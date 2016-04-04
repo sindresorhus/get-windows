@@ -1,0 +1,47 @@
+{
+  "name": "active-win",
+  "version": "0.0.0",
+  "description": "Get the title/id/etc of the active window (OS X)",
+  "license": "MIT",
+  "repository": "sindresorhus/active-win",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "xo && ava",
+    "make": "clang main.m -fmodules -mmacosx-version-min=10.7 -o main"
+  },
+  "files": [
+    "index.js",
+    "main"
+  ],
+  "keywords": [
+    "osx",
+    "app",
+    "application",
+    "window",
+    "win",
+    "active",
+    "focused",
+    "current",
+    "title",
+    "name",
+    "id",
+    "pid"
+  ],
+  "dependencies": {
+    "pify": "^2.3.0"
+  },
+  "devDependencies": {
+    "ava": "*",
+    "xo": "*"
+  },
+  "xo": {
+    "esnext": true
+  }
+}
