@@ -17,13 +17,14 @@ function parse(stdout) {
 		};
 	} else if (process.platform === 'linux') {
 		const result = {};
-		for (let row of stdout.trim().split('\n')) {
+
+		for (const row of stdout.trim().split('\n')) {
 			if (row.includes('=')) {
-				row = row.split('=');
-				result[row[0].trim()] = row[1].trim();
+				const parts = row.split('=');
+				result[parts[0].trim()] = parts[1].trim();
 			} else if (row.includes(':')) {
-				row = row.split(':');
-				result[row[0].trim()] = row[1].trim();
+				const parts = row.split(':');
+				result[parts[0].trim()] = parts[1].trim();
 			}
 		}
 
