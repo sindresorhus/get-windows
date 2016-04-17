@@ -44,7 +44,6 @@ module.exports = () => {
 	} else if (process.platform === 'linux') {
 		return pify(childProcess.exec)(xprop).then(parse);
 	}
-	
 	return Promise.reject(new Error('OS X and Linux only'));
 };
 
