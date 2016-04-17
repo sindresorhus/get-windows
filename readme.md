@@ -1,8 +1,8 @@
 # active-win [![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
 
-> Get the title/id/etc of the [active window](https://en.wikipedia.org/wiki/Active_window) *(OS X)*
+> Get the title/id/etc of the [active window](https://en.wikipedia.org/wiki/Active_window) *(OS X and Linux)*
 
-*PR welcome for Linux and Windows support.*
+*PR welcome for Windows support.*
 
 
 ## Install
