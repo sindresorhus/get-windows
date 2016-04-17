@@ -3,7 +3,7 @@ const path = require('path');
 const childProcess = require('child_process');
 const pify = require('pify');
 const bin = path.join(__dirname, 'main');
-const xprop = "xprop -id $(xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)";
+const xprop = 'xprop -id $(xprop -root 32x \'\t$0\' _NET_ACTIVE_WINDOW | cut -f 2)';
 
 function parse(stdout) {
 	if (process.platform === 'darwin') {
@@ -17,15 +17,15 @@ function parse(stdout) {
 		};
 	} else if (process.platform === 'linux') {
 		const result = {};
-		stdout.trim().split('\n').forEach(row => {
-			if (row.indexOf('=') > -1) {
+		for (let row of stdout.trim().split('\n')) {
+			if (row.includes('=')) {
 				row = row.split('=');
 				result[row[0].trim()] = row[1].trim();
-			} else if (row.indexOf(':') > -1) {
+			} else if (row.includes(':')) {
 				row = row.split(':');
 				result[row[0].trim()] = row[1].trim();
 			}
-		});
+		}
 
 		return {
 			title: JSON.parse(result['_NET_WM_NAME(UTF8_STRING)']) || null,
@@ -34,6 +34,7 @@ function parse(stdout) {
 			pid: parseInt(result['_NET_WM_PID(CARDINAL)'], 10)
 		};
 	}
+
 	throw new Error('OS X and Linux only');
 }
 
@@ -43,6 +44,7 @@ module.exports = () => {
 	} else if (process.platform === 'linux') {
 		return pify(childProcess.exec)(xprop).then(parse);
 	}
+	
 	return Promise.reject(new Error('OS X and Linux only'));
 };
 
@@ -52,5 +54,6 @@ module.exports.sync = () => {
 	} else if (process.platform === 'linux') {
 		return parse(childProcess.execSync(xprop, {encoding: 'utf8'}));
 	}
+
 	throw new Error('OS X and Linux only');
 };

@@ -1,7 +1,7 @@
 {
   "name": "active-win",
   "version": "0.1.0",
-  "description": "Get the title/id/etc of the active window (OS X)",
+  "description": "Get the title/id/etc of the active window (in OS X and Linux)",
   "license": "MIT",
   "repository": "sindresorhus/active-win",
   "author": {
@@ -22,6 +22,7 @@
   ],
   "keywords": [
     "osx",
+    "linux",
     "app",
     "application",
     "window",
