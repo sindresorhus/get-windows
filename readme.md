@@ -1,7 +1,4 @@
-# active-win
-[![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
-[![Dependency Status](https://david-dm.org/sindresorhus/active-win.svg?style=flat)](https://david-dm.org/sindresorhus/active-win)
-[![devDependency Status](https://david-dm.org/sindresorhus/active-win/dev-status.svg?style=flat)](https://david-dm.org/sindresorhus/active-win#info=devDependencies)
+# active-win [![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
 
 > Get the title/id/etc of the [active window](https://en.wikipedia.org/wiki/Active_window) *(OS X and Linux)*
 
