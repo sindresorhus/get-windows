@@ -1,11 +1,23 @@
 os:
   - linux
   - osx
+
 language: node_js
 node_js:
   - '5'
   - '4'
+
+env: DISPLAY=:99.0
+
+install: true
+
+addons:
+  apt:
+    packages:
+    - metacity
+
 before_script:
-  - 'export DISPLAY=:99.0'
-  - 'sh -e /etc/init.d/xvfb start'
-  - sleep 3 # give xvfb some time to start
+  - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sh -e /etc/init.d/xvfb start; fi"
+  - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sleep 3; fi"
+  - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then metacity --sm-disable --replace 2> metacity.err & fi"
+  - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then metacity-theme-viewer & fi"
