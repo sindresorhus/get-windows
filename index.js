@@ -36,7 +36,7 @@ function parse(stdout) {
 		};
 	}
 
-	throw new Error('OS X and Linux only');
+	throw new Error('macOS and Linux only');
 }
 
 module.exports = () => {
@@ -55,5 +55,5 @@ module.exports.sync = () => {
 		return parse(childProcess.execSync(xprop, {encoding: 'utf8'}));
 	}
 
-	throw new Error('OS X and Linux only');
+	throw new Error('macOS and Linux only');
 };
