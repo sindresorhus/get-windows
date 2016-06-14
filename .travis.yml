@@ -3,7 +3,7 @@ os:
   - osx
 language: node_js
 node_js:
-  - '5'
+  - '6'
   - '4'
 env: DISPLAY=:99.0
 install: true
