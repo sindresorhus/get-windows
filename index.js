@@ -2,6 +2,7 @@
 const path = require('path');
 const childProcess = require('child_process');
 const pify = require('pify');
+
 const bin = path.join(__dirname, 'main');
 const xprop = 'xprop -id $(xprop -root 32x \'\\t$0\' _NET_ACTIVE_WINDOW | cut -f 2)';
 
