@@ -9,6 +9,12 @@ function parse(stdout) {
 	if (process.platform === 'darwin') {
 		const parts = stdout.trim().split('\n');
 
+		// First part isn't always the title.
+		// Check if first character was newline.
+		if(stdout.indexOf('\n') === 0) {
+			parts.unshift(parts[1]);
+		}
+
 		return {
 			title: parts[0] || null,
 			id: Number(parts[1]),
