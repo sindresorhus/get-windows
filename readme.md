@@ -35,11 +35,11 @@ activeWin().then(result => {
 
 ### activeWin()
 
-Returns a promise for the result object.
+Returns a `Promise` for the result `Object`.
 
 ### activeWin.sync()
 
-Returns the result object.
+Returns the result `Object`.
 
 
 ## Result
