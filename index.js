@@ -8,7 +8,7 @@ const xprop = 'xprop -id $(xprop -root 32x \'\\t$0\' _NET_ACTIVE_WINDOW | cut -f
 
 function parse(stdout) {
 	if (process.platform === 'darwin') {
-		const parts = stdout.trim().split('\n');
+		const parts = stdout.trimRight().split('\n');
 
 		return {
 			title: parts[0] || null,
