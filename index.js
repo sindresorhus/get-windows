@@ -11,7 +11,7 @@ function parse(stdout) {
 		const parts = stdout.trimRight().split('\n');
 
 		return {
-			title: parts[0] || null,
+			title: parts[0],
 			id: Number(parts[1]),
 			app: parts[2],
 			pid: Number(parts[3])
