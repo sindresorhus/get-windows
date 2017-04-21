@@ -28,10 +28,13 @@ function parse(stdout) {
 				result[parts[0].trim()] = parts[1].trim();
 			}
 		}
+		const windowIdProperty = 'WM_CLIENT_LEADER(WINDOW)';
+		const windowId = (result.hasOwnProperty(windowIdProperty) &&
+			parseInt(result[windowIdProperty].split('#').pop(), 16)) || null
 
 		return {
 			title: JSON.parse(result['_NET_WM_NAME(UTF8_STRING)']) || null,
-			id: parseInt(result['WM_CLIENT_LEADER(WINDOW)'].split('#').pop(), 16),
+			id: windowId,
 			app: JSON.parse(result['WM_CLASS(STRING)'].split(',').pop()),
 			pid: parseInt(result['_NET_WM_PID(CARDINAL)'], 10)
 		};
