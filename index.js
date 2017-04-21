@@ -29,8 +29,9 @@ function parse(stdout) {
 			}
 		}
 		const windowIdProperty = 'WM_CLIENT_LEADER(WINDOW)';
-		const windowId = (result.hasOwnProperty(windowIdProperty) &&
-			parseInt(result[windowIdProperty].split('#').pop(), 16)) || null
+		const resultKeys = Object.keys(result);
+		const windowId = (resultKeys.indexOf(windowIdProperty) > 0 &&
+			parseInt(result[windowIdProperty].split('#').pop(), 16)) || null;
 
 		return {
 			title: JSON.parse(result['_NET_WM_NAME(UTF8_STRING)']) || null,
