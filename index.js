@@ -4,8 +4,9 @@ const childProcess = require('child_process');
 const pify = require('pify');
 
 const bin = path.join(__dirname, 'main');
-const xpropActive = 'xprop -root 32x \'\\t$0\' _NET_ACTIVE_WINDOW | cut -f 2';
-const xpropDetails = 'xprop -id';
+const xpropBin = 'xprop';
+const xpropActiveArgs = ['-root', '32x', '\'\\t$0\'', '_NET_ACTIVE_WINDOW'];
+const xpropDetailsArgs = ['-id'];
 
 const parseMac = stdout => {
 	const parts = stdout.trimRight().split('\n');
@@ -46,14 +47,16 @@ const parseLinux = linuxData => {
 	};
 };
 
+const getActiveWindowId = activeWindowIdStdout => activeWindowIdStdout.split('\t')[1].replace('\'', '').trim();
+
 module.exports = () => {
 	if (process.platform === 'darwin') {
 		return pify(childProcess.execFile)(bin).then(parseMac);
 	} else if (process.platform === 'linux') {
-		return pify(childProcess.exec)(xpropActive).then(
+		return pify(childProcess.execFile)(xpropBin, xpropActiveArgs).then(
 			activeWindowIdStdout => {
-				const activeWindowId = activeWindowIdStdout.trim();
-				return pify(childProcess.exec)(`${xpropDetails} ${activeWindowId}`).then(stdout => {
+				const activeWindowId = getActiveWindowId(activeWindowIdStdout);
+				return pify(childProcess.execFile)(xpropBin, xpropDetailsArgs.concat([activeWindowId])).then(stdout => {
 					return {
 						activeWindowId,
 						stdout
@@ -69,9 +72,9 @@ module.exports.sync = () => {
 	if (process.platform === 'darwin') {
 		return parseMac(childProcess.execFileSync(bin, {encoding: 'utf8'}));
 	} else if (process.platform === 'linux') {
-		const activeWindowIdStdout = childProcess.execSync(xpropActive, {encoding: 'utf8'});
-		const activeWindowId = activeWindowIdStdout.trim();
-		const stdout = childProcess.execSync(`${xpropDetails} ${activeWindowId}`, {encoding: 'utf8'});
+		const activeWindowIdStdout = childProcess.execFileSync(xpropBin, xpropActiveArgs, {encoding: 'utf8'});
+		const activeWindowId = getActiveWindowId(activeWindowIdStdout);
+		const stdout = childProcess.execFileSync(xpropBin, xpropDetailsArgs.concat([activeWindowId]), {encoding: 'utf8'});
 		return parseLinux({
 			activeWindowId,
 			stdout
