@@ -47,7 +47,7 @@ const parseLinux = linuxData => {
 	};
 };
 
-const getActiveWindowId = activeWindowIdStdout => activeWindowIdStdout.split('\t')[1].replace('\'', '').trim();
+const getActiveWindowId = activeWindowIdStdout => parseInt(activeWindowIdStdout.split('\t')[1].replace('\'', '').trim(), 16);
 
 module.exports = () => {
 	if (process.platform === 'darwin') {
