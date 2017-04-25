@@ -1,8 +1,6 @@
 # active-win [![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
 
-> Get the title/id/etc of the [active window](https://en.wikipedia.org/wiki/Active_window) *(macOS & Linux)*
-
-*PR welcome for Windows support.*
+Get the title / window id / app name / process ID of the [active window](https://en.wikipedia.org/wiki/Active_window) *(macOS, Linux and Windows)*
 
 
 ## Install
@@ -45,9 +43,16 @@ Returns the result `Object`.
 ## Result
 
 - `title` - Window title
-- `id` - Window ID
+- `id` - Window ID (in MacOS and Linux)
 - `app` - App owning the window
 - `pid` - Process ID of the app owning the window
+
+
+## Operating system support
+
+It works with MacOS, Linux and Windows (tested in Windows 7 and above).
+
+**Note**: In Windows, there's no notion of a "Window ID". So, when used in Windows, it returns `-1` in the `id` property of the object.
 
 
 ## Related
