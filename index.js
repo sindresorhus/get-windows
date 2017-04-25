@@ -5,7 +5,7 @@ const pify = require('pify');
 
 const bin = path.join(__dirname, 'main');
 const xpropBin = 'xprop';
-const xpropActiveArgs = ['-root', '32x', '\'\\t$0\'', '_NET_ACTIVE_WINDOW'];
+const xpropActiveArgs = ['-root', '\t$0', '_NET_ACTIVE_WINDOW'];
 const xpropDetailsArgs = ['-id'];
 
 const parseMac = stdout => {
@@ -47,7 +47,7 @@ const parseLinux = linuxData => {
 	};
 };
 
-const getActiveWindowId = activeWindowIdStdout => parseInt(activeWindowIdStdout.split('\t')[1].replace('\'', '').trim(), 16);
+const getActiveWindowId = activeWindowIdStdout => parseInt(activeWindowIdStdout.split('\t')[1], 16);
 
 module.exports = () => {
 	if (process.platform === 'darwin') {
@@ -56,7 +56,7 @@ module.exports = () => {
 		return pify(childProcess.execFile)(xpropBin, xpropActiveArgs).then(
 			activeWindowIdStdout => {
 				const activeWindowId = getActiveWindowId(activeWindowIdStdout);
-				return pify(childProcess.execFile)(xpropBin, xpropDetailsArgs.concat([activeWindowId])).then(stdout => {
+				return pify(childProcess.execFile)(xpropBin, xpropDetailsArgs.concat(activeWindowId)).then(stdout => {
 					return {
 						activeWindowId,
 						stdout
@@ -77,7 +77,7 @@ module.exports.sync = () => {
 	} else if (process.platform === 'linux') {
 		const activeWindowIdStdout = childProcess.execFileSync(xpropBin, xpropActiveArgs, {encoding: 'utf8'});
 		const activeWindowId = getActiveWindowId(activeWindowIdStdout);
-		const stdout = childProcess.execFileSync(xpropBin, xpropDetailsArgs.concat([activeWindowId]), {encoding: 'utf8'});
+		const stdout = childProcess.execFileSync(xpropBin, xpropDetailsArgs.concat(activeWindowId), {encoding: 'utf8'});
 		return parseLinux({
 			activeWindowId,
 			stdout
