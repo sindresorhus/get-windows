@@ -4,12 +4,17 @@ language: node_js
 node_js:
   - '6'
   - '4'
-env: DISPLAY=:99.0
+env:
+  - DISPLAY=:99.0
+  - CXX=g++-4.8
 install: true
 addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
     - metacity
+    - g++-4.8
 before_script:
   - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sh -e /etc/init.d/xvfb start; fi"
   - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sleep 3; fi"
