@@ -32,6 +32,9 @@ const kernel32 = new ffi.Library('kernel32', {
 });
 
 module.exports = () => {
+	// Windows C++ APIs' functions are declared with capitals, so this rule has to be turned off.
+	/* eslint new-cap: off */
+
 	// Get a "handle" of the active window
 	const activeWindowHandle = user32.GetForegroundWindow();
 	// Get the window text length in "characters", to create the buffer
