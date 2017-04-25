@@ -4,57 +4,81 @@ const childProcess = require('child_process');
 const pify = require('pify');
 
 const bin = path.join(__dirname, 'main');
-const xprop = 'xprop -id $(xprop -root 32x \'\\t$0\' _NET_ACTIVE_WINDOW | cut -f 2)';
+const xpropBin = 'xprop';
+const xpropActiveArgs = ['-root', '32x', '\'\\t$0\'', '_NET_ACTIVE_WINDOW'];
+const xpropDetailsArgs = ['-id'];
 
-function parse(stdout) {
-	if (process.platform === 'darwin') {
-		const parts = stdout.trimRight().split('\n');
+const parseMac = stdout => {
+	const parts = stdout.trimRight().split('\n');
 
-		return {
-			title: parts[0],
-			id: Number(parts[1]),
-			app: parts[2],
-			pid: Number(parts[3])
-		};
-	} else if (process.platform === 'linux') {
-		const result = {};
+	return {
+		title: parts[0],
+		id: Number(parts[1]),
+		app: parts[2],
+		pid: Number(parts[3])
+	};
+};
 
-		for (const row of stdout.trim().split('\n')) {
-			if (row.includes('=')) {
-				const parts = row.split('=');
-				result[parts[0].trim()] = parts[1].trim();
-			} else if (row.includes(':')) {
-				const parts = row.split(':');
-				result[parts[0].trim()] = parts[1].trim();
-			}
+const parseLinux = linuxData => {
+	const stdout = linuxData.stdout;
+	const activeWindowId = linuxData.activeWindowId;
+
+	const result = {};
+	for (const row of stdout.trim().split('\n')) {
+		if (row.includes('=')) {
+			const parts = row.split('=');
+			result[parts[0].trim()] = parts[1].trim();
+		} else if (row.includes(':')) {
+			const parts = row.split(':');
+			result[parts[0].trim()] = parts[1].trim();
 		}
-
-		return {
-			title: JSON.parse(result['_NET_WM_NAME(UTF8_STRING)']) || null,
-			id: parseInt(result['WM_CLIENT_LEADER(WINDOW)'].split('#').pop(), 16),
-			app: JSON.parse(result['WM_CLASS(STRING)'].split(',').pop()),
-			pid: parseInt(result['_NET_WM_PID(CARDINAL)'], 10)
-		};
 	}
 
-	throw new Error('macOS and Linux only');
-}
+	const windowIdProperty = 'WM_CLIENT_LEADER(WINDOW)';
+	const resultKeys = Object.keys(result);
+	const windowId = (resultKeys.indexOf(windowIdProperty) > 0 &&
+		parseInt(result[windowIdProperty].split('#').pop(), 16)) || activeWindowId;
+
+	return {
+		title: JSON.parse(result['_NET_WM_NAME(UTF8_STRING)']) || null,
+		id: windowId,
+		app: JSON.parse(result['WM_CLASS(STRING)'].split(',').pop()),
+		pid: parseInt(result['_NET_WM_PID(CARDINAL)'], 10)
+	};
+};
+
+const getActiveWindowId = activeWindowIdStdout => parseInt(activeWindowIdStdout.split('\t')[1].replace('\'', '').trim(), 16);
 
 module.exports = () => {
 	if (process.platform === 'darwin') {
-		return pify(childProcess.execFile)(bin).then(parse);
+		return pify(childProcess.execFile)(bin).then(parseMac);
 	} else if (process.platform === 'linux') {
-		return pify(childProcess.exec)(xprop).then(parse);
+		return pify(childProcess.execFile)(xpropBin, xpropActiveArgs).then(
+			activeWindowIdStdout => {
+				const activeWindowId = getActiveWindowId(activeWindowIdStdout);
+				return pify(childProcess.execFile)(xpropBin, xpropDetailsArgs.concat([activeWindowId])).then(stdout => {
+					return {
+						activeWindowId,
+						stdout
+					};
+				});
+			}
+		).then(parseLinux);
 	}
-
 	return Promise.reject(new Error('macOS and Linux only'));
 };
 
 module.exports.sync = () => {
 	if (process.platform === 'darwin') {
-		return parse(childProcess.execFileSync(bin, {encoding: 'utf8'}));
+		return parseMac(childProcess.execFileSync(bin, {encoding: 'utf8'}));
 	} else if (process.platform === 'linux') {
-		return parse(childProcess.execSync(xprop, {encoding: 'utf8'}));
+		const activeWindowIdStdout = childProcess.execFileSync(xpropBin, xpropActiveArgs, {encoding: 'utf8'});
+		const activeWindowId = getActiveWindowId(activeWindowIdStdout);
+		const stdout = childProcess.execFileSync(xpropBin, xpropDetailsArgs.concat([activeWindowId]), {encoding: 'utf8'});
+		return parseLinux({
+			activeWindowId,
+			stdout
+		});
 	}
 
 	throw new Error('macOS and Linux only');
