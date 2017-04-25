@@ -50,7 +50,7 @@ Returns the result `Object`.
 
 ## Operating system support
 
-It works with MacOS, Linux and Windows (tested in Windows 7 and above).
+It works with macOS, Linux and Windows 7+.
 
 **Note**: In Windows, there's no notion of a "Window ID". So, when used in Windows, it returns `-1` in the `id` property of the object.
 
