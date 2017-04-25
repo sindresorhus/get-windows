@@ -5,8 +5,9 @@ node_js:
   - '6'
   - '4'
 env:
-  - DISPLAY=:99.0
-  - CXX=g++-4.8
+  global:
+    - DISPLAY=:99.0
+    - CXX=g++-4.8
 install: true
 addons:
   apt:
@@ -23,4 +24,3 @@ before_script:
 script:
   - npm install
   - npm test
-
