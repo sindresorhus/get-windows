@@ -2,8 +2,9 @@
 const path = require('path');
 
 const fastcall = require('fastcall');
-const ref = fastcall.ref;
 const wchar = require('ref-wchar');
+
+const ref = fastcall.ref;
 
 // Required by QueryFullProcessImageName
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684880(v=vs.85).aspx
@@ -14,8 +15,7 @@ const PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
 const GWL_ID = -12;
 
 // Create ffi declarations for the C++ library and functions needed (User32.dll), using their "Unicode" (UTF-16) version
-let user32;
-user32 = (new fastcall.Library('User32.dll')
+const user32 = new fastcall.Library('User32.dll')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505(v=vs.85).aspx
 	.function({GetForegroundWindow: ['pointer', []]})
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633520(v=vs.85).aspx
@@ -25,23 +25,20 @@ user32 = (new fastcall.Library('User32.dll')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633522(v=vs.85).aspx
 	.function({GetWindowThreadProcessId: ['uint32', ['pointer', 'uint32 *']]})
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633584(v=vs.85).aspx
-	.function({GetWindowLongW: ['long', ['pointer', 'int']]})
-	);
-
+	.function({GetWindowLongW: ['long', ['pointer', 'int']]});
 
 // Create ffi declarations for the C++ library and functions needed (Kernel32.dll), using their "Unicode" (UTF-16) version
-let kernel32;
-kernel32 = (new fastcall.Library('kernel32')
+const kernel32 = new fastcall.Library('kernel32')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684320(v=vs.85).aspx
 	.function({OpenProcess: ['pointer', ['uint32', 'int', 'uint32']]})
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
 	.function({CloseHandle: ['int', ['pointer']]})
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684919(v=vs.85).aspx
-	.function({QueryFullProcessImageNameW: ['int', ['pointer', 'uint32', 'pointer', 'pointer']]}));
+	.function({QueryFullProcessImageNameW: ['int', ['pointer', 'uint32', 'pointer', 'pointer']]});
 
 module.exports = () => {
 	// Windows C++ APIs' functions are declared with capitals, so this rule has to be turned off.
-	/* eslint new-cap: off */
+	/* eslint-disable new-cap */
 
 	// Get a "handle" of the active window
 	const activeWindowHandle = user32.interface.GetForegroundWindow();
@@ -57,7 +54,7 @@ module.exports = () => {
 	user32.interface.GetWindowTextW(activeWindowHandle, windowTextBuffer, windowTextLength + 2);
 	// Remove trailing null characters
 	const windowTextBufferClean = ref.reinterpretUntilZeros(windowTextBuffer, wchar.size);
-	// The the text as a Javascript string
+	// The text as a JavaScript string
 	const windowTitle = wchar.toString(windowTextBufferClean);
 
 	// Allocate a buffer to store the process ID

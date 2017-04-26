@@ -43,7 +43,7 @@ Returns the result `Object`.
 ## Result
 
 - `title` - Window title
-- `id` - Window ID (in MacOS and Linux)
+- `id` - Window ID (in macOS and Linux)
 - `app` - App owning the window
 - `pid` - Process ID of the app owning the window
 
