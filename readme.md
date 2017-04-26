@@ -55,6 +55,11 @@ Returns the result `Object`.
 - [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
 
 
+## Maintainers
+
+- [Sebastián Ramírez](https://github.com/tiangolo)
+
+
 ## License
 
 MIT © [Sindre Sorhus](https://sindresorhus.com)
