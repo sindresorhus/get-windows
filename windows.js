@@ -24,9 +24,7 @@ const user32 = new fastcall.Library('User32.dll')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633521(v=vs.85).aspx
 	.function({GetWindowTextLengthW: ['int', ['pointer']]})
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633522(v=vs.85).aspx
-	.function({GetWindowThreadProcessId: ['uint32', ['pointer', 'uint32 *']]})
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633584(v=vs.85).aspx
-	.function({GetWindowLongW: ['long', ['pointer', 'int']]});
+	.function({GetWindowThreadProcessId: ['uint32', ['pointer', 'uint32 *']]});
 
 // Create ffi declarations for the C++ library and functions needed (Kernel32.dll), using their "Unicode" (UTF-16) version
 const kernel32 = new fastcall.Library('kernel32')
@@ -43,8 +41,8 @@ module.exports = () => {
 
 	// Get a "handle" of the active window
 	const activeWindowHandle = user32.interface.GetForegroundWindow();
-	// Get the Window ID, as GWL_ID
-	const windowId = user32.interface.GetWindowLongW(activeWindowHandle, GWL_ID);
+	// Get memory address of the window handle as the "window ID"
+	const windowId = ref.address(activeWindowHandle);
 	// Get the window text length in "characters", to create the buffer
 	const windowTextLength = user32.interface.GetWindowTextLengthW(activeWindowHandle);
 	// Allocate a buffer large enough to hold the window text as "Unicode" (UTF-16) characters (using ref-wchar)
@@ -87,7 +85,6 @@ module.exports = () => {
 
 	return {
 		title: windowTitle,
-		// There doesn't seem to be a notion of "window ID" in Windows, so returning -1
 		id: windowId,
 		app: processName,
 		pid: processId
