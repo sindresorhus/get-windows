@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 'use strict';
 const path = require('path');
 
