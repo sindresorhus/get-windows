@@ -52,7 +52,7 @@ Returns the result `Object`.
 
 It works with macOS, Linux and Windows 7+.
 
-**Note**: In Windows, there's no notion of a "Window ID". So, when used in Windows, it returns `-1` in the `id` property of the object.
+**Note**: In Windows, there isn't a clear notion of a "Window ID". So, when used in Windows, it returns the memory address of the window "handle" in the `id` property of the object, that "handle" is unique per window, so it can be used to identify them. To learn more about it refer to the [official Windows documentation](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle).
 
 
 ## Related
