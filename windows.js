@@ -11,10 +11,6 @@ const ref = fastcall.ref;
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684880(v=vs.85).aspx
 const PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
 
-// Used by GetWindowLong
-// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633584(v=vs.85).aspx
-const GWL_ID = -12;
-
 // Create ffi declarations for the C++ library and functions needed (User32.dll), using their "Unicode" (UTF-16) version
 const user32 = new fastcall.Library('User32.dll')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505(v=vs.85).aspx
