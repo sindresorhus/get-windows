@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 'use strict';
 const path = require('path');
-
 const fastcall = require('fastcall');
 const wchar = require('ref-wchar');
 
@@ -11,7 +10,7 @@ const ref = fastcall.ref;
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684880(v=vs.85).aspx
 const PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
 
-// Create ffi declarations for the C++ library and functions needed (User32.dll), using their "Unicode" (UTF-16) version
+// Create FFI declarations for the C++ library and functions needed (User32.dll), using their "Unicode" (UTF-16) version
 const user32 = new fastcall.Library('User32.dll')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505(v=vs.85).aspx
 	.function({GetForegroundWindow: ['pointer', []]})
@@ -22,7 +21,7 @@ const user32 = new fastcall.Library('User32.dll')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633522(v=vs.85).aspx
 	.function({GetWindowThreadProcessId: ['uint32', ['pointer', 'uint32 *']]});
 
-// Create ffi declarations for the C++ library and functions needed (Kernel32.dll), using their "Unicode" (UTF-16) version
+// Create FFI declarations for the C++ library and functions needed (Kernel32.dll), using their "Unicode" (UTF-16) version
 const kernel32 = new fastcall.Library('kernel32')
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684320(v=vs.85).aspx
 	.function({OpenProcess: ['pointer', ['uint32', 'int', 'uint32']]})
@@ -32,20 +31,20 @@ const kernel32 = new fastcall.Library('kernel32')
 	.function({QueryFullProcessImageNameW: ['int', ['pointer', 'uint32', 'pointer', 'pointer']]});
 
 module.exports = () => {
-	// Windows C++ APIs' functions are declared with capitals, so this rule has to be turned off.
+	// Windows C++ APIs' functions are declared with capitals, so this rule has to be turned off
 	/* eslint-disable new-cap */
 
 	// Get a "handle" of the active window
 	const activeWindowHandle = user32.interface.GetForegroundWindow();
 	// Get memory address of the window handle as the "window ID"
 	const windowId = ref.address(activeWindowHandle);
-	// Get the window text length in "characters", to create the buffer
+	// Get the window text length in "characters" to create the buffer
 	const windowTextLength = user32.interface.GetWindowTextLengthW(activeWindowHandle);
 	// Allocate a buffer large enough to hold the window text as "Unicode" (UTF-16) characters (using ref-wchar)
 	// This assumes using the "Basic Multilingual Plane" of Unicode, only 2 characters per Unicode code point
 	// Include some extra bytes for possible null characters
 	const windowTextBuffer = Buffer.alloc((windowTextLength * 2) + 4);
-	// Write the window text to the buffer (it returns the text size, but is not used here)
+	// Write the window text to the buffer (it returns the text size, but it's not used here)
 	user32.interface.GetWindowTextW(activeWindowHandle, windowTextBuffer, windowTextLength + 2);
 	// Remove trailing null characters
 	const windowTextBufferClean = ref.reinterpretUntilZeros(windowTextBuffer, wchar.size);
@@ -54,7 +53,7 @@ module.exports = () => {
 
 	// Allocate a buffer to store the process ID
 	const processIdBuffer = ref.alloc('uint32');
-	// Write the process ID creating the window to the buffer (it returns the thread ID, but is not used here)
+	// Write the process ID creating the window to the buffer (it returns the thread ID, but it's not used here)
 	user32.interface.GetWindowThreadProcessId(activeWindowHandle, processIdBuffer);
 	// Get the process ID as a number from the buffer
 	const processId = ref.get(processIdBuffer);

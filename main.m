@@ -9,12 +9,12 @@ int main() {
 			NSInteger windowOwnerPID = [window[(id)kCGWindowOwnerPID] intValue];
 
 			if (windowOwnerPID == frontmostAppPID) {
-				// skip transparent windows, like with Chrome
+				// Skip transparent windows, like with Chrome
 				if ([window[(id)kCGWindowAlpha] intValue] == 0) {
 					continue;
 				}
 
-				// skip tiny windows, like the Chrome link hover statusbar
+				// Skip tiny windows, like the Chrome link hover statusbar
 				int minWinSize = 50;
 				NSDictionary* winBounds = window[(id)kCGWindowBounds];
 				if ([winBounds[@"Height"] intValue] < minWinSize ||

@@ -1,7 +1,7 @@
 {
   "name": "active-win",
   "version": "1.0.1",
-  "description": "Get the title / window id / app name / process ID of the active window (macOS, Linux & Windows)",
+  "description": "Get the title / window id / app name / process ID of the active window (macOS, Linux, Windows)",
   "license": "MIT",
   "repository": "sindresorhus/active-win",
   "author": {
@@ -23,7 +23,6 @@
   ],
   "keywords": [
     "macos",
-    "osx",
     "linux",
     "windows",
     "app",

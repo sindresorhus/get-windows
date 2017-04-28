@@ -68,7 +68,7 @@ module.exports = () => {
 		const windows = require('./windows');
 		return Promise.resolve(windows());
 	}
-	return Promise.reject(new Error('macOS, Linux and Windows only'));
+	return Promise.reject(new Error('macOS, Linux, and Windows only'));
 };
 
 module.exports.sync = () => {
@@ -87,5 +87,5 @@ module.exports.sync = () => {
 		return windows();
 	}
 
-	throw new Error('macOS, Linux and Windows only');
+	throw new Error('macOS, Linux, and Windows only');
 };
