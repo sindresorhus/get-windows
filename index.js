@@ -64,8 +64,11 @@ module.exports = () => {
 				});
 			}
 		).then(parseLinux);
+	} else if (process.platform === 'win32') {
+		const windows = require('./windows');
+		return Promise.resolve(windows());
 	}
-	return Promise.reject(new Error('macOS and Linux only'));
+	return Promise.reject(new Error('macOS, Linux and Windows only'));
 };
 
 module.exports.sync = () => {
@@ -79,7 +82,10 @@ module.exports.sync = () => {
 			activeWindowId,
 			stdout
 		});
+	} else if (process.platform === 'win32') {
+		const windows = require('./windows');
+		return windows();
 	}
 
-	throw new Error('macOS and Linux only');
+	throw new Error('macOS, Linux and Windows only');
 };
