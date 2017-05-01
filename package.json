@@ -18,7 +18,9 @@
   },
   "files": [
     "index.js",
-    "windows.js",
+    "lib/linux.js",
+    "lib/macos.js",
+    "lib/windows.js",
     "main"
   ],
   "keywords": [
