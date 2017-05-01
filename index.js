@@ -2,14 +2,11 @@
 
 module.exports = () => {
 	if (process.platform === 'darwin') {
-		const macos = require('./lib/macos');
-		return macos();
+		return require('./lib/macos')();
 	} else if (process.platform === 'linux') {
-		const linux = require('./lib/linux');
-		return linux();
+		return require('./lib/linux')();
 	} else if (process.platform === 'win32') {
-		const windows = require('./lib/windows');
-		return windows();
+		return require('./lib/windows')();
 	}
 
 	return Promise.reject(new Error('macOS, Linux, and Windows only'));
@@ -17,14 +14,11 @@ module.exports = () => {
 
 module.exports.sync = () => {
 	if (process.platform === 'darwin') {
-		const macos = require('./lib/macos');
-		return macos.sync();
+		return require('./lib/macos').sync();
 	} else if (process.platform === 'linux') {
-		const linux = require('./lib/linux');
-		return linux.sync();
+		return require('./lib/linux').sync();
 	} else if (process.platform === 'win32') {
-		const windows = require('./lib/windows');
-		return windows.sync();
+		return require('./lib/windows').sync();
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
