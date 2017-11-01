@@ -26,7 +26,26 @@ int main() {
 				NSInteger winId = [window[(id)kCGWindowNumber] intValue];
 				NSString* app = window[(id)kCGWindowOwnerName];
 				NSInteger pid = [window[(id)kCGWindowOwnerPID] intValue];
-				printf("%s\n%ld\n%s\n%ld\n", title.UTF8String, winId, app.UTF8String, pid);
+
+				NSDictionary *bounds = @{
+					@"height": winBounds[@"Height"],
+					@"width": winBounds[@"Width"],
+					@"x": winBounds[@"X"],
+					@"y": winBounds[@"Y"]
+				};
+
+				NSDictionary *dict = @{
+					@"title": title,
+					@"id": @(winId),
+					@"app": app,
+					@"pid": @(pid),
+					@"bounds": bounds
+				};
+
+				NSError * err;
+				NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&err];
+				NSString * jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+				printf("%s\n", jsonString.UTF8String);
 
 				return 0;
 			}
