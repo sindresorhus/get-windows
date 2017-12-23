@@ -45,6 +45,7 @@ Returns the result `Object`.
 - `title` - Window title
 - `id` - Window ID
 - `app` - App owning the window
+- `appPath` - Path to the app executable (Windows only)
 - `pid` - Process ID of the app owning the window
 
 
