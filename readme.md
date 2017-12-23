@@ -6,7 +6,7 @@ Get the title / window id / app name / process ID of the [active window](https:/
 ## Install
 
 ```
-$ npm install --save active-win
+$ npm install active-win
 ```
 
 
@@ -15,8 +15,8 @@ $ npm install --save active-win
 ```js
 const activeWin = require('active-win');
 
-activeWin().then(result => {
-	console.log(result);
+(async () => {
+	console.log(await activeWin());
 	/*
 	{
 		title: 'npm install',
@@ -25,7 +25,7 @@ activeWin().then(result => {
 		pid: 368
 	}
 	*/
-});
+})();
 ```
 
 
@@ -42,11 +42,16 @@ Returns the result `Object`.
 
 ## Result
 
-- `title` - Window title
-- `id` - Window ID
-- `app` - App owning the window
-- `appPath` - Path to the app executable (Windows only)
-- `pid` - Process ID of the app owning the window
+- `title` *(string)* - Window title
+- `id` *(number)* - Window ID
+- `app` *(string)* - App owning the window
+- `appPath` *(string)* - Path to the app executable *(Windows only)*
+- `pid` *(number)* - Process ID of the app owning the window
+- `bounds` *(Object)* - Window position and size *(macOS only)*
+	- `x` *(number)*
+	- `y` *(number)*
+	- `width` *(number)*
+	- `height` *(number)*
 
 
 ## OS support
@@ -63,9 +68,10 @@ It works on macOS, Linux, and Windows 7+.
 
 ## Maintainers
 
+- [Sindre Sorhus](https://github.com/sindresorhus)
 - [Sebastián Ramírez](https://github.com/tiangolo)
 
 
 ## License
 
-MIT © [Sindre Sorhus](https://sindresorhus.com)
+MIT
