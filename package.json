@@ -1,54 +1,54 @@
 {
-  "name": "active-win",
-  "version": "2.0.0",
-  "description": "Get the title / window id / app name / process ID of the active window (macOS, Linux, Windows)",
-  "license": "MIT",
-  "repository": "sindresorhus/active-win",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava",
-    "make": "clang main.m -fmodules -mmacosx-version-min=10.7 -o main"
-  },
-  "files": [
-    "index.js",
-    "lib",
-    "main"
-  ],
-  "keywords": [
-    "macos",
-    "linux",
-    "windows",
-    "app",
-    "application",
-    "window",
-    "win",
-    "active",
-    "focused",
-    "current",
-    "title",
-    "name",
-    "id",
-    "pid",
-    "screenshot",
-    "capture"
-  ],
-  "dependencies": {
-    "pify": "^2.3.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "xo": "*"
-  },
-  "optionalDependencies": {
-    "ffi": "^2.2.0",
-    "ref": "^1.3.4",
-    "ref-wchar": "^1.0.2"
-  }
+	"name": "active-win",
+	"version": "2.0.0",
+	"description": "Get the title / window id / app name / process ID of the active window (macOS, Linux, Windows)",
+	"license": "MIT",
+	"repository": "sindresorhus/active-win",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && ava",
+		"make": "clang main.m -fmodules -mmacosx-version-min=10.7 -o main"
+	},
+	"files": [
+		"index.js",
+		"lib",
+		"main"
+	],
+	"keywords": [
+		"macos",
+		"linux",
+		"windows",
+		"app",
+		"application",
+		"window",
+		"win",
+		"active",
+		"focused",
+		"current",
+		"title",
+		"name",
+		"id",
+		"pid",
+		"screenshot",
+		"capture"
+	],
+	"dependencies": {
+		"pify": "^3.0.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"xo": "*"
+	},
+	"optionalDependencies": {
+		"ffi": "^2.2.0",
+		"ref": "^1.3.4",
+		"ref-wchar": "^1.0.2"
+	}
 }
