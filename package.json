@@ -14,7 +14,8 @@
 	},
 	"scripts": {
 		"test": "xo && ava",
-		"make": "clang main.m -fmodules -mmacosx-version-min=10.7 -o main"
+		"build": "swift build --configuration=release -Xswiftc -static-stdlib && mv .build/release/active-win main",
+		"prepublish": "npm run build"
 	},
 	"files": [
 		"index.js",
