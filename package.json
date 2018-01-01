@@ -1,7 +1,7 @@
 {
 	"name": "active-win",
 	"version": "2.0.0",
-	"description": "Get the title / window id / app name / process ID of the active window (macOS, Linux, Windows)",
+	"description": "Get metadata about the active window (title, id, bounds, owner, etc). Works on macOS, Linux, Windows.",
 	"license": "MIT",
 	"repository": "sindresorhus/active-win",
 	"author": {
@@ -15,7 +15,7 @@
 	"scripts": {
 		"test": "xo && ava",
 		"build": "swift build --configuration=release -Xswiftc -static-stdlib && mv .build/release/active-win main",
-		"prepublish": "npm run build"
+		"prepublishOnly": "npm run build"
 	},
 	"files": [
 		"index.js",
@@ -38,7 +38,12 @@
 		"id",
 		"pid",
 		"screenshot",
-		"capture"
+		"capture",
+		"metadata",
+		"bounds",
+		"memory",
+		"usage",
+		"bundleid"
 	],
 	"dependencies": {
 		"pify": "^3.0.0"

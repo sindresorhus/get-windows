@@ -1,6 +1,8 @@
 # active-win [![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
 
-Get the title / window id / app name / process ID of the [active window](https://en.wikipedia.org/wiki/Active_window) *(macOS, Linux, Windows)*
+Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc)
+
+Works on macOS, Linux, Windows.
 
 
 ## Install
@@ -19,10 +21,21 @@ const activeWin = require('active-win');
 	console.log(await activeWin());
 	/*
 	{
-		title: 'npm install',
-		id: 54,
-		app: 'Terminal',
-		pid: 368
+		title: 'Unicorns - Google Search',
+		id: 5762,
+		bounds: {
+			x: 0,
+			y: 0,
+			height: 900,
+			width: 1440
+		},
+		owner: {
+			name: 'Google Chrome',
+			processId: 310,
+			bundleId: 'com.google.Chrome',
+			path: '/Applications/Google Chrome.app'
+		},
+		memoryUsage: 11015432
 	}
 	*/
 })();
@@ -33,25 +46,28 @@ const activeWin = require('active-win');
 
 ### activeWin()
 
-Returns a `Promise` for the result `Object`.
+Returns a `Promise<Object>` with the result.
 
 ### activeWin.sync()
 
-Returns the result `Object`.
+Returns an `Object` with the result.
 
 
 ## Result
 
 - `title` *(string)* - Window title
-- `id` *(number)* - Window ID
-- `app` *(string)* - App owning the window
-- `appPath` *(string)* - Path to the app executable *(Windows only)*
-- `pid` *(number)* - Process ID of the app owning the window
+- `id` *(number)* - Window identifier
 - `bounds` *(Object)* - Window position and size *(macOS only)*
 	- `x` *(number)*
 	- `y` *(number)*
 	- `width` *(number)*
 	- `height` *(number)*
+- `owner` *(Object)* - App that owns the window
+	- `name` *(string)* - Name of the app
+	- `processId` *(number)* - Process identifier
+	- `bundleId` *(string)* - Bundle identifier *(macOS only)*
+	- `path` *(string)* - Path to the app *(macOS and Windows only)*
+- `memoryUsage` *(number)* - Memory usage by the window *(macOS only)*
 
 
 ## OS support
