@@ -34,7 +34,7 @@ for window in windows {
 	let app = NSRunningApplication(processIdentifier: appPid)!
 
 	let dict: [String: Any] = [
-		"title": (window[kCGWindowName as String] != nil ? window[kCGWindowName as String] as! String : "" ),
+		"title": window[kCGWindowName as String] as? String ?? "",
 		"id": window[kCGWindowNumber as String] as! Int,
 		"bounds": [
 			"x": bounds.origin.x,
