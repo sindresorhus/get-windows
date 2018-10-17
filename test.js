@@ -1,6 +1,6 @@
 import util from 'util';
 import test from 'ava';
-import m from '.';
+import activeWin from '.';
 
 function asserter(t, result) {
 	t.log(util.inspect(result));
@@ -12,9 +12,9 @@ function asserter(t, result) {
 }
 
 test('async', async t => {
-	asserter(t, await m());
+	asserter(t, await activeWin());
 });
 
 test('sync', t => {
-	asserter(t, m.sync());
+	asserter(t, activeWin.sync());
 });

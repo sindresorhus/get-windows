@@ -2,9 +2,8 @@ os:
   - linux
 language: node_js
 node_js:
+  - '10'
   - '8'
-  - '6'
-  - '4'
 env: DISPLAY=:99.0
 install: true
 addons:

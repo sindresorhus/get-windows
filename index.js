@@ -3,9 +3,13 @@
 module.exports = () => {
 	if (process.platform === 'darwin') {
 		return require('./lib/macos')();
-	} else if (process.platform === 'linux') {
+	}
+
+	if (process.platform === 'linux') {
 		return require('./lib/linux')();
-	} else if (process.platform === 'win32') {
+	}
+
+	if (process.platform === 'win32') {
 		return require('./lib/windows')();
 	}
 
@@ -15,9 +19,13 @@ module.exports = () => {
 module.exports.sync = () => {
 	if (process.platform === 'darwin') {
 		return require('./lib/macos').sync();
-	} else if (process.platform === 'linux') {
+	}
+
+	if (process.platform === 'linux') {
 		return require('./lib/linux').sync();
-	} else if (process.platform === 'win32') {
+	}
+
+	if (process.platform === 'win32') {
 		return require('./lib/windows').sync();
 	}
 

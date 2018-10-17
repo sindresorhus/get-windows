@@ -10,7 +10,7 @@
 		"url": "sindresorhus.com"
 	},
 	"engines": {
-		"node": ">=4"
+		"node": ">=8"
 	},
 	"scripts": {
 		"test": "xo && ava",
@@ -46,11 +46,11 @@
 		"bundleid"
 	],
 	"dependencies": {
-		"pify": "^3.0.0"
+		"pify": "^4.0.0"
 	},
 	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
+		"ava": "^0.25.0",
+		"xo": "^0.23.0"
 	},
 	"optionalDependencies": {
 		"ffi": "^2.2.0",
