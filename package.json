@@ -45,9 +45,6 @@
 		"usage",
 		"bundleid"
 	],
-	"dependencies": {
-		"pify": "^4.0.0"
-	},
 	"devDependencies": {
 		"ava": "^0.25.0",
 		"xo": "^0.23.0"
