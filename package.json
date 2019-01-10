@@ -14,14 +14,14 @@
 	},
 	"scripts": {
 		"test": "xo && ava",
-		"build-win32": "csc Sources/active-win/main.cs && mv main.exe active-win-win32.exe",
-		"build-osx": "swift build --configuration=release --static-swift-stdlib && mv .build/release/active-win active-win-osx",
+		"build-win32": "csc Sources/active-win/main.cs && mv main.exe bin/active-win-win32.exe",
+		"build-osx": "swift build --configuration=release --static-swift-stdlib && mv .build/release/active-win bin/active-win-osx",
 		"prepublishOnly": "npm run build-osx build-win32"
 	},
 	"files": [
 		"index.js",
 		"lib",
-		"main"
+		"bin"
 	],
 	"keywords": [
 		"macos",
