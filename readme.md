@@ -57,7 +57,7 @@ Returns an `Object` with the result.
 
 - `title` *(string)* - Window title
 - `id` *(number)* - Window identifier
-- `bounds` *(Object)* - Window position and size *(macOS only)*
+- `bounds` *(Object)* - Window position and size
 	- `x` *(number)*
 	- `y` *(number)*
 	- `width` *(number)*
