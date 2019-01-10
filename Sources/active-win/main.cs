@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ActiveWin
 {
@@ -14,6 +15,32 @@ namespace ActiveWin
         public int Top;         // y position of upper-left corner
         public int Right;       // x position of lower-right corner
         public int Bottom;      // y position of lower-right corner
+    }
+
+    public class MonitorInfo
+    {
+        public UInt32 cbSize;
+        public RECT rcMonitor;
+        public RECT rcWork;
+        public UInt32 dwFlags;
+
+        public MonitorInfo()
+        {
+            rcMonitor = new RECT();
+            rcWork = new RECT();
+
+            cbSize = (UInt32)System.Runtime.InteropServices.Marshal.SizeOf(typeof(MonitorInfo));
+            dwFlags = 0;
+        }
+    }
+
+    public class DisplayInfo
+    {
+        public string Availability;
+        public string ScreenHeight;
+        public string ScreenWidth;
+        public RECT MonitorArea;
+        public RECT WorkArea;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -53,6 +80,8 @@ namespace ActiveWin
               WS_THICKFRAME  | 
               WS_MINIMIZEBOX | 
               WS_MAXIMIZEBOX;
+       
+        public delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
         #region User32
         [DllImport("user32.dll", SetLastError = true)]
@@ -62,6 +91,14 @@ namespace ActiveWin
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.SysUInt)]
         public static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.SysUInt)]
+        public static extern bool GetMonitorInfo(IntPtr hMptr, ref MonitorInfo info);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.SysUInt)]
+        public static extern void EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -128,16 +165,38 @@ namespace ActiveWin
             }
         }
 
+        public static List<DisplayInfo> getDisplays() {
+          List<DisplayInfo> col = new List<DisplayInfo>();
+
+          EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, 
+            delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
+              MonitorInfo mi = new MonitorInfo();
+              mi.size = (uint)Marshal.SizeOf(mi);
+              bool success = GetMonitorInfo(hMonitor, ref mi);
+              if (success) {
+                DisplayInfo di = new DisplayInfo();
+                di.ScreenWidth = (mi.monitor.right - mi.monitor.left).ToString();
+                di.ScreenHeight = (mi.monitor.bottom - mi.monitor.top).ToString();
+                di.MonitorArea = mi.monitor;
+                di.WorkArea = mi.work;
+                di.Availability = mi.flags.ToString();
+                col.Add(di);
+              }
+              return true;
+            }, 
+            IntPtr.Zero );
+
+          return col;
+        }
+
         public static RECT getBounds(int pid) {
             Process proc = Process.GetProcessById(pid);
-            RECT rect = new RECT();
-            bool res = GetWindowRect(proc.MainWindowHandle, ref rect);
-            ActiveWinUtils.checkError(res);
 
             // Window Rect provides bad values in certain situations and should be affected
             // https://groups.google.com/forum/#!topic/microsoft.public.vc.mfc/02s-1NJAqEI
             WINDOWINFO info = new WINDOWINFO(); 
-            res = GetWindowInfo(proc.MainWindowHandle, ref info);
+            bool res = GetWindowInfo(proc.MainWindowHandle, ref info);
+            RECT rect = info.rcWindow;
             ActiveWinUtils.checkError(res);
 
             if (IsZoomed(proc.MainWindowHandle)) { 
@@ -159,11 +218,18 @@ namespace ActiveWin
             return rect;
         }
 
-        static RECT getDesktop() {
-            RECT desktop = new RECT();
-            bool res = GetWindowRect(GetDesktopWindow(), ref desktop);
-            ActiveWinUtils.checkError(res);
-            return desktop;
+        static bool intersects(RECT parent, RECT child) {
+          return parent.Left <= child.Right && child.Left <= parent.Right &&
+            parent.Top <= child.Bottom && child.Top <= parent.Bottom;
+        }
+
+        static DisplayInfo getDesktop(RECT bounds) {
+          foreach (DisplayInfo item in ActiveWinUtils.getDisplays()) {
+            if (ActiveWinUtils.intesects(item.WorkArea, bounds)) {
+              return item;
+            }
+          }
+          return NUL;
         }
 
         static string getProcessFilename(int processId) {
