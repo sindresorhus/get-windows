@@ -1,33 +1,44 @@
-'use strict';
+const util = require('util');
+const childProcess = require('child_process');
 
-module.exports = () => {
-	if (process.platform === 'darwin') {
-		return require('./lib/macos')();
+const execFile = util.promisify(childProcess.execFile);
+
+const parseJSON = text => {
+	try {
+		return JSON.parse(text);
+	} catch (error) {
+		console.error(error);
+		throw new Error('Error parsing data');
 	}
-
-	if (process.platform === 'linux') {
-		return require('./lib/linux')();
-	}
-
-	if (process.platform === 'win32') {
-		return require('./lib/windows')();
-	}
-
-	return Promise.reject(new Error('macOS, Linux, and Windows only'));
 };
 
-module.exports.sync = () => {
-	if (process.platform === 'darwin') {
-		return require('./lib/macos').sync();
+const EXEC_MAP = {
+	win32: 'active-win-win32.exe',
+	linux: 'active-win-linux.js',
+	darwin: 'active-win-darwin'
+}
+
+function getCmdWithArgs(platform) {
+	let cmd = EXEC_MAP[process.platform];
+	if (cmd) {
+		throw new Error('macOS, Linux, and Windows only');
 	}
 
-	if (process.platform === 'linux') {
-		return require('./lib/linux').sync();
+	let args = [];
+
+	if (cmd.endsWith('.js')) { // Node script
+		[cmd, args] = [process.argv[0], [cmd]];
 	}
 
-	if (process.platform === 'win32') {
-		return require('./lib/windows').sync();
-	}
+	return [cmd, args];
+}
 
-	throw new Error('macOS, Linux, and Windows only');
+module.exports = async (platform = process.platform) => {
+	const [cmd, args] = getCmdWithArgs(platform);
+	return parseJSON(await execFile(cmd, args, { encoding: 'utf8' }));
+};
+
+module.exports.sync = (platform = process.platform) => {
+	const [cmd, args] = getCmdWithArgs(platform);
+	return parseJSON(childProcess.execFileSync(cmd, args, { encoding: 'utf8' }));
 };
