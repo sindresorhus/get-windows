@@ -4,3 +4,4 @@ yarn.lock
 /*.xcodeproj
 /main
 /active-win-*
+/bin
