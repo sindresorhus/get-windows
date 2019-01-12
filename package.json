@@ -15,8 +15,10 @@
 	"scripts": {
 		"test": "xo && ava",
 		"build-win32": "csc native/win32/main.cs -Out:bin/active-win-win32.exe",
-		"build-darwin": "cd native/darwin && swift build --configuration=release --static-swift-stdlib && mv .build/release/active-win ../../bin/active-win-darwin",
-		"prepublishOnly": "npm run build-darwin build-win32"
+		"compile-darwin": "swift build --package-path=native/darwin --configuration=release --static-swift-stdlib",
+		"move-darwin": "mv native/darwin/.build/release/active-win bin/active-win-darwin",
+		"build-darwin": "npm run compile-darwin && npm run move-darwin",
+		"prepublishOnly": "npm run build-darwin && npm run build-win32"
 	},
 	"files": [
 		"index.js",

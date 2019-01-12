@@ -1,21 +1,22 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const childProcess = require('child_process');
 const execFile = util.promisify(childProcess.execFile);
-const exists = util.promisify(childProcess.exists);
+const exists = util.promisify(fs.exists);
 
 const bin = path.join(__dirname, `../bin/active-win-${process.platform}`);
 
 let found = undefined;
 
-const parseJSON = stdout => {
+const parseJSON = text => {
 	try {
-		return JSON.parse(stdout);
+		return JSON.parse(text);
 	} catch (error) {
 		console.error(error);
-		throw new Error('Error parsing window data');
+		throw new Error('Error parsing data');
 	}
 };
 
@@ -36,9 +37,9 @@ function getCmdWithArgs() {
 	return [cmd, args];
 }
 
-module.exports = async () => {
+module.exports = () => {
 	let [cmd, args] = getCmdWithArgs();
-	return parseJSON(await execFile(cmd, args));
+	return execFile(cmd, args).then(parseJSON);
 };
 
 module.exports.sync = () => {
