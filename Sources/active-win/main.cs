@@ -19,18 +19,18 @@ namespace ActiveWin
 
     public class MonitorInfo
     {
-        public UInt32 cbSize;
-        public RECT rcMonitor;
-        public RECT rcWork;
-        public UInt32 dwFlags;
+        public UInt32 size;
+        public RECT monitor;
+        public RECT work;
+        public UInt32 flags;
 
         public MonitorInfo()
         {
-            rcMonitor = new RECT();
-            rcWork = new RECT();
+            monitor = new RECT();
+            work = new RECT();
 
-            cbSize = (UInt32)System.Runtime.InteropServices.Marshal.SizeOf(typeof(MonitorInfo));
-            dwFlags = 0;
+            size = (UInt32)System.Runtime.InteropServices.Marshal.SizeOf(typeof(MonitorInfo));
+            flags = 0;
         }
     }
 
@@ -171,12 +171,12 @@ namespace ActiveWin
           EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, 
             delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
               MonitorInfo mi = new MonitorInfo();
-              mi.size = (uint)Marshal.SizeOf(mi);
+
               bool success = GetMonitorInfo(hMonitor, ref mi);
               if (success) {
                 ScreenInfo di = new ScreenInfo();
-                di.ScreenWidth = (mi.monitor.right - mi.monitor.left).ToString();
-                di.ScreenHeight = (mi.monitor.bottom - mi.monitor.top).ToString();
+                di.ScreenWidth = (mi.monitor.Right - mi.monitor.Left).ToString();
+                di.ScreenHeight = (mi.monitor.Bottom - mi.monitor.Top).ToString();
                 di.MonitorArea = mi.monitor;
                 di.WorkArea = mi.work;
                 di.Availability = mi.flags.ToString();
@@ -226,12 +226,12 @@ namespace ActiveWin
         static Tuple<int, ScreenInfo> getScreen(RECT bounds) {
           int i = 0;
           foreach (ScreenInfo item in ActiveWinUtils.getScreens()) {
-            if (ActiveWinUtils.intesects(item.WorkArea, bounds)) {
-              return Tuple.create(i, item);
+            if (ActiveWinUtils.intersects(item.WorkArea, bounds)) {
+              return Tuple.Create(i, item);
             }
-            i += 1
+            i += 1;
           }
-          return NUL;
+          return null;
         }
 
         static string getProcessFilename(int processId) {
@@ -260,7 +260,15 @@ namespace ActiveWin
             return windowText.ToString();
         }
 
-        static string generateOutput(string windowTitle, int windowId, int processId, string processFileName, RECT bounds, int displayIndex, RECT display) { 
+        static string generateOutput(
+            string windowTitle, 
+            int windowId, 
+            int processId, 
+            string processFileName, 
+            RECT bounds, 
+            int screenIndex,
+            ScreenInfo screen
+        ) { 
            return  String.Format(@"{{
     ""title"": ""{0}"",
     ""id"": {1},
@@ -269,29 +277,29 @@ namespace ActiveWin
         ""processId"": {3},
         ""path"": ""{4}""
     }},
-    ""bounds"": {{
-        ""x"": {5},
-        ""y"": {6},
-        ""width"": {7},
-        ""height"": {8}
-    }},
     ""screen"": {{
         ""x"": {9},
         ""y"": {10},
         ""width"": {11},
         ""height"": {12},
         ""index"": {13}
+    }},
+    ""bounds"": {{
+        ""x"": {5},
+        ""y"": {6},
+        ""width"": {7},
+        ""height"": {8}
     }}
 }}", 
                 windowTitle, 
                 windowId, // Window Id
                 Path.GetFileName(processFileName), 
                 processId,
-                processFileName, 
+                processFileName,
+                screen.WorkArea.Left, screen.WorkArea.Top, 
+                screen.WorkArea.Right-screen.WorkArea.Left, screen.WorkArea.Bottom-screen.WorkArea.Top,
                 bounds.Left, bounds.Top, 
-                bounds.Right-bounds.Left, bounds.Bottom-bounds.Top,
-                screen.Left, screen.Top, 
-                screen.Right-screen.Left, screen.Bottom-screen.Top);
+                bounds.Right-bounds.Left, bounds.Bottom-bounds.Top);
         }
 
         static void Main(string[] args)
@@ -304,7 +312,7 @@ namespace ActiveWin
             string windowTitle = ActiveWinUtils.getWindowTitle(activeWindowHandle);
             string processFileName = ActiveWinUtils.getProcessFilename(processId);    
             RECT bounds = ActiveWinUtils.getBounds(processId);
-            RECT screen = ActiveWinUtils.getScreen();
+            Tuple<int, ScreenInfo> screen = ActiveWinUtils.getScreen(bounds);
 
             System.Console.WriteLine(ActiveWinUtils.generateOutput(
                 windowTitle, 
