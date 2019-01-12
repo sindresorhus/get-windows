@@ -1,4 +1,5 @@
 'use strict';
+
 const util = require('util');
 const childProcess = require('child_process');
 
@@ -22,7 +23,7 @@ const processOutput = output => {
 	return result;
 };
 
-const parseLinux = ({stdout, boundsStdout, activeWindowId}) => {
+const parseLinux = ({ stdout, boundsStdout, activeWindowId }) => {
 	const result = processOutput(stdout);
 	const bounds = processOutput(boundsStdout);
 
@@ -49,31 +50,23 @@ const parseLinux = ({stdout, boundsStdout, activeWindowId}) => {
 
 const getActiveWindowId = activeWindowIdStdout => parseInt(activeWindowIdStdout.split('\t')[1], 16);
 
-module.exports = async () => {
-	const {stdout: activeWindowIdStdout} = await execFile(xpropBin, xpropActiveArgs);
+async function main() {
+	const { stdout: activeWindowIdStdout } = await execFile(xpropBin, xpropActiveArgs);
 	const activeWindowId = getActiveWindowId(activeWindowIdStdout);
 
-	const [{stdout}, {stdout: boundsStdout}] = await Promise.all([
+	const [{ stdout }, { stdout: boundsStdout }] = await Promise.all([
 		execFile(xpropBin, xpropDetailsArgs.concat([activeWindowId])),
 		execFile(xwininfoBin, xpropDetailsArgs.concat([activeWindowId]))
 	]);
 
-	return parseLinux({
-		activeWindowId,
-		boundsStdout,
-		stdout
-	});
-};
+	return JSON.stringify(
+		parseLinux({
+			activeWindowId,
+			boundsStdout,
+			stdout
+		}), undefined, 2
+	);
+}
 
-module.exports.sync = () => {
-	const activeWindowIdStdout = childProcess.execFileSync(xpropBin, xpropActiveArgs, {encoding: 'utf8'});
-	const activeWindowId = getActiveWindowId(activeWindowIdStdout);
-	const stdout = childProcess.execFileSync(xpropBin, xpropDetailsArgs.concat(activeWindowId), {encoding: 'utf8'});
-	const boundsStdout = childProcess.execFileSync(xwininfoBin, xpropDetailsArgs.concat([activeWindowId]), {encoding: 'utf8'});
 
-	return parseLinux({
-		activeWindowId,
-		boundsStdout,
-		stdout
-	});
-};
+console.log(main());
