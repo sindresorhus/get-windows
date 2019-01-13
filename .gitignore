@@ -1,7 +1,5 @@
 node_modules
 yarn.lock
 **/.build/
-/*.xcodeproj
-/main
-/active-win-*
+**/*.xcodeproj
 /bin
