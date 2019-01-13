@@ -1,15 +1,8 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const util = require('util');
 const childProcess = require('child_process');
 const execFile = util.promisify(childProcess.execFile);
-const exists = util.promisify(fs.exists);
-
-const bin = path.join(__dirname, `../bin/active-win-${process.platform}`);
-
-let found = undefined;
 
 const parseJSON = text => {
 	try {
@@ -20,29 +13,31 @@ const parseJSON = text => {
 	}
 };
 
-function getCmdWithArgs() {
-	found = found || (found === undefined ? found = exists(bin) : found);
-
-	if (!found) {
-		throw new Error('macOS, Linux, and Windows only');
+function getCmdWithArgs(platform) {
+	let cmd;
+	switch (platform) {
+		case 'win32': cmd = 'win32.exe'; break;
+		case 'linux': cmd = 'linux.js'; break;
+		case 'darwin': cmd = 'darwin'; break;
+		default:
+			throw new Error('macOS, Linux, and Windows only');
 	}
 
-	let cmd = bin;
 	let args = [];
 
-	if (process.platform === 'linux') {
+	if (cmd.endsWith('.js')) { // Node script
 		[cmd, args] = [process.argv[0], [bin]];
 	}
 
 	return [cmd, args];
 }
 
-module.exports = () => {
-	let [cmd, args] = getCmdWithArgs();
-	return execFile(cmd, args).then(parseJSON);
+module.exports = async (platform = process.platform) => {
+	const [cmd, args] = getCmdWithArgs(platform);
+	return parseJSON(await execFile(cmd, args));
 };
 
-module.exports.sync = () => {
-	let [cmd, args] = getCmdWithArgs();
+module.exports.sync = (platform = process.platform) => {
+	const [cmd, args] = getCmdWithArgs(platform);
 	return parseJSON(childProcess.execFileSync(cmd, args, { encoding: 'utf8' }));
 };
