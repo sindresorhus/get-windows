@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Diagnostics;
 using System.ComponentModel;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ActiveWin
 {
@@ -16,7 +16,7 @@ namespace ActiveWin
     public int Bottom;      // y position of lower-right corner
   }
 
-  [StructLayout(LayoutKind.Sequential)]
+ [StructLayout(LayoutKind.Sequential)] //, CharSet=CharSet.Auto)]
   public class MonitorInfo
   {
     public UInt32 size;
@@ -24,8 +24,8 @@ namespace ActiveWin
     public RECT work;
     public UInt32 flags;
 
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst=32)]
-    public char[] device = new char[32];
+    // [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    // public string deviceName;
 
     public MonitorInfo()
     {
@@ -74,6 +74,8 @@ namespace ActiveWin
       WS_MINIMIZEBOX | 
       WS_MAXIMIZEBOX;
 
+    delegate bool MonitorEnumDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
+
     #region User32
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -85,11 +87,11 @@ namespace ActiveWin
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetMonitorInfo(IntPtr hMptr, ref MonitorInfo info);
+    static extern bool GetMonitorInfo(IntPtr hMptr, ref MonitorInfo info);
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+    static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -154,6 +156,24 @@ namespace ActiveWin
         System.Console.Error.WriteLine(new Win32Exception().Message);
         Environment.Exit(1);
       }
+    }
+
+    public static List<MonitorInfo> getMonitors() {
+      List<MonitorInfo> col = new List<MonitorInfo>();
+      EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
+          MonitorInfo mi = new MonitorInfo();
+          bool success = GetMonitorInfo(hMonitor, ref mi);
+
+          checkError(success);
+
+          if (success) {
+            col.Add(mi);
+          }
+          return true;
+        }, 
+        IntPtr.Zero );
+
+      return col;
     }
   }
 }     

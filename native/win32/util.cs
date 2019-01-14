@@ -15,7 +15,7 @@ namespace ActiveWin
     public RECT MonitorArea;
     public RECT WorkArea;
   }
-
+  
   public class Utils 
   {   
     public static string getProcessFilename(int processId) {
@@ -61,27 +61,17 @@ namespace ActiveWin
       return Tuple.Create(activeWindowHandle.ToInt32(), windowTitle);
     }
 
-    public static List<ScreenInfo> getScreens() {
+    public static List<ScreenInfo> getScreens() {      
       List<ScreenInfo> col = new List<ScreenInfo>();
-      WinApi.EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
-          MonitorInfo mi = new MonitorInfo();
-          bool success = WinApi.GetMonitorInfo(hMonitor, ref mi);
-
-          WinApi.checkError(success);
-
-          if (success) {
-            ScreenInfo di = new ScreenInfo();
-            di.ScreenWidth = (mi.monitor.Right - mi.monitor.Left).ToString();
-            di.ScreenHeight = (mi.monitor.Bottom - mi.monitor.Top).ToString();
-            di.MonitorArea = mi.monitor;
-            di.WorkArea = mi.work;
-            di.Availability = mi.flags.ToString();
-            col.Add(di);
-          }
-          return true;
-        }, 
-        IntPtr.Zero );
-
+      foreach (MonitorInfo mi in WinApi.getMonitors()) {
+        ScreenInfo di = new ScreenInfo();
+        di.ScreenWidth = (mi.monitor.Right - mi.monitor.Left).ToString();
+        di.ScreenHeight = (mi.monitor.Bottom - mi.monitor.Top).ToString();
+        di.MonitorArea = mi.monitor;
+        di.WorkArea = mi.work;
+        di.Availability = mi.flags.ToString();
+        col.Add(di);
+      }
       return col;
     }
 
