@@ -134,6 +134,9 @@ async function main() {
 
 	const screen = await getScreen(bounds);
 
+	bounds.x = bounds.x - screen.x;
+	bounds.y = bounds.y - screen.y;
+
 	return JSON.stringify({
 		...general,
 		screen,
