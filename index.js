@@ -12,14 +12,16 @@ const parseJSON = text => {
 	}
 };
 
+const EXEC_MAP = {
+	win32: 'active-win-win32.exe',
+	linux: 'active-win-linux.js',
+	darwin: 'active-win-darwin'
+}
+
 function getCmdWithArgs(platform) {
-	let cmd;
-	switch (platform) {
-		case 'win32': cmd = 'active-win-win32.exe'; break;
-		case 'linux': cmd = 'active-win-linux.js'; break;
-		case 'darwin': cmd = 'active-win-darwin'; break;
-		default:
-			throw new Error('macOS, Linux, and Windows only');
+	let cmd = EXEC_MAP[process.platform];
+	if (cmd) {
+		throw new Error('macOS, Linux, and Windows only');
 	}
 
 	let args = [];
