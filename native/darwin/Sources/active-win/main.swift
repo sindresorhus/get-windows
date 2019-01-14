@@ -2,21 +2,24 @@ import AppKit
 
 extension String: Error {}
 
-func getScreen(bounds: CGRect) -> (index:Int, ref:NSScreen)? {
+func getScreens(bounds: CGRect) -> [(index:Int, ref:NSScreen)]? {
 		var index = 0
+		var out: [(index:Int, ref:NSScreen)] = [];
     for screen in NSScreen.screens
     {
 			if (screen.frame.intersects(bounds))
 			{
-				print("index", index)
-				return (index: index, ref: screen)
+				out.append((index: index, ref: screen))
 			}
 			index += 1
     }
-		return nil
+		if (out.count == 0) {
+			return nil;
+		}
+		return out
 }
 
-func getActiveApp() throws -> (pid: pid_t, screenIndex: Int, screen: NSScreen, ref: NSRunningApplication, window: [String: Any], bounds: CGRect) {
+func getActiveApp() throws -> (pid: pid_t, screens: [(index:Int, ref:NSScreen)], ref: NSRunningApplication, window: [String: Any], bounds: CGRect) {
 
 	let frontmostApp = NSWorkspace.shared.frontmostApplication!
 	let frontmostAppPID = frontmostApp.processIdentifier
@@ -44,16 +47,15 @@ func getActiveApp() throws -> (pid: pid_t, screenIndex: Int, screen: NSScreen, r
 		}
 
 		let pid = window[kCGWindowOwnerPID as String] as! pid_t
-		let screen = getScreen(bounds: bounds)
+		let screens = getScreens(bounds: bounds)
 
-		if screen == nil {
+		if screens == nil {
 			continue
 		}
 
 		return (
 			pid:  pid,
-			screenIndex: screen!.index,
-			screen: screen!.ref,
+			screens: screens!,
 			ref: NSRunningApplication(processIdentifier: pid)!,
 			window: window,
 			bounds: bounds
@@ -80,13 +82,15 @@ func getConfig() throws -> [String: Any] {
 			"width": app.bounds.width,
 			"height": app.bounds.height
 		],
-		"screen": [	
-			"x": app.screen.frame.origin.x,
-			"y": app.screen.frame.origin.y,
-			"width": app.screen.frame.width,
-			"height": app.screen.frame.height,
-			"index": app.screenIndex
-		],
+		"screens": app.screens.map {
+			[	
+				"x": $0.ref.frame.origin.x,
+				"y": $0.ref.frame.origin.y,
+				"width": $0.ref.frame.width,
+				"height": $0.ref.frame.height,
+				"index": $0.index
+			]
+		},
 		"owner": [
 			"name": app.window[kCGWindowOwnerName as String] as! String,
 			"processId": app.pid,

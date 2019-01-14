@@ -13,22 +13,21 @@ const xwininfoArgs = ['-id'];
 const xrandrBin = 'xrandr';
 const xrandrArgs = [];
 
+const propertySep = /\s*[=:]\s*/;
+
 /**
  * Convert output into hah map
  * @param {string} output 
+ * @returns {Object.<string, string>}
  */
 function processOutput(output) {
-	const result = {};
-	for (const row of output.trim().split('\n')) {
-		if (row.includes('=')) {
-			const [key, value] = row.split('=');
-			result[key.trim()] = value.trim();
-		} else if (row.includes(':')) {
-			const [key, value] = row.split(':');
-			result[key.trim()] = value.trim();
-		}
-	}
-	return result;
+	return output.trim().split('\n') // To lines
+		.filter(line => propertySep.test(line)) // Only ones with separator
+		.reduce((acc, line) => {
+			const [k, v] = line.split(propertySep); // Split into parts
+			acc[k.trim()] = v.trim(); // Store key/value
+			return acc;
+		}, {});
 }
 
 /**
@@ -38,26 +37,6 @@ async function getActiveWindowId() {
 	const { stdout } = await execFile(xpropBin, xpropActiveArgs);
 	const windowId = parseInt(stdout.split('\t')[1], 16);
 	return windowId;
-}
-
-/**
- * Get all screens
- */
-async function getScreens() {
-	const { stdout } = await execFile(xrandrBin, xrandrArgs);
-	const lines = stdout.split('\n').filter(x => x.includes('connected'));
-	return lines.map((line, idx) => {
-		const [id, state, primaryOrRes, res, ...remaining] = line.split(' ');
-		const finalRes = primaryOrRes === 'primary' ? res : primaryOrRes;
-		const [width, height, x, y] = finalRes.split(/[+x]/).map(v => parseInt(v, 10));
-		return {
-			index: idx,
-			width,
-			height,
-			x,
-			y
-		}
-	});
 }
 
 /**
@@ -72,18 +51,36 @@ function intersects(parent, child) {
 }
 
 /**
+ * Turn xrandr screen line into object
+ * 
+ * @param {string} line 
+ * @param {number} index 
+ */
+function lineToScreen(line, index) {
+	const [id, state, primaryOrRes, res, ...remaining] = line.split(' ');
+	const finalRes = primaryOrRes === 'primary' ? res : primaryOrRes;
+	const [width, height, x, y] = finalRes.split(/[+x]/).map(v => parseInt(v, 10));
+	return { index, width, height, x, y };
+}
+
+/**
  * Find any screen that intersects with the bounds
  * 
  * @param {{x:number, y: number, width:number, height:number}} bounds 
  */
-async function getScreen(bounds) {
-	const screens = await getScreens();
-	for (const screen of screens) {
-		if (intersects(screen, bounds)) {
-			return screen;
-		}
+async function getScreens(bounds) {
+	const { stdout } = await execFile(xrandrBin, xrandrArgs);
+
+	const out = stdout.split('\n') // Lines
+		.filter(x => x.includes('connected')) // Only screens
+		.map(lineToScreen) // Convert
+		.filter(x => intersects(x, bounds)); // Only overlapping
+
+	if (out.length === 0) {
+		throw new Error('No matching screens');
 	}
-	throw new Error('No matching screen');
+
+	return out;
 }
 
 /**
@@ -132,14 +129,15 @@ async function main() {
 		getBounds(id)
 	]);
 
-	const screen = await getScreen(bounds);
+	const screens = await getScreens(bounds);
 
-	bounds.x = bounds.x - screen.x;
-	bounds.y = bounds.y - screen.y;
+	if (!screens.length) {
+		throw new Error('No screens detected');
+	}
 
 	return JSON.stringify({
 		...general,
-		screen,
+		screens,
 		bounds
 	}, undefined, 2);
 }

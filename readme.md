@@ -2,7 +2,7 @@
 
 Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc)
 
-Works on macOS, Linux, Windows.
+Works on macOS, Windows and X11-based Desktops (Linux, BSD). Wayland support is outstanding.
 
 
 ## Install
@@ -10,7 +10,6 @@ Works on macOS, Linux, Windows.
 ```
 $ npm install active-win
 ```
-
 
 ## Usage
 
@@ -29,6 +28,13 @@ const activeWin = require('active-win');
 			height: 900,
 			width: 1440
 		},
+		screens: [{
+			x: 0,
+			y: 0, 
+			height: 920,
+			width: 1440,
+			index: 0
+		}],
 		owner: {
 			name: 'Google Chrome',
 			processId: 310,
@@ -62,6 +68,12 @@ Returns an `Object` with the result.
 	- `y` *(number)*
 	- `width` *(number)*
 	- `height` *(number)*
+- `screens` *(Array)* - Screens that overlap with the window
+	- `x` *(number)*
+	- `y` *(number)*
+	- `width` *(number)*
+	- `height` *(number)*
+	- `index` *(number)* - Display index
 - `owner` *(Object)* - App that owns the window
 	- `name` *(string)* - Name of the app
 	- `processId` *(number)* - Process identifier
@@ -72,7 +84,7 @@ Returns an `Object` with the result.
 
 ## OS support
 
-It works on macOS, Linux, and Windows 7+.
+It works on macOS, Windows 7+, and X11-based desktops (Linux, BSD).
 
 **Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle).
 

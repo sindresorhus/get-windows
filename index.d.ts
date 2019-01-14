@@ -2,6 +2,8 @@
 import win = require('active-win');
 
 declare namespace activeWin {
+  type Platform = 'win32' | 'darwin' | 'linux';
+
   interface Rect {
     x: number;
     y: number;
@@ -9,23 +11,27 @@ declare namespace activeWin {
     height: number;
   }
 
+  interface Screen extends Rect {
+    index: number;
+  }
+
+  interface Owner {
+    name: string;
+    processId: number;
+    path: string;
+  }
+
   interface Results {
     id: string;
     title: string;
-    owner: {
-      name: string;
-      processId: number;
-      path: string;
-    };
-    screen: Rect & {
-      index: number;
-    };
+    owner: Owner;
+    screens: Screen[];
     bounds: Rect;
   }
 
-  export function sync(): Results;
+  export function sync(platform?: activeWin.Platform): Results;
 }
 
-declare function activeWin(): Promise<activeWin.Results>;
+declare function activeWin(platform?: activeWin.Platform): Promise<activeWin.Results>;
 
 export = activeWin;

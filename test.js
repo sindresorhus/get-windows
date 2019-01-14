@@ -14,12 +14,12 @@ function asserter(t, result) {
 	t.is(typeof result.bounds.y, 'number');
 	t.is(typeof result.bounds.width, 'number');
 	t.is(typeof result.bounds.height, 'number');
-	t.is(typeof result.screen, 'object');
-	t.is(typeof result.screen.index, 'number');
-	t.is(typeof result.screen.x, 'number');
-	t.is(typeof result.screen.y, 'number');
-	t.is(typeof result.screen.width, 'number');
-	t.is(typeof result.screen.height, 'number');
+	t.is(typeof result.screens, 'object');
+	t.is(typeof result.screens[0].index, 'number');
+	t.is(typeof result.screens[0].x, 'number');
+	t.is(typeof result.screens[0].y, 'number');
+	t.is(typeof result.screens[0].width, 'number');
+	t.is(typeof result.screens[0].height, 'number');
 
 }
 

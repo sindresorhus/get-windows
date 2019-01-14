@@ -15,6 +15,7 @@ namespace ActiveWin
     public string ScreenWidth;
     public RECT MonitorArea;
     public RECT WorkArea;
+    public int Index;
   }
   
   public class Utils 
@@ -62,20 +63,6 @@ namespace ActiveWin
       return Tuple.Create(activeWindowHandle.ToInt32(), windowTitle);
     }
 
-    public static List<ScreenInfo> getScreens() {      
-      List<ScreenInfo> col = new List<ScreenInfo>();
-      foreach (MonitorInfo mi in WinApi.getMonitors()) {
-        ScreenInfo di = new ScreenInfo();
-        di.ScreenWidth = (mi.monitor.Right - mi.monitor.Left).ToString();
-        di.ScreenHeight = (mi.monitor.Bottom - mi.monitor.Top).ToString();
-        di.MonitorArea = mi.monitor;
-        di.WorkArea = mi.work;
-        di.Availability = mi.flags.ToString();
-        col.Add(di);
-      }
-      return col;
-    }
-
     public static RECT getBounds(int pid) {
       Process proc = Process.GetProcessById(pid);
 
@@ -111,15 +98,30 @@ namespace ActiveWin
         parent.Top <= child.Bottom && child.Top <= parent.Bottom;
     }
 
-    public static Tuple<int, ScreenInfo> getScreen(RECT bounds) {
+    public static List<ScreenInfo> getScreens(RECT bounds) {
+      List<ScreenInfo> col = new List<ScreenInfo>();
       int i = 0;
-      foreach (ScreenInfo item in Utils.getScreens()) {
-        if (Utils.contains(item.WorkArea, bounds)) {
-          return Tuple.Create(i, item);
+
+      foreach (MonitorInfo mi in WinApi.getMonitors()) {
+        if (!Utils.contains(mi.work, bounds)) {
+          continue;
         }
-        i += 1;
+
+        ScreenInfo di = new ScreenInfo();
+        di.ScreenWidth = (mi.monitor.Right - mi.monitor.Left).ToString();
+        di.ScreenHeight = (mi.monitor.Bottom - mi.monitor.Top).ToString();
+        di.MonitorArea = mi.monitor;
+        di.WorkArea = mi.work;
+        di.Availability = mi.flags.ToString();
+        di.Index = i++;
+        col.Add(di);
       }
-      throw new Exception("Screen not found");
+
+      if (col.Count == 0) {
+        throw new Exception("Screens not found");
+      }
+
+      return col;
     }
   }
 }
