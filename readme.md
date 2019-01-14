@@ -1,9 +1,9 @@
-# active-win [![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
+# @arcsine/active-win 
+Forked from [active-win](https://github.com/sindresorhus/active-win), by Sindre Sorhus
 
 Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc)
 
-Works on macOS, Windows and X11-based Desktops (Linux, BSD). Wayland support is outstanding.
-
+Works on macOS, Windows and X11-based Desktops (Linux, BSD). Wayland support is missing.
 
 ## Install
 
@@ -48,6 +48,19 @@ const activeWin = require('active-win');
 ```
 
 
+```ts
+import * as activeWin from 'active-win';
+
+...
+console.log(await activeWin());
+...
+
+...
+console.log(activeWin.sync());
+...
+
+```
+
 ## API
 
 ### activeWin()
@@ -88,17 +101,10 @@ It works on macOS, Windows 7+, and X11-based desktops (Linux, BSD).
 
 **Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle).
 
-
-## Related
-
-- [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
-
-
 ## Maintainers
-
 - [Sindre Sorhus](https://github.com/sindresorhus)
 - [Sebastián Ramírez](https://github.com/tiangolo)
-
+- [Timothy Soehnlin](https://github.com/arciisine)
 
 ## License
 
