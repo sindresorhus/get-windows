@@ -14,7 +14,7 @@
 	},
 	"scripts": {
 		"test": "xo && ava",
-		"build-win32": "csc native/win32/main.cs -Out:bin/active-win-win32.exe",
+		"build-win32": "csc native/win32/*.cs -Out:bin/active-win-win32.exe",
 		"build-linux": "cp native/linux/main.js bin/active-win-linux.js",
 		"compile-darwin": "swift build --package-path=native/darwin --configuration=release --static-swift-stdlib",
 		"move-darwin": "mv native/darwin/.build/release/active-win bin/active-win-darwin",

@@ -1,7 +1,6 @@
-'use strict';
-
 const util = require('util');
 const childProcess = require('child_process');
+
 const execFile = util.promisify(childProcess.execFile);
 
 const parseJSON = text => {
@@ -26,7 +25,7 @@ function getCmdWithArgs(platform) {
 	let args = [];
 
 	if (cmd.endsWith('.js')) { // Node script
-		[cmd, args] = [process.argv[0], [bin]];
+		[cmd, args] = [process.argv[0], [cmd]];
 	}
 
 	return [cmd, args];
