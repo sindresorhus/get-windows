@@ -1,12 +1,15 @@
-declare module 'active-win' {
-  export interface Rect {
+
+import win = require('active-win');
+
+declare namespace activeWin {
+  interface Rect {
     x: number;
     y: number;
     width: number;
     height: number;
   }
 
-  export interface Results {
+  interface Results {
     id: string;
     title: string;
     owner: {
@@ -20,7 +23,9 @@ declare module 'active-win' {
     bounds: Rect;
   }
 
-  function exec(): Promise<Results>;
-  export = exec;
   export function sync(): Results;
 }
+
+declare function activeWin(): Promise<activeWin.Results>;
+
+export = activeWin;
