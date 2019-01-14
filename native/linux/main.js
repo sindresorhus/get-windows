@@ -67,7 +67,7 @@ async function getScreens() {
  * @param {{x:number, y: number, width:number, height:number}} child
  */
 function intersects(parent, child) {
-	return parent.x <= child.x + parent.width - 1 && child.x <= parent.x + parent.width - 1 &&
+	return parent.x <= child.x + child.width - 1 && child.x <= parent.x + parent.width - 1 &&
 		parent.y <= child.y + child.height - 1 && child.y <= parent.y + parent.height - 1;
 }
 

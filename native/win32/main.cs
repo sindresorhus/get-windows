@@ -1,7 +1,6 @@
 using System;
-using System.Runtime.InteropServices;
 using System.IO;
-
+using System.Collections.Generic;
 
 namespace ActiveWin
 {
@@ -52,23 +51,28 @@ namespace ActiveWin
     static void Main(string[] args)
     {   
       // Get a "handle" of the active window
-      IntPtr activeWindowHandle = WinApi.GetForegroundWindow();
-      int processId = 0;
-      WinApi.GetWindowThreadProcessId(activeWindowHandle, ref processId);
+      Tuple<int, string> procInfo = Utils.getActiveProcessInfo();
+      int processId =  procInfo.Item1;
+      string processFileName =  procInfo.Item2;
 
-      string windowTitle = Utils.getWindowTitle(activeWindowHandle);
-      string processFileName = Utils.getProcessFilename(processId);    
+      Tuple<int, string> windowInfo = Utils.getActiveWindowInfo();
+      int windowId =  windowInfo.Item1;
+      string windowTitle =  windowInfo.Item2;
+
       RECT bounds = Utils.getBounds(processId);
-      Tuple<int, ScreenInfo> screen = Utils.getScreen(bounds);
+
+      Tuple<int, ScreenInfo> scr = Utils.getScreen(bounds);
+      int screenIndex = scr.Item1;
+      ScreenInfo screenInfo = scr.Item2;
 
       System.Console.WriteLine(Entrypoint.generateOutput(
         windowTitle, 
-        activeWindowHandle.ToInt32(), 
+        windowId, 
         processId, 
         processFileName, 
         bounds, 
-        screen.Item1,
-        screen.Item2
+        screenIndex,
+        screenInfo
       ));
     }
   }

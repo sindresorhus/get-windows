@@ -16,6 +16,7 @@ namespace ActiveWin
     public int Bottom;      // y position of lower-right corner
   }
 
+  [StructLayout(LayoutKind.Sequential)]
   public class MonitorInfo
   {
     public UInt32 size;
@@ -23,23 +24,17 @@ namespace ActiveWin
     public RECT work;
     public UInt32 flags;
 
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst=32)]
+    public char[] device = new char[32];
+
     public MonitorInfo()
     {
       monitor = new RECT();
       work = new RECT();
 
-      size = (UInt32)System.Runtime.InteropServices.Marshal.SizeOf(typeof(MonitorInfo));
+      size = (UInt32)(Marshal.SizeOf(typeof(MonitorInfo)));
       flags = 0;
     }
-  }
-
-  public class ScreenInfo
-  {
-    public string Availability;
-    public string ScreenHeight;
-    public string ScreenWidth;
-    public RECT MonitorArea;
-    public RECT WorkArea;
   }
 
   [StructLayout(LayoutKind.Sequential)]
@@ -58,15 +53,12 @@ namespace ActiveWin
 
     public WINDOWINFO(Boolean? filler): this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
     {
-      cbSize = (UInt32)(Marshal.SizeOf(typeof( WINDOWINFO )));
+      cbSize = (UInt32)(Marshal.SizeOf(typeof(WINDOWINFO)));
     }
   }
 
-  public delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
-
   public class WinApi 
   {
-      
     public static uint QueryLimitedInformation = 0x1000;
     public static uint WS_THICKFRAME  = 0x00040000;
     public static uint WS_OVERLAPPED  = 0x00000000;
@@ -92,12 +84,12 @@ namespace ActiveWin
     public static extern IntPtr GetDesktopWindow();
 
     [DllImport("user32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.SysUInt)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetMonitorInfo(IntPtr hMptr, ref MonitorInfo info);
 
     [DllImport("user32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.SysUInt)]
-    public static extern void EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]

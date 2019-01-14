@@ -2,21 +2,73 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using System.Diagnostics;
-using System.IO;
 using System.Collections.Generic;
 
 namespace ActiveWin
 {
+
+  public class ScreenInfo
+  {
+    public string Availability;
+    public string ScreenHeight;
+    public string ScreenWidth;
+    public RECT MonitorArea;
+    public RECT WorkArea;
+  }
+
   public class Utils 
-  {        
+  {   
+    public static string getProcessFilename(int processId) {
+      int processFileNameLength = 10240;
+      StringBuilder processFileName = new StringBuilder(processFileNameLength);
+
+      IntPtr processHandle = WinApi.OpenProcess(WinApi.QueryLimitedInformation, false, processId);
+      
+      try {
+        // Get file name
+        bool res = WinApi.QueryFullProcessImageNameW(processHandle, 0, processFileName, ref processFileNameLength);
+        WinApi.checkError(res);
+      } finally {
+        // Close Handle
+        WinApi.CloseHandle(processHandle);
+      }
+
+      return processFileName.ToString().Replace("\\", "\\\\").Replace("\"", "\\\"");
+    }
+
+    public static string getWindowTitle(IntPtr windowHandle) {
+      // Get Window Title
+      int windowTextLength = WinApi.GetWindowTextLengthW(windowHandle) + 1;
+      StringBuilder  windowText = new StringBuilder(windowTextLength);
+      int written = WinApi.GetWindowTextW(windowHandle, windowText, windowTextLength);
+      return windowText.ToString();
+    }
+
+    public static Tuple<int, string> getActiveProcessInfo() {
+      IntPtr activeWindowHandle = WinApi.GetForegroundWindow();
+
+      int processId = 0;
+      WinApi.GetWindowThreadProcessId(activeWindowHandle, ref processId);
+
+      string processFileName = Utils.getProcessFilename(processId);
+
+      return Tuple.Create(processId, processFileName);
+    }
+
+    public static Tuple<int, string> getActiveWindowInfo() {
+      IntPtr activeWindowHandle = WinApi.GetForegroundWindow();
+      string windowTitle = Utils.getWindowTitle(activeWindowHandle);
+      return Tuple.Create(activeWindowHandle.ToInt32(), windowTitle);
+    }
+
     public static List<ScreenInfo> getScreens() {
       List<ScreenInfo> col = new List<ScreenInfo>();
-
-      WinApi.EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, 
-        delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
+      WinApi.EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
           MonitorInfo mi = new MonitorInfo();
-
           bool success = WinApi.GetMonitorInfo(hMonitor, ref mi);
+
+          WinApi.checkError(success);
+
           if (success) {
             ScreenInfo di = new ScreenInfo();
             di.ScreenWidth = (mi.monitor.Right - mi.monitor.Left).ToString();
@@ -62,7 +114,7 @@ namespace ActiveWin
       return rect;
     }
 
-    public static bool intersects(RECT parent, RECT child) {
+    public static bool contains(RECT parent, RECT child) {      
       return parent.Left <= child.Right && child.Left <= parent.Right &&
         parent.Top <= child.Bottom && child.Top <= parent.Bottom;
     }
@@ -70,38 +122,12 @@ namespace ActiveWin
     public static Tuple<int, ScreenInfo> getScreen(RECT bounds) {
       int i = 0;
       foreach (ScreenInfo item in Utils.getScreens()) {
-        if (Utils.intersects(item.WorkArea, bounds)) {
+        if (Utils.contains(item.WorkArea, bounds)) {
           return Tuple.Create(i, item);
         }
         i += 1;
       }
-      return null;
-    }
-
-    public static string getProcessFilename(int processId) {
-      int processFileNameLength = 10240;
-      StringBuilder processFileName = new StringBuilder(processFileNameLength);
-
-      IntPtr processHandle = WinApi.OpenProcess(WinApi.QueryLimitedInformation, false, processId);
-      
-      try {
-        // Get file name
-        bool res = WinApi.QueryFullProcessImageNameW(processHandle, 0, processFileName, ref processFileNameLength);
-        WinApi.checkError(res);
-      } finally {
-        // Close Handle
-        WinApi.CloseHandle(processHandle);
-      }
-
-      return processFileName.ToString().Replace("\\", "\\\\").Replace("\"", "\\\"");
-    }
-
-    public static string getWindowTitle(IntPtr windowHandle) {
-      // Get Window Title
-      int windowTextLength = WinApi.GetWindowTextLengthW(windowHandle) + 1;
-      StringBuilder  windowText = new StringBuilder(windowTextLength);
-      int written = WinApi.GetWindowTextW(windowHandle, windowText, windowTextLength);
-      return windowText.ToString();
+      throw new Exception("Screen not found");
     }
   }
 }
