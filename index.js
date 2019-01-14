@@ -20,7 +20,7 @@ const EXEC_MAP = {
 
 function getCmdWithArgs(platform) {
 	let cmd = EXEC_MAP[process.platform];
-	if (cmd) {
+	if (!cmd) {
 		throw new Error('macOS, Linux, and Windows only');
 	}
 
