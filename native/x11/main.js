@@ -13,7 +13,7 @@ const xwininfoArgs = ['-id'];
 const xrandrBin = 'xrandr';
 const xrandrArgs = [];
 
-const propertySep = /\s*[=:]\s*/;
+const propertyLine = /^\s*([^=:]+)\s*[=:]\s*(.*?)\s*$/;
 
 /**
  * Convert output into hah map
@@ -22,10 +22,12 @@ const propertySep = /\s*[=:]\s*/;
  */
 function processOutput(output) {
   return output.trim().split('\n') // To lines
-    .filter(line => propertySep.test(line)) // Only ones with separator
+    .filter(line => propertyLine.test(line)) // Only ones with separator
     .reduce((acc, line) => {
-      const [k, v] = line.split(propertySep); // Split into parts
-      acc[k.trim()] = v.trim(); // Store key/value
+      line.replace(propertyLine, (all, k, v) => {
+        acc[k.trim()] = v.trim(); // Store key/value
+        return '';
+      });
       return acc;
     }, {});
 }

@@ -1,6 +1,3 @@
-
-import win = require('active-win');
-
 declare namespace activeWin {
   type Platform = 'win32' | 'darwin' | 'linux';
 
