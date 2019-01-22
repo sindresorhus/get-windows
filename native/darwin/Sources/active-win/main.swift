@@ -2,31 +2,31 @@ import AppKit
 
 extension String: Error {}
 
-func getScreen(bounds: CGRect) -> (index:Int, ref:NSScreen)? {
+func getScreens(bounds: CGRect) -> [(index:Int, ref:NSScreen)]? {
 		var index = 0
+		var out: [(index:Int, ref:NSScreen)] = [];
     for screen in NSScreen.screens
     {
 			if (screen.frame.intersects(bounds))
 			{
-				print("index", index)
-				return (index: index, ref: screen)
+				out.append((index: index, ref: screen))
 			}
 			index += 1
     }
-		return nil
+		if (out.count == 0) {
+			return nil;
+		}
+		return out
 }
 
-func getActiveApp() throws -> (pid: pid_t, screenIndex: Int, screen: NSScreen, ref: NSRunningApplication, window: [String: Any], bounds: CGRect) {
-
-	let frontmostApp = NSWorkspace.shared.frontmostApplication!
-	let frontmostAppPID = frontmostApp.processIdentifier
+func getActiveWindow(pid: pid_t) throws -> (window:[String: Any], bounds:CGRect) {
 	let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
 
 	for window in windows {
 		
 		let windowOwnerPID = window[kCGWindowOwnerPID as String] as! Int
 
-		if windowOwnerPID != frontmostAppPID {
+		if windowOwnerPID != pid {
 			continue
 		}
 
@@ -42,24 +42,9 @@ func getActiveApp() throws -> (pid: pid_t, screenIndex: Int, screen: NSScreen, r
 		if bounds.width < minWinSize || bounds.height < minWinSize {
 			continue
 		}
-
-		let pid = window[kCGWindowOwnerPID as String] as! pid_t
-		let screen = getScreen(bounds: bounds)
-
-		if screen == nil {
-			continue
-		}
-
-		return (
-			pid:  pid,
-			screenIndex: screen!.index,
-			screen: screen!.ref,
-			ref: NSRunningApplication(processIdentifier: pid)!,
-			window: window,
-			bounds: bounds
-		)
+		return (window, bounds);
 	}
-	throw "Invalid"
+	throw "No matching window found"
 }
 
 func toJson<T>(_ data: T) throws -> String {
@@ -69,31 +54,43 @@ func toJson<T>(_ data: T) throws -> String {
 
 func getConfig() throws -> [String: Any] {
 	// This can't fail as we're only dealing with apps
-	let app = try! getActiveApp()
+	let frontmostApp = NSWorkspace.shared.frontmostApplication!
+	let pid = frontmostApp.processIdentifier
+
+	let (window, bounds) = try! getActiveWindow(pid: pid);
+	let screens = getScreens(bounds: bounds)
+
+	if screens == nil {
+		throw "No screens for window"
+	}
+
+	let ref = NSRunningApplication(processIdentifier: pid)!;
 
 	let dict: [String: Any] = [
-		"title": app.window[kCGWindowName as String] as? String ?? "",
-		"id": app.window[kCGWindowNumber as String] as! Int,
+		"title": window[kCGWindowName as String] as? String ?? "",
+		"id": window[kCGWindowNumber as String] as! Int,
 		"bounds": [
-			"x": app.bounds.origin.x,
-			"y": app.bounds.origin.y,
-			"width": app.bounds.width,
-			"height": app.bounds.height
+			"x": bounds.origin.x,
+			"y": bounds.origin.y,
+			"width": bounds.width,
+			"height": bounds.height
 		],
-		"screen": [	
-			"x": app.screen.frame.origin.x,
-			"y": app.screen.frame.origin.y,
-			"width": app.screen.frame.width,
-			"height": app.screen.frame.height,
-			"index": app.screenIndex
-		],
+		"screens": screens!.map {
+			[	
+				"x": $0.ref.frame.origin.x,
+				"y": $0.ref.frame.origin.y,
+				"width": $0.ref.frame.width,
+				"height": $0.ref.frame.height,
+				"index": $0.index
+			]
+		},
 		"owner": [
-			"name": app.window[kCGWindowOwnerName as String] as! String,
-			"processId": app.pid,
-			"bundleId": app.ref.bundleIdentifier!,
-			"path": app.ref.bundleURL!.path
+			"name": window[kCGWindowOwnerName as String] as! String,
+			"processId": pid,
+			"bundleId": ref.bundleIdentifier!,
+			"path": ref.bundleURL!.path
 		],
-		"memoryUsage": app.window[kCGWindowMemoryUsage as String] as! Int
+		"memoryUsage": window[kCGWindowMemoryUsage as String] as! Int
 	]
 
 	return dict

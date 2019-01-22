@@ -1,34 +1,49 @@
 {
-	"name": "active-win",
-	"version": "4.0.0",
-	"description": "Get metadata about the active window (title, id, bounds, owner, etc). Works on macOS, Linux, Windows.",
+	"name": "@arcsine/active-win",
+	"version": "5.0.0",
+	"description": "Get metadata about the active window (title, id, bounds, screens, owner, etc). Works on macOS, X11-based Desktops (Linux, BSD), Windows.",
 	"license": "MIT",
-	"repository": "sindresorhus/active-win",
+	"repository": "arciisine/active-win",
 	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"name": "Timothy Soehnlin",
+		"email": "timothy.soehnlin@gmail.com",
+		"url": "github.com/arciisine"
 	},
 	"engines": {
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && ava",
+		"test": "ava",
 		"build-win32": "csc native/win32/*.cs -Out:bin/active-win-win32.exe",
-		"build-linux": "cp native/linux/main.js bin/active-win-linux.js",
+		"build-x11": "cp native/x11/main.js bin/active-win-x11.js",
 		"compile-darwin": "swift build --package-path=native/darwin --configuration=release --static-swift-stdlib",
 		"move-darwin": "mv native/darwin/.build/release/active-win bin/active-win-darwin",
 		"build-darwin": "npm run compile-darwin && npm run move-darwin",
-		"prepublishOnly": "npm run build-linux && npm run build-darwin && npm run build-win32"
+		"compile": "mkdir bin; npm run build-x11 && npm run build-darwin && npm run build-win32"
 	},
+	"maintainers": [
+		{
+			"name": "Timothy Soehnlin",
+			"url": "https://github.com/arciisine"
+		},
+		{
+			"name": "Sindre Sorhus",
+			"url": "https://github.com/sindresorhus"
+		},
+		{
+			"name": "Sebastián Ramírez",
+			"url": "https://github.com/tiangolo"
+		}
+	],
 	"files": [
 		"index.js",
-		"lib",
+		"index.d.ts",
 		"bin"
 	],
 	"keywords": [
 		"macos",
 		"linux",
+		"x11",
 		"windows",
 		"app",
 		"application",
@@ -50,7 +65,6 @@
 		"bundleid"
 	],
 	"devDependencies": {
-		"ava": "^0.25.0",
-		"xo": "^0.23.0"
+		"ava": "^0.25.0"
 	}
 }

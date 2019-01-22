@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
 
 namespace ActiveWin
@@ -12,9 +13,23 @@ namespace ActiveWin
       int processId, 
       string processFileName, 
       RECT bounds, 
-      int screenIndex,
-      ScreenInfo screen
+      List<ScreenInfo> screens
     ) { 
+
+
+      string screenData = 
+        String.Join(",\n",
+          screens.ConvertAll(screen => 
+            String.Format(@"
+        {{
+          ""x"": {0},
+          ""y"": {1},
+          ""width"": {2},
+          ""height"": {3},
+          ""index"": {4}
+        }}", screen.WorkArea.Left, screen.WorkArea.Top, screen.WorkArea.Right - screen.WorkArea.Left, screen.WorkArea.Bottom - screen.WorkArea.Top)
+          ));        
+
        return  String.Format(@"{{
     ""title"": ""{0}"",
     ""id"": {1},
@@ -23,18 +38,12 @@ namespace ActiveWin
         ""processId"": {3},
         ""path"": ""{4}""
     }},
-    ""screen"": {{
-        ""x"": {9},
-        ""y"": {10},
-        ""width"": {11},
-        ""height"": {12},
-        ""index"": {13}
-    }},
+    ""screens"": [ {5} ],
     ""bounds"": {{
-        ""x"": {5},
-        ""y"": {6},
-        ""width"": {7},
-        ""height"": {8}
+        ""x"": {6},
+        ""y"": {7},
+        ""width"": {8},
+        ""height"": {9}
     }}
 }}", 
         windowTitle, 
@@ -42,14 +51,14 @@ namespace ActiveWin
         Path.GetFileName(processFileName), 
         processId,
         processFileName,
-        screen.WorkArea.Left, screen.WorkArea.Top, 
-        screen.WorkArea.Right-screen.WorkArea.Left, screen.WorkArea.Bottom-screen.WorkArea.Top,
+        screenData,
         bounds.Left, bounds.Top, 
         bounds.Right-bounds.Left, bounds.Bottom-bounds.Top);
     }
 
     static void Main(string[] args)
     {   
+
       // Get a "handle" of the active window
       Tuple<int, string> procInfo = Utils.getActiveProcessInfo();
       int processId =  procInfo.Item1;
@@ -61,9 +70,7 @@ namespace ActiveWin
 
       RECT bounds = Utils.getBounds(processId);
 
-      Tuple<int, ScreenInfo> scr = Utils.getScreen(bounds);
-      int screenIndex = scr.Item1;
-      ScreenInfo screenInfo = scr.Item2;
+      List<ScreenInfo> screens = Utils.getScreens(bounds);
 
       System.Console.WriteLine(Entrypoint.generateOutput(
         windowTitle, 
@@ -71,8 +78,7 @@ namespace ActiveWin
         processId, 
         processFileName, 
         bounds, 
-        screenIndex,
-        screenInfo
+        screens
       ));
     }
   }

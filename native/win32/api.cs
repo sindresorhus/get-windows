@@ -17,24 +17,12 @@ namespace ActiveWin
   }
 
  [StructLayout(LayoutKind.Sequential)] //, CharSet=CharSet.Auto)]
-  public class MonitorInfo
+  public struct MonitorInfo
   {
     public UInt32 size;
     public RECT monitor;
     public RECT work;
     public UInt32 flags;
-
-    // [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    // public string deviceName;
-
-    public MonitorInfo()
-    {
-      monitor = new RECT();
-      work = new RECT();
-
-      size = (UInt32)(Marshal.SizeOf(typeof(MonitorInfo)));
-      flags = 0;
-    }
   }
 
   [StructLayout(LayoutKind.Sequential)]
@@ -50,11 +38,6 @@ namespace ActiveWin
     public uint cyWindowBorders;
     public ushort atomWindowType;
     public ushort wCreatorVersion;
-
-    public WINDOWINFO(Boolean? filler): this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
-    {
-      cbSize = (UInt32)(Marshal.SizeOf(typeof(WINDOWINFO)));
-    }
   }
 
   public class WinApi 
@@ -87,7 +70,7 @@ namespace ActiveWin
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    static extern bool GetMonitorInfo(IntPtr hMptr, ref MonitorInfo info);
+    public static extern bool GetMonitorInfo(IntPtr hMptr, ref MonitorInfo info);
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -100,6 +83,10 @@ namespace ActiveWin
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetWindowInfo(IntPtr hWnd, ref WINDOWINFO info);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.SysUInt)]
+    public static extern IntPtr MonitorFromWindow(IntPtr hWnd, uint flags);
 
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505(v=vs.85).aspx
     [DllImport("user32.dll", SetLastError = true)]
@@ -162,6 +149,7 @@ namespace ActiveWin
       List<MonitorInfo> col = new List<MonitorInfo>();
       EnumDisplayMonitors( IntPtr.Zero, IntPtr.Zero, delegate (IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData) {
           MonitorInfo mi = new MonitorInfo();
+          mi.size = (uint)Marshal.SizeOf( mi );
           bool success = GetMonitorInfo(hMonitor, ref mi);
 
           checkError(success);
