@@ -1,23 +1,23 @@
 # @arcsine/active-win 
 Forked from [active-win](https://github.com/sindresorhus/active-win), by Sindre Sorhus
 
-Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc)
+Get metadata about the window backing a process PID, or the [active window](https://en.wikipedia.org/wiki/Active_window). (title, id, bounds, owner, etc)
 
 Works on macOS, Windows and X11-based Desktops (Linux, BSD). Wayland support is missing.
 
 ## Install
 
 ```
-$ npm install active-win
+$ npm install @arcsine/process-win
 ```
 
 ## Usage
 
 ```js
-const activeWin = require('active-win');
+const processWin = require('@arcsine/process-win');
 
 (async () => {
-	console.log(await activeWin());
+	console.log(await processWin());
 	/*
 	{
 		title: 'Unicorns - Google Search',
@@ -49,25 +49,25 @@ const activeWin = require('active-win');
 
 
 ```ts
-import * as activeWin from 'active-win';
+import * as processWin from '@arcsine/process-win';
 
 ...
-console.log(await activeWin());
+console.log(await processWin());
 ...
 
 ...
-console.log(activeWin.sync());
+console.log(processWin.sync());
 ...
 
 ```
 
 ## API
 
-### activeWin()
+### processWin({ pid?: number, platform?: string })
 
 Returns a `Promise<Object>` with the result.
 
-### activeWin.sync()
+### processWin.sync({ pid?: number, platform?: string })
 
 Returns an `Object` with the result.
 

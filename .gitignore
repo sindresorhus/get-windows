@@ -3,3 +3,5 @@ yarn.lock
 **/.build/
 **/*.xcodeproj
 bin/
+index.js
+index.d.ts

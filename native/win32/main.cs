@@ -61,15 +61,17 @@ namespace ActiveWin
 
     static void Main(string[] args)
     {   
+      int processId = 0;
+      if (args.Length > 0) {
+        processId = Int32.Parse(args[0]);
+      } else {
+        processId = Utils.getActiveProcessId();
+      }
 
-      // Get a "handle" of the active window
-      Tuple<int, string> procInfo = Utils.getActiveProcessInfo();
-      int processId =  procInfo.Item1;
-      string processFileName =  procInfo.Item2;
-
-      Tuple<int, string> windowInfo = Utils.getActiveWindowInfo();
-      int windowId =  windowInfo.Item1;
-      string windowTitle =  windowInfo.Item2;
+      Tuple<int, string, string> windowInfo = Utils.getWindowInfo(processId);
+      int windowId = windowInfo.Item1;
+      string processFileName = windowInfo.Item2;
+      string windowTitle =  windowInfo.Item3;
 
       RECT bounds = Utils.getBounds(processId);
 

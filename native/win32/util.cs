@@ -38,33 +38,26 @@ namespace ActiveWin
       return processFileName.ToString().Replace("\\", "\\\\").Replace("\"", "\\\"");
     }
 
-    public static string getWindowTitle(IntPtr windowHandle) {
-      // Get Window Title
+    public static int getActiveProcessId() {
+      IntPtr activeWindowHandle = WinApi.GetForegroundWindow();
+      int processId = 0;
+      WinApi.GetWindowThreadProcessId(activeWindowHandle, ref processId);
+      return processId;
+    }
+
+    public static Tuple<int, string, string> getWindowInfo(int processId) {
+      IntPtr windowHandle = Process.GetProcessById(processId).MainWindowHandle;
+      string processFileName = Utils.getProcessFilename(processId);
+
       int windowTextLength = WinApi.GetWindowTextLengthW(windowHandle) + 1;
       StringBuilder  windowText = new StringBuilder(windowTextLength);
       int written = WinApi.GetWindowTextW(windowHandle, windowText, windowTextLength);
-      return windowText.ToString();
+
+      return Tuple.Create(windowHandle.ToInt32(), processFileName, windowText.ToString());
     }
 
-    public static Tuple<int, string> getActiveProcessInfo() {
-      IntPtr activeWindowHandle = WinApi.GetForegroundWindow();
-
-      int processId = 0;
-      WinApi.GetWindowThreadProcessId(activeWindowHandle, ref processId);
-
-      string processFileName = Utils.getProcessFilename(processId);
-
-      return Tuple.Create(processId, processFileName);
-    }
-
-    public static Tuple<int, string> getActiveWindowInfo() {
-      IntPtr activeWindowHandle = WinApi.GetForegroundWindow();
-      string windowTitle = Utils.getWindowTitle(activeWindowHandle);
-      return Tuple.Create(activeWindowHandle.ToInt32(), windowTitle);
-    }
-
-    public static RECT getBounds(int pid) {
-      Process proc = Process.GetProcessById(pid);
+    public static RECT getBounds(int processId) {
+      Process proc = Process.GetProcessById(processId);
 
       // Window Rect provides bad values in certain situations and should be affected
       // https://groups.google.com/forum/#!topic/microsoft.public.vc.mfc/02s-1NJAqEI

@@ -1,9 +1,9 @@
 {
-	"name": "@arcsine/active-win",
-	"version": "5.0.3",
-	"description": "Get metadata about the active window (title, id, bounds, screens, owner, etc). Works on macOS, X11-based Desktops (Linux, BSD), Windows.",
+	"name": "@arcsine/process-win",
+	"version": "1.0.0",
+	"description": "Get metadata about a program window (title, id, bounds, screens, owner, etc). Works on macOS, X11-based Desktops (Linux, BSD), Windows.",
 	"license": "MIT",
-	"repository": "arciisine/active-win",
+	"repository": "arciisine/process-win",
 	"author": {
 		"name": "Timothy Soehnlin",
 		"email": "timothy.soehnlin@gmail.com",
@@ -14,12 +14,12 @@
 	},
 	"scripts": {
 		"test": "ava",
-		"build-win32": "csc native/win32/*.cs -Out:bin/active-win-win32.exe",
-		"build-x11": "cp native/x11/main.js bin/active-win-x11.js",
+		"build-win32": "csc native/win32/*.cs -Out:bin/process-win-win32.exe",
+		"build-x11": "cd native/x11/ && npx tsc",
 		"compile-darwin": "swift build --package-path=native/darwin --configuration=release --static-swift-stdlib",
-		"move-darwin": "mv native/darwin/.build/release/active-win bin/active-win-darwin",
+		"move-darwin": "mv native/darwin/.build/release/process-win bin/process-win-darwin",
 		"build-darwin": "npm run compile-darwin && npm run move-darwin",
-		"compile": "mkdir bin; npm run build-x11 && npm run build-darwin && npm run build-win32",
+		"compile": "tsc; mkdir bin; npm run build-x11 && npm run build-darwin && npm run build-win32",
 		"prepublish": "npm run compile"
 	},
 	"maintainers": [
@@ -50,7 +50,7 @@
 		"application",
 		"window",
 		"win",
-		"active",
+		"process",
 		"focused",
 		"current",
 		"title",
@@ -67,5 +67,9 @@
 	],
 	"devDependencies": {
 		"ava": "^0.25.0"
+	},
+	"dependencies": {
+		"@types/node": "^10.12.18",
+		"typescript": "^3.2.4"
 	}
 }

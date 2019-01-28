@@ -22,7 +22,7 @@ func getScreens(bounds: CGRect) -> [(index:Int, bounds:CGRect)]? {
     return out;
 }
 
-func getActiveWindow(pid: pid_t) throws -> (window:[String: Any], bounds:CGRect) {
+func getPrimaryWindow(pid: pid_t) throws -> (window:[String: Any], bounds:CGRect) {
   let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
 
   for window in windows {
@@ -50,12 +50,17 @@ func getActiveWindow(pid: pid_t) throws -> (window:[String: Any], bounds:CGRect)
   throw "No matching window found"
 }
 
-func getConfig() throws -> String {
-  // This can't fail as we're only dealing with apps
-  let frontmostApp = NSWorkspace.shared.frontmostApplication!
-  let pid = frontmostApp.processIdentifier
+func getPid() -> pid_t {
+	if (CommandLine.arguments.count > 1) {
+		return Int32(CommandLine.arguments[1])!;
+	} else {
+	  let frontmostApp = NSWorkspace.shared.frontmostApplication!
+  	return frontmostApp.processIdentifier;
+	}
+}
 
-  let (window, bounds) = try! getActiveWindow(pid: pid);
+func getConfig(pid: pid_t) throws -> String {
+  let (window, bounds) = try! getPrimaryWindow(pid: pid);
   let screens = getScreens(bounds: bounds)
 
   if screens == nil {
@@ -99,6 +104,7 @@ func getConfig() throws -> String {
   return json
 }
 
-let config = try! getConfig()
+let pid = try! getPid();
+let config = try! getConfig(pid: pid)
 print(config)
 exit(0)

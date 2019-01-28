@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "sourceMap": false,
+    "lib": [
+      "es2015",
+      "es2015.proxy",
+      "es2018"
+    ],
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "rootDir": ".",
+    "outFile": "../../bin/process-win-x11.js"
+  }
+}

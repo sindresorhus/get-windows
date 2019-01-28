@@ -1,0 +1,24 @@
+{
+  "include": [
+    "index.ts"
+  ],
+  "exclude": [
+    "bin/**"
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2018",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "lib": [
+      "es2015",
+      "es2015.proxy",
+      "es2018"
+    ],
+    "declaration": true,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "outDir": "."
+  }
+}
