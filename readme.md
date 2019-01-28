@@ -1,4 +1,4 @@
-# @arcsine/active-win 
+# @arcsine/process-win 
 Forked from [active-win](https://github.com/sindresorhus/active-win), by Sindre Sorhus
 
 Get metadata about the window backing a process PID, or the [active window](https://en.wikipedia.org/wiki/Active_window). (title, id, bounds, owner, etc)
@@ -14,10 +14,10 @@ $ npm install @arcsine/process-win
 ## Usage
 
 ```js
-const processWin = require('@arcsine/process-win');
+const * as processWin = require('@arcsine/process-win');
 
 (async () => {
-	console.log(await processWin());
+	console.log(await processWin.getActive());
 	/*
 	{
 		title: 'Unicorns - Google Search',
@@ -52,25 +52,36 @@ const processWin = require('@arcsine/process-win');
 import * as processWin from '@arcsine/process-win';
 
 ...
-console.log(await processWin());
+console.log(await processWin.getActive());
 ...
 
 ...
-console.log(processWin.sync());
+console.log(await processWin.get(1000));
+...
+
+...
+console.log(processWin.getActiveSync());
 ...
 
 ```
 
 ## API
 
-### processWin({ pid?: number, platform?: string })
+### get(pid: number, platform?: string)
 
-Returns a `Promise<Object>` with the result.
+Returns a `Promise<Object>` with the result for the window tied to PID.
 
-### processWin.sync({ pid?: number, platform?: string })
+### getActive(platform?: string)
 
-Returns an `Object` with the result.
+Returns a `Promise<Object>` with the result for the active window.
 
+### getSync(pid: number, platform?: string)
+
+Returns an `Object` with the result for the window tied to PID.
+
+### getActiveSync(platform?: string)
+
+Returns an `Object` with the result for the active window.
 
 ## Result
 
