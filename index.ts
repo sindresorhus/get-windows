@@ -8,7 +8,7 @@ export interface Rect {
   x: number;
   y: number;
   width: number;
-  height: Number;
+  height: number;
 }
 
 export interface Screen extends Rect {

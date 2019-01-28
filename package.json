@@ -1,6 +1,6 @@
 {
 	"name": "@arcsine/process-win",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Get metadata about a program window (title, id, bounds, screens, owner, etc). Works on macOS, X11-based Desktops (Linux, BSD), Windows.",
 	"license": "MIT",
 	"repository": "arciisine/process-win",
