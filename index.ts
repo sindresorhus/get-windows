@@ -70,19 +70,24 @@ function getCmdWithArgs(pid?: string, platform?: string) {
   return { cmd, args };
 }
 
-export default class ProcessWin {
+class ProcessWin {
   static async get(pid: string, platform?: Platform) {
     const { cmd, args } = getCmdWithArgs(pid, platform);
     return parseJSON((await execFile(cmd, args, { encoding: 'utf8' })).stdout) as Response;
   }
   static async getActive(platform?: Platform) {
-    return this.get(null!, platform);
+    return ProcessWin.get(null!, platform);
   }
   static getSync(pid: string, platform?: Platform) {
     const { cmd, args } = getCmdWithArgs(pid, platform);
     return parseJSON((child_process.execFileSync(cmd, args, { encoding: 'utf8' }))) as Response;
   }
   static getActiveSync(platform?: Platform) {
-    return this.getSync(null!, platform);
+    return ProcessWin.getSync(null!, platform);
   }
 }
+
+export const get = ProcessWin.get;
+export const getSync = ProcessWin.getSync;
+export const getActive = ProcessWin.getActive;
+export const getActiveSync = ProcessWin.getActiveSync;
