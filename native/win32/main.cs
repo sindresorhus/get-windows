@@ -27,8 +27,11 @@ namespace ActiveWin
           ""width"": {2},
           ""height"": {3},
           ""index"": {4}
-        }}", screen.WorkArea.Left, screen.WorkArea.Top, screen.WorkArea.Right - screen.WorkArea.Left, screen.WorkArea.Bottom - screen.WorkArea.Top)
-          ));        
+        }}", 
+          screen.WorkArea.Left, screen.WorkArea.Top, 
+          screen.WorkArea.Right - screen.WorkArea.Left, screen.WorkArea.Bottom - screen.WorkArea.Top,
+          screen.Index
+          )));        
 
        return  String.Format(@"{{
     ""title"": ""{0}"",

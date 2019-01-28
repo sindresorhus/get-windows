@@ -1,6 +1,6 @@
 {
 	"name": "@arcsine/active-win",
-	"version": "5.0.2",
+	"version": "5.0.3",
 	"description": "Get metadata about the active window (title, id, bounds, screens, owner, etc). Works on macOS, X11-based Desktops (Linux, BSD), Windows.",
 	"license": "MIT",
 	"repository": "arciisine/active-win",
@@ -20,7 +20,7 @@
 		"move-darwin": "mv native/darwin/.build/release/active-win bin/active-win-darwin",
 		"build-darwin": "npm run compile-darwin && npm run move-darwin",
 		"compile": "mkdir bin; npm run build-x11 && npm run build-darwin && npm run build-win32",
-		"prepublish": "npm compile"
+		"prepublish": "npm run compile"
 	},
 	"maintainers": [
 		{
