@@ -51,11 +51,11 @@ func getPrimaryWindow(pid: pid_t) throws -> (window:[String: Any], bounds:CGRect
 }
 
 func getPid() -> pid_t {
-	if (CommandLine.arguments.count > 1) {
-		return Int32(CommandLine.arguments[1])!;
-	} else {
+	if (CommandLine.arguments.count <= 1 || CommandLine.arguments[1] == "active") {
 	  let frontmostApp = NSWorkspace.shared.frontmostApplication!
   	return frontmostApp.processIdentifier;
+	} else {
+		return Int32(CommandLine.arguments[1])!;
 	}
 }
 

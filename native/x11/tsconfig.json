@@ -13,6 +13,6 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "rootDir": ".",
-    "outFile": "../../bin/process-win-x11.js"
+    "outFile": "../../bin/win-info-x11.js"
   }
 }

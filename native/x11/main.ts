@@ -1,7 +1,8 @@
 const util = require('util');
 const child_process = require('child_process');
 
-const execFile: (cmd: string, args: string[], opts?: any) => Promise<{ stdout: string, stderr: string }> = util.promisify(child_process.execFile);
+const execFile: (cmd: string, args: string[], opts?: any) => Promise<{ stdout: string, stderr: string }> =
+  util.promisify(child_process.execFile);
 
 const xpropBin = 'xprop';
 const xpropActiveArgs = ['-root', '\t$0', '_NET_ACTIVE_WINDOW'];
@@ -146,7 +147,7 @@ async function getGeneralInfo(windowId: number) {
 }
 
 async function main(pid: string) {
-  const id = await (!pid ? getActiveWindowId() : getWindowByPid(pid));
+  const id = await ((!pid || pid === 'active') ? getActiveWindowId() : getWindowByPid(pid));
   const [general, bounds] = await Promise.all([
     getGeneralInfo(id),
     getBounds(id)

@@ -18,7 +18,6 @@
     "declaration": true,
     "preserveConstEnums": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
     "outDir": "."
   }
 }

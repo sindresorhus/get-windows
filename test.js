@@ -1,6 +1,6 @@
 import util from 'util';
 import test from 'ava';
-import activeWin from '.';
+import * as winInfo from './index';
 
 function asserter(t, result) {
   t.log(util.inspect(result));
@@ -23,9 +23,9 @@ function asserter(t, result) {
 }
 
 test('async', async t => {
-  asserter(t, await activeWin());
+  asserter(t, await winInfo.getActive());
 });
 
 test('sync', t => {
-  asserter(t, activeWin.sync());
+  asserter(t, winInfo.getActiveSync());
 });

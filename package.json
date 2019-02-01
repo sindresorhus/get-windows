@@ -1,9 +1,9 @@
 {
-	"name": "@arcsine/process-win",
+	"name": "@arcsine/win-info",
 	"version": "0.1.1",
 	"description": "Get metadata about a program window (title, id, bounds, screens, owner, etc). Works on macOS, X11-based Desktops (Linux, BSD), Windows.",
 	"license": "MIT",
-	"repository": "arciisine/process-win",
+	"repository": "arciisine/win-info",
 	"author": {
 		"name": "Timothy Soehnlin",
 		"email": "timothy.soehnlin@gmail.com",
@@ -14,10 +14,10 @@
 	},
 	"scripts": {
 		"test": "ava",
-		"build-win32": "csc native/win32/*.cs -Out:bin/process-win-win32.exe",
+		"build-win32": "csc native/win32/*.cs -Out:bin/win-info-win32.exe",
 		"build-x11": "cd native/x11/ && npx tsc",
 		"compile-darwin": "swift build --package-path=native/darwin --configuration=release --static-swift-stdlib",
-		"move-darwin": "mv native/darwin/.build/release/process-win bin/process-win-darwin",
+		"move-darwin": "mv native/darwin/.build/release/win-info bin/win-info-darwin",
 		"build-darwin": "npm run compile-darwin && npm run move-darwin",
 		"compile": "tsc; mkdir bin; npm run build-x11 && npm run build-darwin && npm run build-win32",
 		"prepublish": "npm run compile"

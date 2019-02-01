@@ -2,8 +2,8 @@
 import PackageDescription
 
 let package = Package(
-	name: "process-win",
+	name: "win-info",
 	targets: [
-		.target(name: "process-win")
+		.target(name: "win-info")
 	]
 )

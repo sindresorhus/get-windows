@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace ActiveWin
+namespace WinInfo
 {
 
   public class ScreenInfo

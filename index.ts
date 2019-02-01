@@ -2,7 +2,10 @@ import * as util from 'util';
 import * as child_process from 'child_process';
 import * as path from 'path';
 
-export type Platform = 'win32' | 'darwin' | 'linux';
+export type Platform =
+  'win32' |
+  'darwin' |
+  'linux' | 'freebsd' | 'openbsd' | 'sunos';
 
 export interface Rect {
   x: number;
@@ -41,18 +44,19 @@ function parseJSON(text: string) {
 }
 
 const EXEC_MAP: { [key: string]: string } = {
-  win32: 'active-win-win32.exe',
-  linux: 'active-win-x11.js',
-  freebsd: 'active-win-x11.js',
-  openbsd: 'active-win-x11.js',
-  darwin: 'active-win-darwin'
+  win32: 'win-info-win32.exe',
+  linux: 'win-info-x11.js',
+  freebsd: 'win-info-x11.js',
+  sunos: 'win-info-x11.js',
+  openbsd: 'win-info-x11.js',
+  darwin: 'win-info-darwin'
 };
 
-function getCmdWithArgs(pid?: string, platform?: string) {
+function getCmdWithArgs(arg?: string, platform?: string) {
   let cmd: string = EXEC_MAP[platform || process.platform];
 
   if (!cmd) {
-    throw new Error('macOS, Linux, and Windows only');
+    throw new Error('macOS, Windows and X11 platforms only');
   }
 
   cmd = path.resolve(__dirname, 'bin', cmd);
@@ -63,31 +67,33 @@ function getCmdWithArgs(pid?: string, platform?: string) {
     [cmd, args] = [process.argv[0], [cmd]];
   }
 
-  if (pid) {
-    args.push(pid);
+  if (arg) {
+    args.push(arg);
   }
 
   return { cmd, args };
 }
 
-class ProcessWin {
-  static async get(pid: string, platform?: Platform) {
+class WinInfo {
+  static async getByPid(pid: string, platform?: Platform) {
     const { cmd, args } = getCmdWithArgs(pid, platform);
     return parseJSON((await execFile(cmd, args, { encoding: 'utf8' })).stdout) as Response;
   }
   static async getActive(platform?: Platform) {
-    return ProcessWin.get(null!, platform);
+    const { cmd, args } = getCmdWithArgs('active', platform);
+    return parseJSON((await execFile(cmd, args, { encoding: 'utf8' })).stdout) as Response;
   }
-  static getSync(pid: string, platform?: Platform) {
+  static getByPidSync(pid: string, platform?: Platform) {
     const { cmd, args } = getCmdWithArgs(pid, platform);
     return parseJSON((child_process.execFileSync(cmd, args, { encoding: 'utf8' }))) as Response;
   }
   static getActiveSync(platform?: Platform) {
-    return ProcessWin.getSync(null!, platform);
+    const { cmd, args } = getCmdWithArgs('active', platform);
+    return parseJSON((child_process.execFileSync(cmd, args, { encoding: 'utf8' }))) as Response;
   }
 }
 
-export const get = ProcessWin.get;
-export const getSync = ProcessWin.getSync;
-export const getActive = ProcessWin.getActive;
-export const getActiveSync = ProcessWin.getActiveSync;
+export const getByPid = WinInfo.getByPid;
+export const getByPidSync = WinInfo.getByPidSync;
+export const getActive = WinInfo.getActive;
+export const getActiveSync = WinInfo.getActiveSync;

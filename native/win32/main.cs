@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
-namespace ActiveWin
+namespace WinInfo
 {
   public class Entrypoint 
   {        
@@ -62,10 +62,10 @@ namespace ActiveWin
     static void Main(string[] args)
     {   
       int processId = 0;
-      if (args.Length > 0) {
-        processId = Int32.Parse(args[0]);
-      } else {
+      if (args.Length == 0 || args[0] == "active") {
         processId = Utils.getActiveProcessId();
+      } else {
+        processId = Int32.Parse(args[0]);
       }
 
       Tuple<int, string, string> windowInfo = Utils.getWindowInfo(processId);
