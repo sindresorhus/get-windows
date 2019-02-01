@@ -66,9 +66,7 @@
 		"bundleid"
 	],
 	"devDependencies": {
-		"ava": "^0.25.0"
-	},
-	"dependencies": {
+		"ava": "^0.25.0",
 		"@types/node": "^10.12.18",
 		"typescript": "^3.2.4"
 	}

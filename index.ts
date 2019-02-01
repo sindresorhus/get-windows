@@ -52,7 +52,7 @@ const EXEC_MAP: { [key: string]: string } = {
   darwin: 'win-info-darwin'
 };
 
-function getCmdWithArgs(arg?: string, platform?: string) {
+function getCmdWithArgs(arg?: string | number, platform?: string) {
   let cmd: string = EXEC_MAP[platform || process.platform];
 
   if (!cmd) {
@@ -68,14 +68,14 @@ function getCmdWithArgs(arg?: string, platform?: string) {
   }
 
   if (arg) {
-    args.push(arg);
+    args.push(`${arg}`);
   }
 
   return { cmd, args };
 }
 
 class WinInfo {
-  static async getByPid(pid: string, platform?: Platform) {
+  static async getByPid(pid: number, platform?: Platform) {
     const { cmd, args } = getCmdWithArgs(pid, platform);
     return parseJSON((await execFile(cmd, args, { encoding: 'utf8' })).stdout) as Response;
   }
@@ -83,7 +83,7 @@ class WinInfo {
     const { cmd, args } = getCmdWithArgs('active', platform);
     return parseJSON((await execFile(cmd, args, { encoding: 'utf8' })).stdout) as Response;
   }
-  static getByPidSync(pid: string, platform?: Platform) {
+  static getByPidSync(pid: number, platform?: Platform) {
     const { cmd, args } = getCmdWithArgs(pid, platform);
     return parseJSON((child_process.execFileSync(cmd, args, { encoding: 'utf8' }))) as Response;
   }
