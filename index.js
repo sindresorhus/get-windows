@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = () => {
+const activeWin = () => {
 	if (process.platform === 'darwin') {
 		return require('./lib/macos')();
 	}
@@ -15,6 +15,9 @@ module.exports = () => {
 
 	return Promise.reject(new Error('macOS, Linux, and Windows only'));
 };
+
+module.exports = activeWin;
+module.exports.default = activeWin;
 
 module.exports.sync = () => {
 	if (process.platform === 'darwin') {
