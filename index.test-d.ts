@@ -1,5 +1,5 @@
 import {expectType, expectError} from 'tsd-check';
-import activeWin, {Result, DarwinResult, LinuxResult, WindowsResult} from '.';
+import activeWin, {Result, MacOSResult, LinuxResult, WindowsResult} from '.';
 
 expectType<Promise<Result>>(activeWin());
 
@@ -7,8 +7,8 @@ const result = activeWin.sync();
 
 expectType<Result>(result);
 
-if (result.platform === 'darwin') {
-	expectType<DarwinResult>(result);
+if (result.platform === 'macos') {
+	expectType<MacOSResult>(result);
 
 	expectType<string>(result.title);
 	expectType<number>(result.id);

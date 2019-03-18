@@ -39,7 +39,7 @@ export interface BaseResult {
 	owner: BaseOwner;
 }
 
-export interface DarwinOwner extends BaseOwner {
+export interface MacOSOwner extends BaseOwner {
 	/**
 	Bundle identifier.
 	*/
@@ -51,10 +51,10 @@ export interface DarwinOwner extends BaseOwner {
 	path: string;
 }
 
-export interface DarwinResult extends BaseResult {
-	platform: 'darwin';
+export interface MacOSResult extends BaseResult {
+	platform: 'macos';
 
-	owner: DarwinOwner;
+	owner: MacOSOwner;
 
 	/**
 	Memory usage by the window.
@@ -74,17 +74,37 @@ export interface WindowsOwner extends BaseOwner {
 }
 
 export interface WindowsResult extends BaseResult {
-	platform: 'win32';
+	platform: 'windows';
 	owner: WindowsOwner;
 }
 
-export type Result = DarwinResult | LinuxResult | WindowsResult;
+export type Result = MacOSResult | LinuxResult | WindowsResult;
 
 declare const activeWin: {
 	/**
 	Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
 
 	@returns The active window metadata.
+
+	@example
+	```
+	import activeWin from 'active-win';
+
+	(async () => {
+		const result = await activeWin();
+
+		if (result.platform === 'macos') {
+			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
+		} else if (result.platform === 'windows') {
+			// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+		} else {
+			// Only common fields are available on Linux.
+			console.log(`Process title is ${result.title}.`);
+		}
+	})();
+	```
 	*/
 	(): Promise<Result>;
 
@@ -92,6 +112,24 @@ declare const activeWin: {
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
 
 	@returns The active window metadata.
+
+	@example
+	```
+	import activeWin from 'active-win';
+
+	const result = activeWin.sync();
+
+	if (result.platform === 'macos') {
+		// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+		console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
+	} else if (result.platform === 'windows') {
+		// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
+		console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+	} else {
+		// Only common fields are available on Linux.
+		console.log(`Process title is ${result.title}.`);
+	}
+	```
 	*/
 	sync(): Result;
 };

@@ -55,7 +55,7 @@ Returns an `Object` with the result.
 
 ## Result
 
-- `platform` *(string)* - `'darwin'` | `'linux'` | `'win32'`
+- `platform` *(string)* - `'macos'` | `'linux'` | `'windows'`
 - `title` *(string)* - Window title
 - `id` *(number)* - Window identifier
 - `bounds` *(Object)* - Window position and size
