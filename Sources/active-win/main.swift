@@ -56,17 +56,6 @@ for window in windows {
 }
 
 // If we reach here, it means there was no active window (according to the conditions above).
-// Rather than crash out, assume the active window is the Desktop (Finder)
-let app = NSRunningApplication(processIdentifier: frontmostAppPID)!
-
-let dict: [String: Any] = [
-	"title": "Desktop",
-	"owner": [
-  	"name": "Desktop",
-	  "processId": frontmostAppPID,
-	  "bundleId": app.bundleIdentifier!,
-	  "path": app.bundleURL!.path
-  ]
-]
-print(try! toJson(dict))
+// Rather than crash out, print "null", which is valid JSON
+print("null")
 exit(0)
