@@ -18,3 +18,7 @@ test('async', async t => {
 test('sync', t => {
 	asserter(t, activeWin.sync());
 });
+
+test('JSON parses "null" string into null value', t => {
+	t.is(JSON.parse('null'), null);
+});
