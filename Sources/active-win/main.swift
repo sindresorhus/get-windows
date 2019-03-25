@@ -54,3 +54,6 @@ for window in windows {
 	print(try! toJson(dict))
 	exit(0)
 }
+
+print("null")
+exit(0)
