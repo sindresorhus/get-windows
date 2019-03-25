@@ -95,6 +95,10 @@ declare const activeWin: {
 	(async () => {
 		const result = await activeWin();
 
+		if (!result) {
+			return;
+		}
+
 		if (result.platform === 'macos') {
 			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
 			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
@@ -108,7 +112,7 @@ declare const activeWin: {
 	})();
 	```
 	*/
-	(): Promise<activeWin.Result>;
+	(): Promise<activeWin.Result | undefined>;
 
 	/**
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
@@ -121,19 +125,21 @@ declare const activeWin: {
 
 	const result = activeWin.sync();
 
-	if (result.platform === 'macos') {
-		// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
-		console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
-	} else if (result.platform === 'windows') {
-		// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
-		console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
-	} else {
-		// Only common fields are available on Linux.
-		console.log(`Process title is ${result.title}.`);
+	if (result) {
+		if (result.platform === 'macos') {
+			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
+		} else if (result.platform === 'windows') {
+			// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+		} else {
+			// Only common fields are available on Linux.
+			console.log(`Process title is ${result.title}.`);
+		}
 	}
 	```
 	*/
-	sync(): activeWin.Result;
+	sync(): activeWin.Result | undefined;
 };
 
 export = activeWin;
