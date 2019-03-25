@@ -46,11 +46,11 @@ const activeWin = require('active-win');
 
 ### activeWin()
 
-Returns a `Promise<Object>` with the result.
+Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window.
 
 ### activeWin.sync()
 
-Returns an `Object` with the result.
+Returns an `Object` with the result, or `undefined` if there is no active window.
 
 
 ## Result
