@@ -1,5 +1,6 @@
 import {expectType, expectError} from 'tsd';
-import activeWin, {Result, MacOSResult, LinuxResult, WindowsResult} from '.';
+import activeWin = require('.');
+import { Result, LinuxResult, MacOSResult, WindowsResult } from '.';
 
 expectType<Promise<Result>>(activeWin());
 
