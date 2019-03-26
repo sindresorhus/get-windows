@@ -80,6 +80,7 @@ It works on macOS, Linux, and Windows 7+.
 ## Related
 
 - [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
+- [active-win-log](https://github.com/uglow/active-win-log) - Window-usage logging application using this module 
 
 
 ## Maintainers
