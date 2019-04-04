@@ -1,5 +1,5 @@
 declare namespace activeWin {
-	export interface BaseOwner {
+	interface BaseOwner {
 		/**
 		Name of the app.
 		*/
@@ -11,7 +11,7 @@ declare namespace activeWin {
 		processId: number;
 	}
 
-	export interface BaseResult {
+	interface BaseResult {
 		/**
 		Window title.
 		*/
@@ -40,7 +40,7 @@ declare namespace activeWin {
 		owner: BaseOwner;
 	}
 
-	export interface MacOSOwner extends BaseOwner {
+	interface MacOSOwner extends BaseOwner {
 		/**
 		Bundle identifier.
 		*/
@@ -52,7 +52,7 @@ declare namespace activeWin {
 		path: string;
 	}
 
-	export interface MacOSResult extends BaseResult {
+	interface MacOSResult extends BaseResult {
 		platform: 'macos';
 
 		owner: MacOSOwner;
@@ -63,23 +63,23 @@ declare namespace activeWin {
 		memoryUsage: number;
 	}
 
-	export interface LinuxResult extends BaseResult {
+	interface LinuxResult extends BaseResult {
 		platform: 'linux';
 	}
 
-	export interface WindowsOwner extends BaseOwner {
+	interface WindowsOwner extends BaseOwner {
 		/**
 		Path to the app.
 		*/
 		path: string;
 	}
 
-	export interface WindowsResult extends BaseResult {
+	interface WindowsResult extends BaseResult {
 		platform: 'windows';
 		owner: WindowsOwner;
 	}
 
-	export type Result = MacOSResult | LinuxResult | WindowsResult;
+	type Result = MacOSResult | LinuxResult | WindowsResult;
 }
 
 declare const activeWin: {
