@@ -55,6 +55,7 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 
 ## Result
 
+- `platform` *(string)* - `'macos'` | `'linux'` | `'windows'`
 - `title` *(string)* - Window title
 - `id` *(number)* - Window identifier
 - `bounds` *(Object)* - Window position and size

@@ -13,12 +13,13 @@
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && ava",
+		"test": "xo && ava && tsd",
 		"build": "swift build --configuration=release --static-swift-stdlib && mv .build/release/active-win main",
 		"prepublishOnly": "npm run build"
 	},
 	"files": [
 		"index.js",
+		"index.d.ts",
 		"lib",
 		"main"
 	],
@@ -46,7 +47,8 @@
 		"bundleid"
 	],
 	"devDependencies": {
-		"ava": "^1.4.0",
+		"ava": "^1.4.1",
+		"tsd": "^0.7.1",
 		"xo": "^0.24.0"
 	},
 	"optionalDependencies": {
