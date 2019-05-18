@@ -46,7 +46,7 @@ const activeWin = require('active-win');
 
 ### activeWin()
 
-Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window.
+Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if information is not available to us.
 
 ### activeWin.sync()
 
@@ -76,8 +76,6 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 It works on macOS, Linux, and Windows 7+.
 
 **Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle).
-
-**Note** Depending on OS, getting various parts of this information might require additional rights the user doesn't have or be impossible(in general or at the moment of time). In such cases the information is provided on best effor basis, with missing pieces being `undefined`.
 
 
 ## Related
