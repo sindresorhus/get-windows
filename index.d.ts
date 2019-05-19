@@ -92,14 +92,12 @@ declare const activeWin: {
 		}
 
 		if (result.platform === 'macos') {
-			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+			// Among other fields, result.owner.bundleId is available on macOS.
 			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
 		} else if (result.platform === 'windows') {
-			// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
 			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		} else {
-			// Only common fields are available on Linux.
-			console.log(`Process title is ${result.title}.`);
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		}
 	})();
 	```
@@ -119,14 +117,12 @@ declare const activeWin: {
 
 	if (result) {
 		if (result.platform === 'macos') {
-			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+			// Among other fields, result.owner.bundleId is available on macOS.
 			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
 		} else if (result.platform === 'windows') {
-			// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
 			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		} else {
-			// Only common fields are available on Linux.
-			console.log(`Process title is ${result.title}.`);
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		}
 	}
 	```

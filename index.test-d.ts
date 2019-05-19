@@ -9,6 +9,7 @@ const result = activeWin.sync();
 expectType<Result | undefined>(result);
 
 if (result) {
+	expectType<string>(result.platform);
 	expectType<string>(result.title);
 	expectType<number>(result.id);
 	expectType<number>(result.bounds.x);
