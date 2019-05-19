@@ -25,13 +25,10 @@ if (result) {
 		expectType<number>(result.memoryUsage);
 	} else if (result.platform === 'linux') {
 		expectType<LinuxResult>(result);
-		expectError(result.owner.path);
 		expectError(result.owner.bundleId);
-		expectError(result.memoryUsage);
 	} else {
 		expectType<WindowsResult>(result);
 		expectType<string>(result.owner.path);
 		expectError(result.owner.bundleId);
-		expectError(result.memoryUsage);
 	}
 }
