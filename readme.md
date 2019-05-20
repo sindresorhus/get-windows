@@ -46,7 +46,7 @@ const activeWin = require('active-win');
 
 ### activeWin()
 
-Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window.
+Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
 
 ### activeWin.sync()
 
@@ -67,8 +67,8 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 	- `name` *(string)* - Name of the app
 	- `processId` *(number)* - Process identifier
 	- `bundleId` *(string)* - Bundle identifier *(macOS only)*
-	- `path` *(string)* - Path to the app *(macOS and Windows only)*
-- `memoryUsage` *(number)* - Memory usage by the window *(macOS only)*
+	- `path` *(string)* - Path to the app
+- `memoryUsage` *(number)* - Memory usage by the window owner process
 
 
 ## OS support

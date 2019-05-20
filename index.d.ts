@@ -9,6 +9,11 @@ declare namespace activeWin {
 		Process identifier
 		*/
 		processId: number;
+
+		/**
+		Path to the app.
+		*/
+		path: string;
 	}
 
 	interface BaseResult {
@@ -38,24 +43,6 @@ declare namespace activeWin {
 		App that owns the window.
 		*/
 		owner: BaseOwner;
-	}
-
-	interface MacOSOwner extends BaseOwner {
-		/**
-		Bundle identifier.
-		*/
-		bundleId: number;
-
-		/**
-		Path to the app.
-		*/
-		path: string;
-	}
-
-	interface MacOSResult extends BaseResult {
-		platform: 'macos';
-
-		owner: MacOSOwner;
 
 		/**
 		Memory usage by the window.
@@ -63,20 +50,25 @@ declare namespace activeWin {
 		memoryUsage: number;
 	}
 
+	interface MacOSOwner extends BaseOwner {
+		/**
+		Bundle identifier.
+		*/
+		bundleId: number;
+	}
+
+	interface MacOSResult extends BaseResult {
+		platform: 'macos';
+
+		owner: MacOSOwner;
+	}
+
 	interface LinuxResult extends BaseResult {
 		platform: 'linux';
 	}
 
-	interface WindowsOwner extends BaseOwner {
-		/**
-		Path to the app.
-		*/
-		path: string;
-	}
-
 	interface WindowsResult extends BaseResult {
 		platform: 'windows';
-		owner: WindowsOwner;
 	}
 
 	type Result = MacOSResult | LinuxResult | WindowsResult;
@@ -100,14 +92,12 @@ declare const activeWin: {
 		}
 
 		if (result.platform === 'macos') {
-			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+			// Among other fields, result.owner.bundleId is available on macOS.
 			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
 		} else if (result.platform === 'windows') {
-			// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
 			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		} else {
-			// Only common fields are available on Linux.
-			console.log(`Process title is ${result.title}.`);
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		}
 	})();
 	```
@@ -127,14 +117,12 @@ declare const activeWin: {
 
 	if (result) {
 		if (result.platform === 'macos') {
-			// Among other fields, result.owner.bundleId, result.owner.path, and result.memoryUsage are available on macOS.
+			// Among other fields, result.owner.bundleId is available on macOS.
 			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
 		} else if (result.platform === 'windows') {
-			// Among other fields, result.owner.path, and result.memoryUsage are available on Windows.
 			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		} else {
-			// Only common fields are available on Linux.
-			console.log(`Process title is ${result.title}.`);
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
 		}
 	}
 	```
