@@ -10,6 +10,7 @@ node_js:
 before_install:
   - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install -y metacity; fi"
   - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then metacity --sm-disable --replace 2> metacity.err & fi"
+before_script:
   - "if [[ $TRAVIS_OS_NAME == 'linux' ]]; then metacity-theme-viewer & fi"
 script:
   - npm test
