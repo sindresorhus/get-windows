@@ -5,6 +5,7 @@ dist: bionic
 services:
   - xvfb
 node_js:
+  - '12'
   - '10'
   - '8'
 before_install:

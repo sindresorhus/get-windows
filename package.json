@@ -53,8 +53,8 @@
 	},
 	"optionalDependencies": {
 		"ffi-napi": "^2.4.5",
-		"ref": "^1.3.5",
-		"ref-wchar": "^1.0.2",
-		"ref-struct": "^1.1.0"
+		"ref-napi": "^1.4.2",
+		"ref-wchar-napi": "^1.0.2",
+		"ref-struct-napi": "^1.1.0"
 	}
 }
