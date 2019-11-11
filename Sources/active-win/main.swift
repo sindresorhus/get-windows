@@ -6,8 +6,8 @@ func toJson<T>(_ data: T) throws -> String {
 }
 
 if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
-    print("BActive-Win requires permission for accessibility in System Preferences > Security & Privacy > Privacy > Accessibility.")
-    exit(0)
+	print("BActive-Win requires permission for accessibility in System Preferences > Security & Privacy > Privacy > Accessibility.")
+	exit(0)
 }
 
 let frontmostAppPID = NSWorkspace.shared.frontmostApplication!.processIdentifier
@@ -16,8 +16,8 @@ let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopEl
 let windowImage = CGWindowListCreateImage(.null, .optionIncludingWindow, windows[0][kCGWindowNumber as String] as! CGWindowID, [.boundsIgnoreFraming, .bestResolution])
 
 if windowImage == nil {
-    print("Active-Win requires permission for screen recording in System Preferences > Security & Privacy > Privacy > Screen Recording.")
-    exit(0)
+	print("Active-Win requires permission for screen recording in System Preferences > Security & Privacy > Privacy > Screen Recording.")
+	exit(0)
 }
 
 for window in windows {
