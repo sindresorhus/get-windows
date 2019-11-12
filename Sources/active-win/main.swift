@@ -15,9 +15,11 @@ let frontmostAppPID = NSWorkspace.shared.frontmostApplication!.processIdentifier
 let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
 
 // Show screen recording permissions screen if not enabled; required to get the complete window title
-if CGWindowListCreateImage(.null, .optionIncludingWindow, windows[0][kCGWindowNumber as String] as! CGWindowID, [.boundsIgnoreFraming, .bestResolution]) == nil {
-    print("Active-Win requires permission for screen recording in System Preferences > Security & Privacy > Privacy > Screen Recording.")
-    exit(1)
+if let firstWindow = windows.first {
+    if CGWindowListCreateImage(.null, .optionIncludingWindow, firstWindow[kCGWindowNumber as String] as! CGWindowID, [.boundsIgnoreFraming, .bestResolution]) == nil {
+        print("Active-Win requires permission for screen recording in System Preferences > Security & Privacy > Privacy > Screen Recording.")
+        exit(1)
+    }
 }
 
 for window in windows {
