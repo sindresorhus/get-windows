@@ -5,8 +5,24 @@ func toJson<T>(_ data: T) throws -> String {
 	return String(data: json, encoding: .utf8)!
 }
 
+// Show accessibility permission prompt if needed. Required to get the complete window title.
+if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
+	print("active-win requires the accessibility permission in “System Preferences › Security & Privacy › Privacy › Accessibility”.")
+	exit(1)
+}
+
 let frontmostAppPID = NSWorkspace.shared.frontmostApplication!.processIdentifier
 let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
+
+// Show screen recording permission prompt if needed. Required to get the complete window title.
+if
+	let firstWindow = windows.first,
+	let windowNumber = firstWindow[kCGWindowNumber as String] as? CGWindowID,
+	CGWindowListCreateImage(.null, .optionIncludingWindow, windowNumber, [.boundsIgnoreFraming, .bestResolution]) == nil
+{
+	print("active-win requires the screen recording permission in “System Preferences › Security & Privacy › Privacy › Screen Recording”.")
+	exit(1)
+}
 
 for window in windows {
 	let windowOwnerPID = window[kCGWindowOwnerPID as String] as! Int
