@@ -5,21 +5,23 @@ func toJson<T>(_ data: T) throws -> String {
 	return String(data: json, encoding: .utf8)!
 }
 
-// Show accessibility permissions screen if not enabled; required to get the complete window title
+// Show accessibility permission prompt if needed. Required to get the complete window title.
 if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
-	print("Active-Win requires permission for accessibility in System Preferences > Security & Privacy > Privacy > Accessibility.")
+	print("active-win requires the accessibility permission in “System Preferences › Security & Privacy › Privacy › Accessibility”.")
 	exit(1)
 }
 
 let frontmostAppPID = NSWorkspace.shared.frontmostApplication!.processIdentifier
 let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
 
-// Show screen recording permissions screen if not enabled; required to get the complete window title
-if let firstWindow = windows.first {
-    if CGWindowListCreateImage(.null, .optionIncludingWindow, firstWindow[kCGWindowNumber as String] as! CGWindowID, [.boundsIgnoreFraming, .bestResolution]) == nil {
-        print("Active-Win requires permission for screen recording in System Preferences > Security & Privacy > Privacy > Screen Recording.")
-        exit(1)
-    }
+// Show screen recording permission prompt if needed. Required to get the complete window title.
+if
+	let firstWindow = windows.first,
+	let windowNumber = firstWindow[kCGWindowNumber as String] as? CGWindowID,
+	CGWindowListCreateImage(.null, .optionIncludingWindow, windowNumber, [.boundsIgnoreFraming, .bestResolution]) == nil
+{
+	print("active-win requires the screen recording permission in “System Preferences › Security & Privacy › Privacy › Screen Recording”.")
+	exit(1)
 }
 
 for window in windows {
