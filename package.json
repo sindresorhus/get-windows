@@ -14,8 +14,8 @@
 	},
 	"scripts": {
 		"test": "xo && ava && tsd",
-		"build": "swift build --configuration=release --static-swift-stdlib && mv .build/release/active-win main",
-		"//prepublishOnly": "npm run build"
+		"build": "swift build --configuration=release && mv .build/release/active-win main",
+		"prepublishOnly": "npm run build"
 	},
 	"files": [
 		"index.js",
@@ -47,9 +47,9 @@
 		"bundleid"
 	],
 	"devDependencies": {
-		"ava": "^1.4.1",
-		"tsd": "^0.7.1",
-		"xo": "^0.24.0"
+		"ava": "^2.4.0",
+		"tsd": "^0.10.0",
+		"xo": "^0.25.3"
 	},
 	"optionalDependencies": {
 		"ffi-napi": "^2.4.5",

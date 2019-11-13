@@ -4,6 +4,8 @@ Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_wind
 
 Works on macOS, Linux, Windows.
 
+Users on macOS 10.13 or earlier needs to download the [Swift runtime support libraries](https://support.apple.com/kb/DL1998).
+
 
 ## Install
 
@@ -81,15 +83,10 @@ It works on macOS, Linux, and Windows 7+.
 ## Related
 
 - [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
-- [active-win-log](https://github.com/uglow/active-win-log) - Window-usage logging CLI using this module 
+- [active-win-log](https://github.com/uglow/active-win-log) - Window-usage logging CLI using this module
 
 
 ## Maintainers
 
 - [Sindre Sorhus](https://github.com/sindresorhus)
 - [Sebastián Ramírez](https://github.com/tiangolo)
-
-
-## License
-
-MIT
