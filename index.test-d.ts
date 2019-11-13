@@ -1,6 +1,6 @@
 import {expectType, expectError} from 'tsd';
 import activeWin = require('.');
-import { Result, LinuxResult, MacOSResult, WindowsResult } from '.';
+import {Result, LinuxResult, MacOSResult, WindowsResult} from '.';
 
 expectType<Promise<Result | undefined>>(activeWin());
 
@@ -9,7 +9,7 @@ const result = activeWin.sync();
 expectType<Result | undefined>(result);
 
 if (result) {
-	expectType<string>(result.platform);
+	expectType<'macos' | 'linux' | 'windows'>(result.platform);
 	expectType<string>(result.title);
 	expectType<number>(result.id);
 	expectType<number>(result.bounds.x);

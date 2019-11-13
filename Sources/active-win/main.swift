@@ -1,5 +1,18 @@
 import AppKit
 
+// This shows the system prompt if there's no permission.
+func hasScreenRecordingPermission() -> Bool {
+	CGDisplayStream(
+		dispatchQueueDisplay: CGMainDisplayID(),
+		outputWidth: 1,
+		outputHeight: 1,
+		pixelFormat: Int32(kCVPixelFormatType_32BGRA),
+		properties: nil,
+		queue: DispatchQueue.global(),
+		handler: { _, _, _, _ in }
+	) != nil
+}
+
 func toJson<T>(_ data: T) throws -> String {
 	let json = try JSONSerialization.data(withJSONObject: data)
 	return String(data: json, encoding: .utf8)!
@@ -15,11 +28,7 @@ let frontmostAppPID = NSWorkspace.shared.frontmostApplication!.processIdentifier
 let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
 
 // Show screen recording permission prompt if needed. Required to get the complete window title.
-if
-	let firstWindow = windows.first,
-	let windowNumber = firstWindow[kCGWindowNumber as String] as? CGWindowID,
-	CGWindowListCreateImage(.null, .optionIncludingWindow, windowNumber, [.boundsIgnoreFraming, .bestResolution]) == nil
-{
+if !hasScreenRecordingPermission() {
 	print("active-win requires the screen recording permission in “System Preferences › Security & Privacy › Privacy › Screen Recording”.")
 	exit(1)
 }
