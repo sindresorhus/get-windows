@@ -10,12 +10,7 @@ func getBrowserURL(_ appName: String) -> String? {
 	guard let script = NSAppleScript(source: scriptText) else { return nil }
 	guard let outputString = script.executeAndReturnError(&error).stringValue else { return nil }
 	
-	// Parse URL and return if present
-	if let url = URL(string: outputString) {
-		return url
-	}
-
-	return nil
+	return outputString
 }
 
 // Formats the AppleScript text for Chrome and Safari
@@ -25,8 +20,8 @@ func getScriptText(_ appName: String) -> String? {
 		return "tell app \"Google Chrome\" to get the url of the active tab of window 1"
 	case "Safari":
 		return "tell application \"Safari\" to return URL of front document"
-	case "Firefox":
-		return "`tell application \"Firefox\" to activate\r\ntell application \"System Events\"\r\nkeystroke \"l\" using command down\r\nkeystroke \"c\" using command down\r\nend tell\r\ndelay 0.5\r\nreturn the clipboard`"
+	case "Brave Browser":
+		return "tell app \"Brave Browser\" to get the url of the active tab of window 1"
 	default:
 		return nil
 	}
@@ -93,7 +88,7 @@ for window in windows {
 	let appName = window[kCGWindowOwnerName as String] as! String
 	let browserURL = getBrowserURL(appName)
 
-	let dict: [String: Any] = [
+	var dict: [String: Any] = [
 		"title": window[kCGWindowName as String] as? String ?? "",
 		"id": window[kCGWindowNumber as String] as! Int,
 		"bounds": [
@@ -111,8 +106,8 @@ for window in windows {
 		"memoryUsage": window[kCGWindowMemoryUsage as String] as! Int
 	]
 
-	if browserURL {
-		dict["owner"]["url"] = browserURL as String? ?? ""
+	if browserURL != nil {
+		dict["url"] = browserURL as String? ?? ""
 	}
 
 	print(try! toJson(dict))
