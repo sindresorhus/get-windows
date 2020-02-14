@@ -1,6 +1,38 @@
 import AppKit
 
-// This shows the system prompt if there's no permission.
+// Uses AppleScript to get the browser URL from Chrome or Safari
+func getBrowserURL(_ appName: String) -> String? {
+	// Gets the appropriate AppleScript for each browser type
+	guard let scriptText = getScriptText(appName) else { return nil }
+	
+	// Prepare and execute AppleScript script to query URL
+	var error: NSDictionary?
+	guard let script = NSAppleScript(source: scriptText) else { return nil }
+	guard let outputString = script.executeAndReturnError(&error).stringValue else { return nil }
+	
+	// Parse URL and return if present
+	if let url = URL(string: outputString) {
+		return url
+	}
+
+	return nil
+}
+
+// Formats the AppleScript text for Chrome and Safari
+func getScriptText(_ appName: String) -> String? {
+	switch appName {
+	case "Google Chrome":
+		return "tell app \"Google Chrome\" to get the url of the active tab of window 1"
+	case "Safari":
+		return "tell application \"Safari\" to return URL of front document"
+	case "Firefox":
+		return "`tell application \"Firefox\" to activate\r\ntell application \"System Events\"\r\nkeystroke \"l\" using command down\r\nkeystroke \"c\" using command down\r\nend tell\r\ndelay 0.5\r\nreturn the clipboard`"
+	default:
+		return nil
+	}
+}
+
+// Shows the system prompt if there's no permission.
 func hasScreenRecordingPermission() -> Bool {
 	CGDisplayStream(
 		dispatchQueueDisplay: CGMainDisplayID(),
@@ -13,6 +45,7 @@ func hasScreenRecordingPermission() -> Bool {
 	) != nil
 }
 
+// Serializes data dict to JSON
 func toJson<T>(_ data: T) throws -> String {
 	let json = try JSONSerialization.data(withJSONObject: data)
 	return String(data: json, encoding: .utf8)!
@@ -57,6 +90,8 @@ for window in windows {
 
 	// This can't fail as we're only dealing with apps
 	let app = NSRunningApplication(processIdentifier: appPid)!
+	let appName = window[kCGWindowOwnerName as String] as! String
+	let browserURL = getBrowserURL(appName)
 
 	let dict: [String: Any] = [
 		"title": window[kCGWindowName as String] as? String ?? "",
@@ -68,13 +103,17 @@ for window in windows {
 			"height": bounds.height
 		],
 		"owner": [
-			"name": window[kCGWindowOwnerName as String] as! String,
+			"name": appName,
 			"processId": appPid,
 			"bundleId": app.bundleIdentifier!,
 			"path": app.bundleURL!.path
 		],
 		"memoryUsage": window[kCGWindowMemoryUsage as String] as! Int
 	]
+
+	if browserURL {
+		dict["owner"]["url"] = browserURL as String? ?? ""
+	}
 
 	print(try! toJson(dict))
 	exit(0)
