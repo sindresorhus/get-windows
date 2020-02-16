@@ -14,6 +14,8 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
 		return "tell app \"Safari\" to get URL of front document"
 	case "Brave Browser":
 		return "tell app \"Brave Browser\" to get the url of the active tab of window 1"
+	case "Microsoft Edge":
+		return "tell app \"Microsoft Edge\" to get the url of the active tab of window 1"
 	default:
 		return nil
 	}
