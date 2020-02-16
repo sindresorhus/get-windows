@@ -1,20 +1,20 @@
 import AppKit
 
-// Uses AppleScript to get the browser URL from Chrome or Safari
-func getBrowserURL(_ appName: String) -> String? {
+// Uses AppleScript to get the browser URL from Chrome, Safari, Brave, and Edge
+func getActiveBrowserTabURL(_ appName: String) -> String? {
 	// Gets the appropriate AppleScript for each browser type
-	guard let scriptText = getScriptText(appName) else { return nil }
+	guard let scriptCommand = getActiveBrowserTabURLAppleScriptCommand(appName) else { return nil }
 	
-	// Prepare and execute AppleScript script to query URL
+	// Prepare and execute AppleScript command to query URL
 	var error: NSDictionary?
-	guard let script = NSAppleScript(source: scriptText) else { return nil }
+	guard let script = NSAppleScript(source: scriptCommand) else { return nil }
 	guard let outputString = script.executeAndReturnError(&error).stringValue else { return nil }
 	
 	return outputString
 }
 
-// Formats the AppleScript text for Chrome and Safari
-func getScriptText(_ appName: String) -> String? {
+// Formats the AppleScript command for Chrome, Safari, Brave, and Edge
+func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
 	switch appName {
 	case "Google Chrome":
 		return "tell app \"Google Chrome\" to get the url of the active tab of window 1"
@@ -86,7 +86,7 @@ for window in windows {
 	// This can't fail as we're only dealing with apps
 	let app = NSRunningApplication(processIdentifier: appPid)!
 	let appName = window[kCGWindowOwnerName as String] as! String
-	let browserURL = getBrowserURL(appName)
+	let browserURL = getActiveBrowserTabURL(appName)
 
 	var dict: [String: Any] = [
 		"title": window[kCGWindowName as String] as? String ?? "",
