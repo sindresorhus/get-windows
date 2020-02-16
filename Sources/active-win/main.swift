@@ -1,13 +1,8 @@
 import AppKit
 
-// Uses AppleScript to get the browser URL from Chrome, Safari, Brave, and Edge
-func getActiveBrowserTabURL(_ scriptCommand: String) -> String? {
-	// Prepare and execute AppleScript command to query URL
-	var error: NSDictionary?
-	guard let script = NSAppleScript(source: scriptCommand) else { return nil }
-	guard let outputString = script.executeAndReturnError(&error).stringValue else { return nil }
-	
-	return outputString
+@discardableResult
+func runAppleScript(source: String) -> String? {
+	NSAppleScript(source: source)?.executeAndReturnError(nil).stringValue
 }
 
 // Formats the AppleScript command for Chrome, Safari, Brave, and Edge
@@ -104,7 +99,10 @@ for window in windows {
 	]
 
 	if browserURLAppleScriptCommand != nil {
-		dict["url"] = getActiveBrowserTabURL(browserURLAppleScriptCommand)
+		let browserURL = runAppleScript(source: browserURLAppleScriptCommand!)
+		if browserURL != nil {
+			dict["url"] = browserURL
+		}
 	}
 
 	print(try! toJson(dict))
