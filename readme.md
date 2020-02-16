@@ -37,7 +37,7 @@ const activeWin = require('active-win');
 			bundleId: 'com.google.Chrome',
 			path: '/Applications/Google Chrome.app'
 		},
-		url: 'https://google.com/unicorns',
+		url: 'https://sindresorhus.com/unicorn',
 		memoryUsage: 11015432
 	}
 	*/
