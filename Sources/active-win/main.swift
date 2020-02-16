@@ -19,7 +19,7 @@ func getScriptText(_ appName: String) -> String? {
 	case "Google Chrome":
 		return "tell app \"Google Chrome\" to get the url of the active tab of window 1"
 	case "Safari":
-		return "tell application \"Safari\" to return URL of front document"
+		return "tell app \"Safari\" to get URL of front document"
 	case "Brave Browser":
 		return "tell app \"Brave Browser\" to get the url of the active tab of window 1"
 	default:
