@@ -45,6 +45,11 @@ declare namespace activeWin {
 		owner: BaseOwner;
 
 		/**
+		URL of active browser tab if the active window is Safari, Chrome, or Brave.
+		*/
+		url: string;
+
+		/**
 		Memory usage by the window.
 		*/
 		memoryUsage: number;
