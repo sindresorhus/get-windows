@@ -1,6 +1,6 @@
 # active-win [![Build Status](https://travis-ci.org/sindresorhus/active-win.svg?branch=master)](https://travis-ci.org/sindresorhus/active-win)
 
-Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, url, etc)
+Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, URL, etc)
 
 Works on macOS, Linux, Windows.
 
@@ -37,7 +37,7 @@ const activeWin = require('active-win');
 			bundleId: 'com.google.Chrome',
 			path: '/Applications/Google Chrome.app'
 		},
-		url: 'https://google.com/unicorns',
+		url: 'https://sindresorhus.com/unicorn',
 		memoryUsage: 11015432
 	}
 	*/
@@ -71,7 +71,7 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 	- `processId` *(number)* - Process identifier
 	- `bundleId` *(string)* - Bundle identifier *(macOS only)*
 	- `path` *(string)* - Path to the app
-- `url` *(string)* - URL of active browser tab if the active window is Safari, Chrome, or Brave *(macOS only)*
+- `url` *(string?)* - URL of the active browser tab if the active window is Safari, Chrome, or Brave *(macOS only)*
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
 
