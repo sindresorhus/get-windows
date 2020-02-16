@@ -19,6 +19,7 @@ if (result) {
 	expectType<string>(result.owner.name);
 	expectType<number>(result.owner.processId);
 	expectType<string>(result.owner.path);
+	expectType<string>(result.url);
 	expectType<number>(result.memoryUsage);
 	if (result.platform === 'macos') {
 		expectType<MacOSResult>(result);
