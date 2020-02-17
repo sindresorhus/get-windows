@@ -45,7 +45,7 @@ declare namespace activeWin {
 		owner: BaseOwner;
 
 		/**
-		URL of active browser tab if the active window is Safari, Chrome, or Brave.
+		URL of the active browser tab if the active window is Safari, Chrome, Edge, or Brave.
 		*/
 		url: string;
 
