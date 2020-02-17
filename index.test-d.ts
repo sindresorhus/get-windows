@@ -19,11 +19,11 @@ if (result) {
 	expectType<string>(result.owner.name);
 	expectType<number>(result.owner.processId);
 	expectType<string>(result.owner.path);
-	expectType<string>(result.url);
 	expectType<number>(result.memoryUsage);
 	if (result.platform === 'macos') {
 		expectType<MacOSResult>(result);
 		expectType<number>(result.owner.bundleId);
+		expectType<string>(result.url);
 	} else if (result.platform === 'linux') {
 		expectType<LinuxResult>(result);
 		expectError(result.owner.bundleId);
