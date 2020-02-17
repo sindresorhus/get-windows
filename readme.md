@@ -71,7 +71,7 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 	- `processId` *(number)* - Process identifier
 	- `bundleId` *(string)* - Bundle identifier *(macOS only)*
 	- `path` *(string)* - Path to the app
-- `url` *(string?)* - URL of the active browser tab if the active window is Safari, Chrome, or Brave *(macOS only)*
+- `url` *(string?)* - URL of the active browser tab if the active window is Safari, Chrome, Edge, or Brave *(macOS only)*
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
 
