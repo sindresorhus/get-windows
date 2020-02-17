@@ -45,11 +45,6 @@ declare namespace activeWin {
 		owner: BaseOwner;
 
 		/**
-		URL of the active browser tab if the active window is Safari, Chrome, Edge, or Brave.
-		*/
-		url: string;
-
-		/**
 		Memory usage by the window.
 		*/
 		memoryUsage: number;
@@ -66,6 +61,11 @@ declare namespace activeWin {
 		platform: 'macos';
 
 		owner: MacOSOwner;
+
+		/**
+		URL of the active browser tab if the active window is Safari, Chrome, Edge, or Brave.
+		*/
+		url?: string;
 	}
 
 	interface LinuxResult extends BaseResult {
