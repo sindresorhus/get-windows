@@ -75,8 +75,8 @@ for window in windows {
 
 	// This can't fail as we're only dealing with apps
 	let app = NSRunningApplication(processIdentifier: appPid)!
+	
 	let appName = window[kCGWindowOwnerName as String] as! String
-	let browserURLAppleScriptCommand = getActiveBrowserTabURLAppleScriptCommand(appName)
 
 	var dict: [String: Any] = [
 		"title": window[kCGWindowName as String] as? String ?? "",
@@ -97,11 +97,11 @@ for window in windows {
 	]
 
 	// Only run the AppleScript if active window is a compatible browser
-	if browserURLAppleScriptCommand != nil {
-		let browserURL = runAppleScript(source: browserURLAppleScriptCommand!)
-		if browserURL != nil {
-			dict["url"] = browserURL
-		}
+	if
+		let script = getActiveBrowserTabURLAppleScriptCommand(appName),
+		let url = runAppleScript(source: script)
+	{
+		dict["url"] = url
 	}
 
 	print(try! toJson(dict))
