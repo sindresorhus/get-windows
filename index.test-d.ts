@@ -23,7 +23,7 @@ if (result) {
 	if (result.platform === 'macos') {
 		expectType<MacOSResult>(result);
 		expectType<number>(result.owner.bundleId);
-		expectType<string>(result.url);
+		expectType<string | undefined>(result.url);
 	} else if (result.platform === 'linux') {
 		expectType<LinuxResult>(result);
 		expectError(result.owner.bundleId);
