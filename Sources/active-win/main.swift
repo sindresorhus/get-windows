@@ -1,6 +1,23 @@
 import AppKit
 
-// This shows the system prompt if there's no permission.
+@discardableResult
+func runAppleScript(source: String) -> String? {
+	NSAppleScript(source: source)?.executeAndReturnError(nil).stringValue
+}
+
+// Format the AppleScript command for Chrome, Safari, Brave, and Edge
+func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
+	switch appName {
+	case "Google Chrome", "Brave Browser", "Microsoft Edge":
+		return "tell app \"\(appName)\" to get the URL of active tab of front window"
+	case "Safari":
+		return "tell app \"Safari\" to get URL of front document"
+	default:
+		return nil
+	}
+}
+
+// Show the system prompt if there's no permission.
 func hasScreenRecordingPermission() -> Bool {
 	CGDisplayStream(
 		dispatchQueueDisplay: CGMainDisplayID(),
@@ -13,6 +30,7 @@ func hasScreenRecordingPermission() -> Bool {
 	) != nil
 }
 
+// Serialize data dict to JSON
 func toJson<T>(_ data: T) throws -> String {
 	let json = try JSONSerialization.data(withJSONObject: data)
 	return String(data: json, encoding: .utf8)!
@@ -57,8 +75,10 @@ for window in windows {
 
 	// This can't fail as we're only dealing with apps
 	let app = NSRunningApplication(processIdentifier: appPid)!
+	
+	let appName = window[kCGWindowOwnerName as String] as! String
 
-	let dict: [String: Any] = [
+	var dict: [String: Any] = [
 		"title": window[kCGWindowName as String] as? String ?? "",
 		"id": window[kCGWindowNumber as String] as! Int,
 		"bounds": [
@@ -68,13 +88,21 @@ for window in windows {
 			"height": bounds.height
 		],
 		"owner": [
-			"name": window[kCGWindowOwnerName as String] as! String,
+			"name": appName,
 			"processId": appPid,
 			"bundleId": app.bundleIdentifier!,
 			"path": app.bundleURL!.path
 		],
 		"memoryUsage": window[kCGWindowMemoryUsage as String] as! Int
 	]
+
+	// Only run the AppleScript if active window is a compatible browser
+	if
+		let script = getActiveBrowserTabURLAppleScriptCommand(appName),
+		let url = runAppleScript(source: script)
+	{
+		dict["url"] = url
+	}
 
 	print(try! toJson(dict))
 	exit(0)
