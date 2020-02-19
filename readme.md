@@ -6,13 +6,11 @@ Works on macOS, Linux, Windows.
 
 Users on macOS 10.13 or earlier needs to download the [Swift runtime support libraries](https://support.apple.com/kb/DL1998).
 
-
 ## Install
 
 ```
 $ npm install active-win
 ```
-
 
 ## Usage
 
@@ -55,7 +53,6 @@ Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is
 
 Returns an `Object` with the result, or `undefined` if there is no active window.
 
-
 ## Result
 
 - `platform` *(string)* - `'macos'` | `'linux'` | `'windows'`
@@ -74,19 +71,16 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 - `url` *(string?)* - URL of the active browser tab if the active window is Safari, Chrome, Edge, or Brave *(macOS only)*
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
-
 ## OS support
 
 It works on macOS, Linux, and Windows 7+.
 
 **Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle).
 
-
 ## Related
 
 - [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
 - [active-win-log](https://github.com/uglow/active-win-log) - Window-usage logging CLI using this module
-
 
 ## Maintainers
 

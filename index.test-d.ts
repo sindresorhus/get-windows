@@ -20,6 +20,7 @@ if (result) {
 	expectType<number>(result.owner.processId);
 	expectType<string>(result.owner.path);
 	expectType<number>(result.memoryUsage);
+
 	if (result.platform === 'macos') {
 		expectType<MacOSResult>(result);
 		expectType<number>(result.owner.bundleId);
