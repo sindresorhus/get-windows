@@ -2,9 +2,14 @@ import {expectType, expectError} from 'tsd';
 import activeWin = require('.');
 import {Result, LinuxResult, MacOSResult, WindowsResult} from '.';
 
+
 expectType<Promise<Result | undefined>>(activeWin());
 
-const result = activeWin.sync();
+const result = activeWin.sync({
+	accessibilityCheck: false,
+	screenRecordingCheck: false,
+	url: false,
+});
 
 expectType<Result | undefined>(result);
 

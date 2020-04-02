@@ -47,11 +47,17 @@ const activeWin = require('active-win');
 
 ### activeWin()
 
-Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
+Accepts an optional dictionary `Options` as only argument and returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
 
 ### activeWin.sync()
 
-Returns an `Object` with the result, or `undefined` if there is no active window.
+Accepts an optional dictionary `Options` as only argument and returns an `Object` with the result, or `undefined` if there is no active window.
+
+## Options
+
+- `accessibilityCheck` *(boolean)* - set to `false` to disable that check *(macOS)*
+- `screenRecordingCheck` *(boolean)* - set to `false` to disable that check *(macOS)*
+- `url` *(boolean)* - set to `false` to skip obtaining the URL from a browser *(macOS)*
 
 ## Result
 

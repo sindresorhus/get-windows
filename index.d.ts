@@ -1,4 +1,21 @@
 declare namespace activeWin {
+	interface Options {
+		/**
+		Disable Accessibility permission check (macOS)
+		*/
+		accessibilityCheck: boolean;
+
+		/**
+		Disable Screen Recording permission check (macOS)
+		*/
+		screenRecordingCheck: boolean;
+
+		/**
+		Disable obtaining URL from the active browser tab (macOS)
+		*/
+		url: boolean;
+	}
+
 	interface BaseOwner {
 		/**
 		Name of the app.
@@ -107,7 +124,7 @@ declare const activeWin: {
 	})();
 	```
 	*/
-	(): Promise<activeWin.Result | undefined>;
+	(options?: activeWin.Options): Promise<activeWin.Result | undefined>;
 
 	/**
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
@@ -132,7 +149,7 @@ declare const activeWin: {
 	}
 	```
 	*/
-	sync(): activeWin.Result | undefined;
+	sync(options?: activeWin.Options): activeWin.Result | undefined;
 };
 
 export = activeWin;
