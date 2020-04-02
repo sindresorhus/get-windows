@@ -11,8 +11,11 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
 	}
 }
 
+let noAccessCheck = CommandLine.arguments.contains("--no-access-check")
+let noAppleScript = CommandLine.arguments.contains("--no-apple-script")
+
 // Show accessibility permission prompt if needed. Required to get the complete window title.
-if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
+if !noAccessCheck && !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
 	print("active-win requires the accessibility permission in “System Preferences › Security & Privacy › Privacy › Accessibility”.")
 	exit(1)
 }
@@ -21,7 +24,7 @@ let frontmostAppPID = NSWorkspace.shared.frontmostApplication!.processIdentifier
 let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID) as! [[String: Any]]
 
 // Show screen recording permission prompt if needed. Required to get the complete window title.
-if !hasScreenRecordingPermission() {
+if !noAccessCheck && !hasScreenRecordingPermission() {
 	print("active-win requires the screen recording permission in “System Preferences › Security & Privacy › Privacy › Screen Recording”.")
 	exit(1)
 }
@@ -50,7 +53,7 @@ for window in windows {
 
 	// This can't fail as we're only dealing with apps.
 	let app = NSRunningApplication(processIdentifier: appPid)!
-	
+
 	let appName = window[kCGWindowOwnerName as String] as! String
 
 	var dict: [String: Any] = [
@@ -73,6 +76,7 @@ for window in windows {
 
 	// Only run the AppleScript if active window is a compatible browser.
 	if
+		!noAppleScript,
 		let script = getActiveBrowserTabURLAppleScriptCommand(appName),
 		let url = runAppleScript(source: script)
 	{
