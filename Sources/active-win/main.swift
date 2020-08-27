@@ -83,5 +83,24 @@ for window in windows {
 	exit(0)
 }
 
-print("null")
+// if no acive window lets report just the frontmost app
+let app = NSRunningApplication(processIdentifier: frontmostAppPID)!
+let dict: [String: Any] = [
+	"title": "",
+	"id": 0,
+	"bounds": [
+		"x": 0,
+		"y": 0,
+		"width": 0,
+		"height": 0
+	],
+	"owner": [
+		"name":  app.localizedName!,
+		"processId": frontmostAppPID,
+		"bundleId": app.bundleIdentifier!,
+		"path": app.bundleURL!.path
+	],
+	"memoryUsage": "0"
+]
+print(try! toJson(dict))
 exit(0)
