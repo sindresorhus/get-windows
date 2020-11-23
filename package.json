@@ -15,7 +15,7 @@
 	},
 	"scripts": {
 		"test": "xo && ava && tsd",
-		"build": "swift build --configuration=release && mv .build/release/active-win main",
+		"build": "swift build --configuration=release && mv .build/release/active-win main && mv .build/release/is-access-granted is-access-granted",
 		"prepublishOnly": "npm run build"
 	},
 	"files": [

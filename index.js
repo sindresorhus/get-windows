@@ -31,3 +31,11 @@ module.exports.sync = () => {
 
 	throw new Error('macOS, Linux, and Windows only');
 };
+
+module.exports.isAccessGranted = () => {
+	if (process.platform === 'darwin') {
+		return require('./lib/macos').isAccessGranted();
+	}
+
+	return true;
+};

@@ -18,3 +18,8 @@ test('async', async t => {
 test('sync', t => {
 	asserter(t, activeWin.sync());
 });
+
+test('isAccessGranted', t => {
+	const result = activeWin.isAccessGranted();
+	t.is(typeof result, 'boolean');
+});

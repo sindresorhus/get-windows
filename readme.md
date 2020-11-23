@@ -71,6 +71,13 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 - `url` *(string?)* - URL of the active browser tab if the active window is Safari, Chrome, Edge, or Brave *(macOS only)*
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
+### activeWin.isAccessGranted()
+
+Checks if the app has enough access to get the active window
+Returns `true` if there is enough access, `false` otherwise.
+
+To prompt user with a dialog to give access call activeWin() or activeWin.sync()
+
 ## OS support
 
 It works on macOS, Linux, and Windows 7+.
