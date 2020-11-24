@@ -66,7 +66,7 @@ func isScreenRecordingGranted() -> Bool {
   }
 }
 
-var dict: [String: Any] = [
+var dictionary: [String: Any] = [
   "isAccessibilityGranted": AXIsProcessTrustedWithOptions(
     ["AXTrustedCheckOptionPrompt": false] as CFDictionary),
   "isScreenRecordingGranted": isScreenRecordingGranted()
