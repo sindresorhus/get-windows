@@ -5,9 +5,6 @@ let package = Package(
 	name: "active-win",
 	targets: [
 		.target(name: "active-win"),
-		.target(
-			name: "is-access-granted",
-			path: "Sources/is-access-granted"
-		)
+		.target(name: "is-access-granted")
 	]
 )
