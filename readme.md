@@ -73,7 +73,7 @@ Returns an `Object` with the result, or `undefined` if there is no active window
 
 ### activeWin.isAccessGranted()
 
-Check if the app has enough access to get the active window.
+Check if the package has enough access to get the active window.
 
 Returns `true` if there is enough access, `false` otherwise.
 
