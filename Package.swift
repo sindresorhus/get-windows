@@ -7,6 +7,7 @@ let package = Package(
 		.target(name: "active-win"),
 		.target(
 			name: "is-access-granted",
-			path: "Sources/is-access-granted")
+			path: "Sources/is-access-granted"
+		)
 	]
 )
