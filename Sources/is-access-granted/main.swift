@@ -6,7 +6,7 @@
  *  
  */
 
- import AppKit
+import AppKit
 
 func toJson<T>(_ data: T) throws -> String {
 	let json = try JSONSerialization.data(withJSONObject: data)
