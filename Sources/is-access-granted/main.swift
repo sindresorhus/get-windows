@@ -72,6 +72,6 @@ var dictionary: [String: Any] = [
   "isScreenRecordingGranted": isScreenRecordingGranted()
 ]
 
-print(try! toJson(dict))
+print(try! toJson(dictionary))
 
 exit(0)
