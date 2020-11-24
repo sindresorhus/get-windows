@@ -22,7 +22,8 @@
 		"index.js",
 		"index.d.ts",
 		"lib",
-		"main"
+		"main",
+		"is-access-granted"
 	],
 	"keywords": [
 		"macos",
