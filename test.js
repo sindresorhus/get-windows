@@ -21,5 +21,28 @@ test('sync', t => {
 
 test('isAccessGranted', t => {
 	const result = activeWin.isAccessGranted();
-	t.is(typeof result, 'boolean');
+	switch (process.platform) {
+		case 'darwin': {
+			t.is(result.platform, 'macos');
+			t.is(typeof result.screen, 'boolean');
+			t.is(typeof result.accessibility, 'boolean');
+			break;
+		}
+
+		case 'linux': {
+			t.is(result.platform, 'linux');
+			break;
+		}
+
+		case 'win32': {
+			t.is(result.platform, 'windows');
+			break;
+		}
+
+		default: {
+			throw new Error('Platform not recognized');
+		}
+	}
+
+	t.is(typeof result.all, 'boolean');
 });

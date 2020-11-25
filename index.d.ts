@@ -76,7 +76,26 @@ declare namespace activeWin {
 		platform: 'windows';
 	}
 
+	interface BaseAccessResult {
+		all: boolean;
+	}
+
+	interface MacOSAccessResult extends BaseAccessResult {
+		screen: boolean;
+		accessibility: boolean;
+		platform: 'macos';
+	}
+
+	interface WindowsAccessResult extends BaseAccessResult {
+		platform: 'windows';
+	}
+
+	interface LinuxAccessResult extends BaseAccessResult {
+		platform: 'linux';
+	}
+
 	type Result = MacOSResult | LinuxResult | WindowsResult;
+	type AccessResult = MacOSAccessResult | LinuxAccessResult | WindowsAccessResult;
 }
 
 declare const activeWin: {
@@ -139,7 +158,7 @@ declare const activeWin: {
 	Returns true if there is enough access, false otherwise
 	To prompt user with a dialog to give access call activeWin() or activeWin.sync()
 	*/
-	isAccessGranted(): boolean;
+	isAccessGranted(): activeWin.AccessResult;
 };
 
 export = activeWin;
