@@ -142,9 +142,10 @@ declare const activeWin: {
 	sync(): activeWin.Result | undefined;
 
 	/**
-	Checks if the app has enough access to get the active window
-	Returns true if there is enough access, false otherwise
-	To prompt user with a dialog to give access call activeWin() or activeWin.sync()
+	Resolves all the statuses of the accesses needed to check the active win
+	Returns an object of type AccessResult
+	Note: this method will not prompte the user with a dialog to grant the accesses,
+	to prompt user with a dialog to give access call activeWin() or activeWin.sync()
 	*/
 	isAccessGranted(): activeWin.AccessResult;
 };
