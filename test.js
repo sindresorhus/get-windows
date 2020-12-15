@@ -23,19 +23,17 @@ test('isAccessGranted', t => {
 	const result = activeWin.isAccessGranted();
 	switch (process.platform) {
 		case 'darwin': {
-			t.is(result.platform, 'macos');
+			t.is(typeof result.all, 'boolean');
 			t.is(typeof result.screen, 'boolean');
 			t.is(typeof result.accessibility, 'boolean');
 			break;
 		}
 
-		case 'linux': {
-			t.is(result.platform, 'linux');
-			break;
-		}
-
+		case 'linux':
 		case 'win32': {
-			t.is(result.platform, 'windows');
+			t.is(result.all, true);
+			t.is(result.screen, true);
+			t.is(result.accessibility, true);
 			break;
 		}
 

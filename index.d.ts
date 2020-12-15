@@ -76,26 +76,14 @@ declare namespace activeWin {
 		platform: 'windows';
 	}
 
-	interface BaseAccessResult {
+	interface AccessResult {
 		all: boolean;
-	}
-
-	interface MacOSAccessResult extends BaseAccessResult {
 		screen: boolean;
 		accessibility: boolean;
-		platform: 'macos';
-	}
-
-	interface WindowsAccessResult extends BaseAccessResult {
-		platform: 'windows';
-	}
-
-	interface LinuxAccessResult extends BaseAccessResult {
-		platform: 'linux';
 	}
 
 	type Result = MacOSResult | LinuxResult | WindowsResult;
-	type AccessResult = MacOSAccessResult | LinuxAccessResult | WindowsAccessResult;
+
 }
 
 declare const activeWin: {

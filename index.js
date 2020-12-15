@@ -39,24 +39,16 @@ module.exports.isAccessGranted = () => {
 		case 'darwin': {
 			// MAC OS needs specific accesses to get the active window. These accesses are
 			// resolved by the isAccessGranted method of the macos lib
-			const result = require('./lib/macos').isAccessGranted();
-			result.platform = 'macos';
-			return result;
+			return require('./lib/macos').isAccessGranted();
 		}
 
-		case 'linux': {
-			// Linux does not need specific access to get the active window
-			return {
-				platform: 'linux',
-				all: true
-			};
-		}
-
-		// Windows does not need specific access to get the active window
+		case 'linux':
 		case 'win32': {
+			// Linux and Windows do not need specific access to get the active window, set all to true
 			return {
-				patform: 'windows',
-				all: true
+				all: true,
+				screen: true,
+				accessibility: true
 			};
 		}
 
