@@ -83,7 +83,6 @@ declare namespace activeWin {
 	}
 
 	type Result = MacOSResult | LinuxResult | WindowsResult;
-
 }
 
 declare const activeWin: {
