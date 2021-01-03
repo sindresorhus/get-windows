@@ -1,6 +1,6 @@
 'use strict';
 
-const PLATFORM_NOT_RECOGNIZED_ERROR = 'macOS, Linux, and Windows only';
+const UNSUPPORTED_PLATFORM_ERROR_MESSAGE = 'macOS, Linux, and Windows only';
 
 module.exports = () => {
 	if (process.platform === 'darwin') {
