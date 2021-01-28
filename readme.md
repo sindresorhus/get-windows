@@ -45,19 +45,35 @@ const activeWin = require('active-win');
 
 ## API
 
-### activeWin(options)
+### activeWin(options?)
 
-Accepts an optional dictionary `Options` as only argument and returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
+#### options
 
-### activeWin.sync(options)
+Type: `object`
 
-Accepts an optional dictionary `Options` as only argument and returns an `Object` with the result, or `undefined` if there is no active window.
+##### screenRecordingPermission
 
-## Options
+Type: `boolean`\
+Default: `true`
 
-- `disableScreenRecordingPermission` *(boolean)* - Disable the screen recording permission check (macOS). Setting this to true will prevent the Screen Recording permission prompt on macOS versions 10.15 and newer. The `title` property will always be set to an empty string.
+Enable the screen recording permission check (macOS). Setting this to `false` will prevent the Screen Recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
+
+### activeWin.sync(options?)
+
+#### options
+
+Type: `object`
+
+##### screenRecordingPermission
+
+Type: `boolean`\
+Default: `true`
+
+Enable the screen recording permission check (macOS). Setting this to `false` will prevent the Screen Recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
 
 ## Result
+
+Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
 
 - `platform` *(string)* - `'macos'` | `'linux'` | `'windows'`
 - `title` *(string)* - Window title
