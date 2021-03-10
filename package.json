@@ -14,7 +14,7 @@
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd",
+		"test": "xo && npm run build && ava && tsd",
 		"build": "swift build --configuration=release && mv .build/release/active-win main",
 		"prepublishOnly": "npm run build"
 	},
@@ -61,7 +61,7 @@
 	"optionalDependencies": {
 		"ffi-napi": "^2.4.5",
 		"ref-napi": "^3.0.0",
-		"ref-wchar-napi": "^1.0.2",
-		"ref-struct-napi": "^1.1.0"
+		"ref-struct-napi": "^1.1.0",
+		"ref-wchar-napi": "^1.0.2"
 	}
 }
