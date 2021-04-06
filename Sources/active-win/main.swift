@@ -11,7 +11,7 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
 	}
 }
 
-let disableScreenRecordingPermission = CommandLine.arguments.contains("--disable-screen-recording-permission")
+let disableScreenRecordingPermission = CommandLine.arguments.contains("--no-screen-recording-permission")
 
 // Show accessibility permission prompt if needed. Required to get the complete window title.
 if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {

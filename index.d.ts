@@ -1,13 +1,13 @@
 declare namespace activeWin {
 	interface Options {
 		/**
-		Enable the screen recording permission check (macOS).
+		Enable the screen recording permission check. _(macOS)_
 
-		Setting this to `false` will prevent the Screen Recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
+		Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
 
 		@default true
 		*/
-		screenRecordingPermission: boolean;
+		readonly screenRecordingPermission: boolean;
 	}
 
 	interface BaseOwner {
