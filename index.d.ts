@@ -1,4 +1,4 @@
-declare namespace activeWin {
+declare namespace activeWindow {
 	interface Options {
 		/**
 		Enable the screen recording permission check. _(macOS)_
@@ -90,7 +90,7 @@ declare namespace activeWin {
 	type Result = MacOSResult | LinuxResult | WindowsResult;
 }
 
-declare const activeWin: {
+declare const activeWindow: {
 	/**
 	Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
 
@@ -98,10 +98,10 @@ declare const activeWin: {
 
 	@example
 	```
-	import activeWin = require('active-win');
+	import activeWindow = require('active-win');
 
 	(async () => {
-		const result = await activeWin();
+		const result = await activeWindow();
 
 		if (!result) {
 			return;
@@ -118,7 +118,7 @@ declare const activeWin: {
 	})();
 	```
 	*/
-	(options?: activeWin.Options): Promise<activeWin.Result | undefined>;
+	(options?: activeWindow.Options): Promise<activeWindow.Result | undefined>;
 
 	/**
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
@@ -127,9 +127,9 @@ declare const activeWin: {
 
 	@example
 	```
-	import activeWin = require('active-win');
+	import activeWindow = require('active-win');
 
-	const result = activeWin.sync();
+	const result = activeWindow.sync();
 
 	if (result) {
 		if (result.platform === 'macos') {
@@ -143,7 +143,7 @@ declare const activeWin: {
 	}
 	```
 	*/
-	sync(options?: activeWin.Options): activeWin.Result | undefined;
+	sync(options?: activeWindow.Options): activeWindow.Result | undefined;
 };
 
-export = activeWin;
+export = activeWindow;
