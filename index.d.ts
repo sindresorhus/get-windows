@@ -74,7 +74,7 @@ declare namespace activeWindow {
 		owner: MacOSOwner;
 
 		/**
-		URL of the active browser tab if the active window is Safari, Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), or Opera.
+		URL of the active browser tab if the active window is Safari, Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Sidekick, or Opera.
 		*/
 		url?: string;
 	}
