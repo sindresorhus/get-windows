@@ -18,7 +18,7 @@ $ npm install active-win
 const activeWin = require('active-win');
 
 (async () => {
-	console.log(await activeWin());
+	console.log(await activeWin(options));
 	/*
 	{
 		title: 'Unicorns - Google Search',
@@ -45,15 +45,24 @@ const activeWin = require('active-win');
 
 ## API
 
-### activeWin()
+### activeWin(options?)
 
-Returns a `Promise<Object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
+#### options
 
-### activeWin.sync()
+Type: `object`
 
-Returns an `Object` with the result, or `undefined` if there is no active window.
+##### screenRecordingPermission **(macOS only)**
+
+Type: `boolean`\
+Default: `true`
+
+Enable the screen recording permission check. Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
+
+### activeWin.sync(options?)
 
 ## Result
+
+Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
 
 - `platform` *(string)* - `'macos'` | `'linux'` | `'windows'`
 - `title` *(string)* - Window title

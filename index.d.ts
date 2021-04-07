@@ -1,4 +1,15 @@
 declare namespace activeWin {
+	interface Options {
+		/**
+		Enable the screen recording permission check. _(macOS)_
+
+		Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
+
+		@default true
+		*/
+		readonly screenRecordingPermission: boolean;
+	}
+
 	interface BaseOwner {
 		/**
 		Name of the app.
@@ -107,7 +118,7 @@ declare const activeWin: {
 	})();
 	```
 	*/
-	(): Promise<activeWin.Result | undefined>;
+	(options?: activeWin.Options): Promise<activeWin.Result | undefined>;
 
 	/**
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
@@ -132,7 +143,7 @@ declare const activeWin: {
 	}
 	```
 	*/
-	sync(): activeWin.Result | undefined;
+	sync(options?: activeWin.Options): activeWin.Result | undefined;
 };
 
 export = activeWin;
