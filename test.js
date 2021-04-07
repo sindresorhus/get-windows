@@ -1,9 +1,9 @@
-import util from 'util';
+import {inspect} from 'util';
 import test from 'ava';
-import activeWin from '.';
+import activeWindow from './index.js';
 
 function asserter(t, result) {
-	t.log(util.inspect(result));
+	t.log(inspect(result));
 	t.is(typeof result, 'object');
 	t.is(typeof result.title, 'string');
 	t.is(typeof result.id, 'number');
@@ -12,9 +12,9 @@ function asserter(t, result) {
 }
 
 test('async', async t => {
-	asserter(t, await activeWin());
+	asserter(t, await activeWindow());
 });
 
 test('sync', t => {
-	asserter(t, activeWin.sync());
+	asserter(t, activeWindow.sync());
 });
