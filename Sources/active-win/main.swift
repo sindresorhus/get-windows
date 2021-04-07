@@ -2,7 +2,7 @@ import AppKit
 
 func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
 	switch appName {
-	case "Google Chrome", "Brave Browser", "Brave Browser Beta", "Microsoft Edge", "Sidekick", "Opera":
+	case "Google Chrome", "Google Chrome Beta", "Google Chrome Dev", "Google Chrome Canary", "Brave Browser", "Brave Browser Beta", "Brave Browser Nightly", "Microsoft Edge", "Microsoft Edge Beta", "Microsoft Edge Dev", "Microsoft Edge Canary", "Sidekick", "Opera":
 		return "tell app \"\(appName)\" to get the URL of active tab of front window"
 	case "Safari":
 		return "tell app \"Safari\" to get URL of front document"
