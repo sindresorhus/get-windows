@@ -11,6 +11,18 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appId: String) -> String? {
 	}
 }
 
+func getActiveBrowserModeAppleScriptCommand(_ appId: String) -> String? {
+	switch appId {
+	case "com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.dev", "com.google.Chrome.canary", "com.brave.Browser", "com.brave.Browser.beta", "com.brave.Browser.nightly", "com.microsoft.edgemac", "com.microsoft.edgemac.Beta", "com.microsoft.edgemac.Dev", "com.microsoft.edgemac.Canary", "com.mighty.app", "com.ghostbrowser.gb1", "com.bookry.wavebox", "com.pushplaylabs.sidekick", "com.operasoftware.Opera",  "com.operasoftware.OperaNext", "com.operasoftware.OperaDeveloper", "com.vivaldi.Vivaldi":
+		return "tell app id \"\(appId)\" to get mode of front window"
+	case "com.apple.Safari", "com.apple.SafariTechnologyPreview":
+		return nil // Need to figure out how to do this for Safari
+	default:
+		return nil
+	}
+}
+
+
 func exitWithoutResult() -> Never {
 	print("null")
 	exit(0)
@@ -87,10 +99,19 @@ for window in windows {
 	// Only run the AppleScript if active window is a compatible browser.
 	if
 		let bundleIdentifier = app.bundleIdentifier,
-		let script = getActiveBrowserTabURLAppleScriptCommand(bundleIdentifier),
-		let url = runAppleScript(source: script)
+		let scriptUrl = getActiveBrowserTabURLAppleScriptCommand(bundleIdentifier),
+		let url = runAppleScript(source: scriptUrl)
 	{
 		output["url"] = url
+	}
+
+	// Only run the AppleScript if active window is a compatible browser.
+	if
+		let bundleIdentifier = app.bundleIdentifier,
+		let scriptMode = getActiveBrowserModeAppleScriptCommand(bundleIdentifier),
+		let mode = runAppleScript(source: scriptMode)
+	{
+		output["mode"] = mode
 	}
 
 	guard let string = try? toJson(output) else {
