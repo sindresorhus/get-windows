@@ -86,7 +86,8 @@ for window in windows {
 
 	// Only run the AppleScript if active window is a compatible browser.
 	if
-		let script = getActiveBrowserTabURLAppleScriptCommand(app.bundleIdentifier ?? ""),
+		let bundleIdentifier = app.bundleIdentifier,
+		let script = getActiveBrowserTabURLAppleScriptCommand(bundleIdentifier),
 		let url = runAppleScript(source: script)
 	{
 		output["url"] = url
