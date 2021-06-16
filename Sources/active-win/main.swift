@@ -1,11 +1,11 @@
 import AppKit
 
-func getActiveBrowserTabURLAppleScriptCommand(_ appName: String) -> String? {
-	switch appName {
-	case "Google Chrome", "Google Chrome Beta", "Google Chrome Dev", "Google Chrome Canary", "Brave Browser", "Brave Browser Beta", "Brave Browser Nightly", "Microsoft Edge", "Microsoft Edge Beta", "Microsoft Edge Dev", "Microsoft Edge Canary", "Mighty", "Ghost Browser", "Wavebox", "Sidekick", "Opera", "Vivaldi":
-		return "tell app \"\(appName)\" to get the URL of active tab of front window"
-	case "Safari":
-		return "tell app \"Safari\" to get URL of front document"
+func getActiveBrowserTabURLAppleScriptCommand(_ appId: String) -> String? {
+	switch appId {
+	case "com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.dev", "com.google.Chrome.canary", "com.brave.Browser", "com.brave.Browser.beta", "com.brave.Browser.nightly", "com.microsoft.edgemac", "com.microsoft.edgemac.Beta", "com.microsoft.edgemac.Dev", "com.microsoft.edgemac.Canary", "com.mighty.app", "com.ghostbrowser.gb1", "com.bookry.wavebox", "com.pushplaylabs.sidekick", "com.operasoftware.Opera",  "com.operasoftware.OperaNext", "com.operasoftware.OperaDeveloper", "com.vivaldi.Vivaldi":
+		return "tell app id \"\(appId)\" to get the URL of active tab of front window"
+	case "com.apple.Safari":
+		return "tell app id \"\(appId)\" to get URL of front document"
 	default:
 		return nil
 	}
@@ -86,7 +86,7 @@ for window in windows {
 
 	// Only run the AppleScript if active window is a compatible browser.
 	if
-		let script = getActiveBrowserTabURLAppleScriptCommand(appName),
+		let script = getActiveBrowserTabURLAppleScriptCommand(app.bundleIdentifier ?? ""),
 		let url = runAppleScript(source: script)
 	{
 		output["url"] = url
