@@ -4,7 +4,7 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appId: String) -> String? {
 	switch appId {
 	case "com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.dev", "com.google.Chrome.canary", "com.brave.Browser", "com.brave.Browser.beta", "com.brave.Browser.nightly", "com.microsoft.edgemac", "com.microsoft.edgemac.Beta", "com.microsoft.edgemac.Dev", "com.microsoft.edgemac.Canary", "com.mighty.app", "com.ghostbrowser.gb1", "com.bookry.wavebox", "com.pushplaylabs.sidekick", "com.operasoftware.Opera",  "com.operasoftware.OperaNext", "com.operasoftware.OperaDeveloper", "com.vivaldi.Vivaldi":
 		return "tell app id \"\(appId)\" to get the URL of active tab of front window"
-	case "com.apple.Safari":
+	case "com.apple.Safari", "com.apple.SafariTechnologyPreview":
 		return "tell app id \"\(appId)\" to get URL of front document"
 	default:
 		return nil
