@@ -62,7 +62,7 @@
 	"optionalDependencies": {
 		"ffi-napi": "^4.0.3",
 		"ref-napi": "^3.0.2",
-		"ref-struct-napi": "^1.1.1",
+		"ref-struct-di": "^1.1.1",
 		"ref-wchar-napi": "^1.0.3"
 	},
 	"ava": {
