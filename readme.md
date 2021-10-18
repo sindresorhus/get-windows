@@ -93,7 +93,7 @@ It works on macOS, Linux, and Windows 7+.
 
 ### Users
 
-- [active-app-qmk-layer-updater](https://github.com/zigotica/active-app-qmk-layer-updater) - node script that checks the current active app running in your OS, parses some customizable rules and sends the target layer index to a QMK keyboard over raw hid, so you can change layers programmatically
+- [active-app-qmk-layer-updater](https://github.com/zigotica/active-app-qmk-layer-updater) - sends active app info to QMK device over raw hid, to change keymap layers automatically
 
 ## Maintainers
 
