@@ -91,6 +91,10 @@ It works on macOS, Linux, and Windows 7+.
 - [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
 - [active-win-log](https://github.com/uglow/active-win-log) - Window-usage logging CLI using this module
 
+### Users
+
+- [active-app-qmk-layer-updater](https://github.com/zigotica/active-app-qmk-layer-updater) - node script that checks the current active app running in your OS, parses some customizable rules and sends the target layer index to a QMK keyboard over raw hid, so you can change layers programmatically
+
 ## Maintainers
 
 - [Sindre Sorhus](https://github.com/sindresorhus)
