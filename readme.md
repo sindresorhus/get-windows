@@ -8,8 +8,8 @@ Users on macOS 10.13 or earlier needs to download the [Swift runtime support lib
 
 ## Install
 
-```
-$ npm install active-win
+```sh
+npm install active-win
 ```
 
 ## Usage
@@ -41,7 +41,6 @@ const activeWindow = require('active-win');
 	*/
 })();
 ```
-
 
 ## API
 

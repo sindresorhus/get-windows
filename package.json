@@ -16,7 +16,7 @@
 	"scripts": {
 		"test": "xo && npm run build && ava && tsd",
 		"test-ci": "xo && tsd",
-		"build": "swift build --configuration=release && mv .build/release/active-win main",
+		"build": "swift build --configuration=release --arch arm64 --arch x86_64 && mv .build/apple/Products/Release/active-win main",
 		"prepare": "npm run build"
 	},
 	"files": [
@@ -61,7 +61,7 @@
 	},
 	"optionalDependencies": {
 		"ffi-napi": "^4.0.3",
-		"ref-napi": "^3.0.2",
+		"ref-napi": "^3.0.3",
 		"ref-struct-di": "^1.1.1",
 		"ref-wchar-napi": "^1.0.3"
 	},

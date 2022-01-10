@@ -1,9 +1,19 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
-	name: "active-win",
+	name: "ActiveWin",
+	products: [
+		.executable(
+			name: "active-win",
+			targets: [
+				"ActiveWinCLI"
+			]
+		)
+	],
 	targets: [
-		.target(name: "active-win")
+		.executableTarget(
+			name: "ActiveWinCLI"
+		)
 	]
 )
