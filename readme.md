@@ -85,6 +85,10 @@ It works on macOS, Linux, and Windows 7+.
 
 **Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle).
 
+## Electron usage
+
+If you use this package in an Electron app that is sandboxed and you want to get the `.url` property, you need to add the [proper entitlements and usage description](https://github.com/sindresorhus/active-win/issues/99#issuecomment-870874546).
+
 ## Users
 
 - [active-win-log](https://github.com/uglow/active-win-log) - Window-usage logging CLI.
