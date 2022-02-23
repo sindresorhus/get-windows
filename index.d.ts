@@ -65,7 +65,7 @@ declare namespace activeWindow {
 		/**
 		Bundle identifier.
 		*/
-		bundleId: number;
+		bundleId: string;
 	}
 
 	interface MacOSResult extends BaseResult {
