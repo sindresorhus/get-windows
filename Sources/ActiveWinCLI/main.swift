@@ -3,9 +3,25 @@ import AppKit
 func getActiveBrowserTabURLAppleScriptCommand(_ appId: String) -> String? {
 	switch appId {
 	case "com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.dev", "com.google.Chrome.canary", "com.brave.Browser", "com.brave.Browser.beta", "com.brave.Browser.nightly", "com.microsoft.edgemac", "com.microsoft.edgemac.Beta", "com.microsoft.edgemac.Dev", "com.microsoft.edgemac.Canary", "com.mighty.app", "com.ghostbrowser.gb1", "com.bookry.wavebox", "com.pushplaylabs.sidekick", "com.operasoftware.Opera",  "com.operasoftware.OperaNext", "com.operasoftware.OperaDeveloper", "com.vivaldi.Vivaldi":
-		return "tell app id \"\(appId)\" to get the URL of active tab of front window"
+		return """
+			tell app id \"\(appId)\"
+				set window_url to URL of active tab of front window
+				set window_name to title of active tab of front window
+				set window_mode to mode of front window
+				set window_data to window_url & "+++++" & window_name & "+++++" & window_mode
+			end tell
+			window_data
+			"""
 	case "com.apple.Safari", "com.apple.SafariTechnologyPreview":
-		return "tell app id \"\(appId)\" to get URL of front document"
+		return """
+			tell app id \"\(appId)\"
+				set window_url to URL of front document
+				set window_name to name of front document
+				set window_mode to "normal"
+				set window_data to window_url & "+++++" & window_name & "+++++" & window_mode
+			end tell
+			window_data
+			"""
 	default:
 		return nil
 	}
@@ -88,9 +104,12 @@ for window in windows {
 	if
 		let bundleIdentifier = app.bundleIdentifier,
 		let script = getActiveBrowserTabURLAppleScriptCommand(bundleIdentifier),
-		let url = runAppleScript(source: script)
+		let windowData = runAppleScript(source: script)
 	{
-		output["url"] = url
+		let windowDataArray = windowData.components(separatedBy: "+++++")
+		output["url"] = windowDataArray[0]
+		output["title"] = windowDataArray[1]
+		output["mode"] = windowDataArray[2]
 	}
 
 	guard let string = try? toJson(output) else {
