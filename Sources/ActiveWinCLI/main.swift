@@ -23,7 +23,17 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appId: String) -> String? {
 			window_data
 			"""
 	default:
-		return nil
+		return """
+			tell application "System Events"
+				tell (first process whose frontmost is true)
+					set window_url to ""
+					set window_name to value of attribute "AXTitle" of window 1
+					set window_mode to "normal"
+					set window_data to window_url & "+++++" & window_name & "+++++" & window_mode
+				end tell
+			end tell
+			window_data
+			"""
 	}
 }
 
