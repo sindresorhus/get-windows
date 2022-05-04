@@ -22,6 +22,16 @@ func getActiveBrowserTabURLAppleScriptCommand(_ appId: String) -> String? {
 			end tell
 			window_data
 			"""
+	case "company.thebrowser.Browser":
+		return """
+			tell app id \"\(appId)\"
+				set window_url to URL of active tab of front window
+				set window_name to name of active tab of front window
+				set window_mode to mode of front window
+				set window_data to window_url & "+++++" & window_name & "+++++" & window_mode
+			end tell
+			window_data
+			"""
 	default:
 		return """
 			tell application "System Events"
