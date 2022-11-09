@@ -88,7 +88,10 @@ declare namespace activeWindow {
 	}
 
 	type Result = MacOSResult | LinuxResult | WindowsResult;
+
+	type OpenWindows = Map<string, { processes: activeWindow.Result[] }>;
 }
+
 
 declare const activeWindow: {
 	/**
@@ -144,6 +147,60 @@ declare const activeWindow: {
 	```
 	*/
 	sync(options?: activeWindow.Options): activeWindow.Result | undefined;
+
+	/**
+	Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
+
+	@returns The enum of open windows metadata.
+
+	@example
+	```
+	import activeWindow = require('active-win');
+
+	(async () => {
+		const result = await activeWindow.getOpenWindows();
+
+		if (!result) {
+			return;
+		}
+
+		if (result.platform === 'macos') {
+			// Among other fields, result.owner.bundleId is available on macOS.
+			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
+		} else if (result.platform === 'windows') {
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+		} else {
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+		}
+	})();
+	```
+	*/
+	getOpenWindows(options?: undefined): Promise<activeWindow.OpenWindows | undefined>;
+
+	/**
+	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
+
+	@returns The enum of open windows metadata.
+
+	@example
+	```
+	import activeWindow = require('active-win');
+
+	const result = activeWindow.getOpenWindowsSync();
+
+	if (result) {
+		if (result.platform === 'macos') {
+			// Among other fields, result.owner.bundleId is available on macOS.
+			console.log(`Process title is ${result.title} with bundle id ${result.owner.bundleId}.`);
+		} else if (result.platform === 'windows') {
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+		} else {
+			console.log(`Process title is ${result.title} with path ${result.owner.path}.`);
+		}
+	}
+	```
+	*/
+	getOpenWindowsSync(options?: undefined): activeWindow.OpenWindows | undefined;
 };
 
 export = activeWindow;

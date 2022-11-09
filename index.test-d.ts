@@ -1,6 +1,6 @@
 import {expectType, expectError} from 'tsd';
 import activeWindow = require('./index.js');
-import {Result, LinuxResult, MacOSResult, WindowsResult} from './index.js';
+import {Result, LinuxResult, MacOSResult, WindowsResult, BaseOwner} from './index.js';
 
 expectType<Promise<Result | undefined>>(activeWindow());
 
