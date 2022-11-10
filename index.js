@@ -32,14 +32,13 @@ module.exports.sync = options => {
 	throw new Error('macOS, Linux, and Windows only');
 };
 
-
 module.exports.getOpenWindows = options => {
 	if (process.platform === 'darwin') {
-		return require('./lib/macos.js').getOpenWindows(options);;
+		return require('./lib/macos.js').getOpenWindows(options);
 	}
 
 	if (process.platform === 'linux') {
-		return require('./lib/linux.js').getOpenWindows(options);;
+		return require('./lib/linux.js').getOpenWindows(options);
 	}
 
 	if (process.platform === 'win32') {

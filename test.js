@@ -29,6 +29,6 @@ test('activeWindow.getOpenWindows', async t => {
 	asserterGetOpenWindows(t, await activeWindow.getOpenWindows());
 });
 
-test('activeWindow.getOpenWindowsSync', async t => {
+test('activeWindow.getOpenWindowsSync', t => {
 	asserterGetOpenWindows(t, activeWindow.getOpenWindowsSync());
 });
