@@ -89,7 +89,7 @@ declare namespace activeWindow {
 
 	type Result = MacOSResult | LinuxResult | WindowsResult;
 
-	type OpenWindows = Map<string, {processes: Result[]}>;
+	type OpenWindows = Map<string, Result[]>;
 }
 
 declare const activeWindow: {
