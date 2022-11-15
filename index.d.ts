@@ -174,7 +174,7 @@ declare const activeWindow: {
 	})();
 	```
 	*/
-	getOpenWindows(options?: undefined): Promise<activeWindow.OpenWindows | undefined>;
+	getOpenWindows(options?: undefined): Promise<activeWindow.OpenWindows>;
 
 	/**
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
@@ -199,7 +199,7 @@ declare const activeWindow: {
 	}
 	```
 	*/
-	getOpenWindowsSync(options?: undefined): activeWindow.OpenWindows | undefined;
+	getOpenWindowsSync(options?: undefined): activeWindow.OpenWindows;
 };
 
 export = activeWindow;
