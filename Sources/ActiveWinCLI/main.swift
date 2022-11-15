@@ -52,6 +52,7 @@ func getWindowInformation(_ window: [String: Any],_ windowOwnerPID: pid_t,_ fron
 	}
 
 	var output: [String: Any] = [
+		"platform": "macos",
 		"title": windowTitle,
 		"id": window[kCGWindowNumber as String] as! Int, // Documented to always exist.
 		"bounds": [

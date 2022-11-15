@@ -88,8 +88,6 @@ declare namespace activeWindow {
 	}
 
 	type Result = MacOSResult | LinuxResult | WindowsResult;
-
-	type OpenWindows = Map<string, Result[]>;
 }
 
 declare const activeWindow: {
@@ -174,7 +172,7 @@ declare const activeWindow: {
 	})();
 	```
 	*/
-	getOpenWindows(options?: undefined): Promise<activeWindow.OpenWindows>;
+	getOpenWindows(options?: undefined): Promise<activeWindow.Result[]>;
 
 	/**
 	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
@@ -199,7 +197,7 @@ declare const activeWindow: {
 	}
 	```
 	*/
-	getOpenWindowsSync(options?: undefined): activeWindow.OpenWindows;
+	getOpenWindowsSync(options?: undefined): activeWindow.Result[];
 };
 
 export = activeWindow;

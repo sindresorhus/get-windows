@@ -85,7 +85,7 @@ To get a Map of open windows.
 
 ## result
 
-Returns a promise `Promise<Map<string, activeWindow.Result[]}>`. Key of the map will be the process name example: `Code.exe`, using this key will return all windows associated of the process `Code.exe`.
+Returns a promise of `activeWindow.Result[]`.
 
 ### activeWindow.getOpenWindowsSync
 
@@ -93,7 +93,7 @@ To get a Map of open windows.
 
 ## result
 
-Returns a map `Map<string, activeWindow.Result[]>`. Key of the map will be the process name example: `Code.exe`, using this key will return all windows associated of the process `Code.exe`.
+Returns an enum of `activeWindow.Result`.
 
 ## OS support
 
