@@ -24,11 +24,7 @@ func printOutput(_ output: Any) -> Never {
 	exit(0)
 }
 
-func getWindowInformation(_ window: [String: Any],_ windowOwnerPID: pid_t,_ frontmostAppPID: pid_t,_ enableOpenWindowsList: Bool) -> [String: Any]? {
-	if !enableOpenWindowsList && windowOwnerPID != frontmostAppPID {
-		return nil
-	}
-
+func getWindowInformation(_ window: [String: Any],_ windowOwnerPID: pid_t,_ frontmostAppPID: pid_t) -> [String: Any]? {
 	// Skip transparent windows, like with Chrome.
 	if (window[kCGWindowAlpha as String] as! Double) == 0 { // Documented to always exist.
 		return nil
@@ -51,7 +47,7 @@ func getWindowInformation(_ window: [String: Any],_ windowOwnerPID: pid_t,_ fron
 
 	let windowTitle = disableScreenRecordingPermission ? "" : window[kCGWindowName as String] as? String ?? ""
 
-	if windowTitle == "Dock" {
+	if app.bundleIdentifier == "com.apple.dock" {
 		return nil
 	}
 
@@ -107,17 +103,20 @@ else {
 	exitWithoutResult()
 }
 
-var openWindows: Array<Any> = [];
+var openWindows = [[String: Any]]();
 
 for window in windows {
 	let windowOwnerPID = window[kCGWindowOwnerPID as String] as! pid_t // Documented to always exist.
-	let windowInformation = getWindowInformation(window, windowOwnerPID, frontmostAppPID, enableOpenWindowsList)
-	if windowInformation != nil {
-		if !enableOpenWindowsList {
-			printOutput(windowInformation ?? "null")
-		} else {
-			openWindows.append(windowInformation ?? [])
-		}
+	if !enableOpenWindowsList && windowOwnerPID != frontmostAppPID {
+		continue
+	}
+	guard let windowInformation = getWindowInformation(window, windowOwnerPID, frontmostAppPID) else {
+		continue
+	}
+	if !enableOpenWindowsList {
+		printOutput(windowInformation)
+	} else {
+		openWindows.append(windowInformation)
 	}
 }
 
