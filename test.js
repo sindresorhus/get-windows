@@ -14,7 +14,8 @@ function asserter(t, result) {
 function asserterGetOpenWindows(t, result) {
 	t.log(inspect(result));
 	t.is(typeof result, 'object');
-	t.is(typeof result.size, 'number');
+	t.is(typeof result.length, 'number');
+	asserter(t, result[0]);
 }
 
 test('activeWindow', async t => {
