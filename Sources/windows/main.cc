@@ -121,7 +121,7 @@ OwnerWindowInfo getProcessPathAndName(const HANDLE &phlde)
     std::unique_ptr<BYTE[]> skey_automatic_cleanup(pVersionInfo);
     if (GetFileVersionInfoW(wspath, NULL, infoSize, pVersionInfo) != 0)
     {
-      auto nname = getDescriptionFromFileVersionInfo(pVersionInfo);
+      std::string nname = getDescriptionFromFileVersionInfo(pVersionInfo);
       if (nname != "")
       {
         name = nname;
@@ -181,6 +181,7 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
   // ApplicationFrameHost & Universal Windows Platform Support
   if (getFileName(ownerInfo.path) == "ApplicationFrameHost.exe")
   {
+    newOwner = (OwnerWindowInfo) * new OwnerWindowInfo();
     BOOL result = EnumChildWindows(hwnd, (WNDENUMPROC)EnumChildWindowsProc, (LPARAM)&ownerInfo);
     if (result == FALSE && newOwner.name.size())
     {
@@ -199,7 +200,7 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
   }
 
   RECT lpRect;
-  auto rectResult = GetWindowRect(hwnd, &lpRect);
+  BOOL rectResult = GetWindowRect(hwnd, &lpRect);
 
   if (rectResult == 0)
   {
@@ -274,15 +275,19 @@ Napi::Array getOpenWindows(const Napi::CallbackInfo &info)
 
   Napi::Array values = Napi::Array::New(env);
 
+  _windows.clear();
+
   if (EnumDesktopWindows(NULL, (WNDENUMPROC)EnumDekstopWindowsProc, NULL))
   {
-    auto i = 0;
+    uint32_t i = 0;
     for (HWND _win : _windows)
     {
-      values.Set(i++, getWindowInformation(_win, info));
+      Napi::Value value = getWindowInformation(_win, info);
+      if (value != env.Null()) {
+        values.Set(i++, value);
+      }
     }
   }
-
   return values;
 }
 
