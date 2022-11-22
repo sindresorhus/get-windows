@@ -122,3 +122,12 @@ If you use this package in an Electron app that is sandboxed and you want to get
 
 - [Sindre Sorhus](https://github.com/sindresorhus)
 - [Sebastián Ramírez](https://github.com/tiangolo)
+
+## For development
+
+In case of development to bypass gyp build:
+
+```sh
+yarn install --ignore-scripts
+```
+
