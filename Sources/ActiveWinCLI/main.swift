@@ -111,7 +111,7 @@ for window in windows {
 	if !enableOpenWindowsList && windowOwnerPID != frontmostAppPID {
 		continue
 	}
-	guard let windowInformation = getWindowInformation(window, windowOwnerPID) else {
+	guard let windowInformation = getWindowInformation(window: window, windowOwnerPID: windowOwnerPID) else {
 		continue
 	}
 	if !enableOpenWindowsList {
