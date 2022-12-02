@@ -24,7 +24,7 @@ func printOutput(_ output: Any) -> Never {
 	exit(0)
 }
 
-func getWindowInformation(window: [String: Any], windowOwnerPID: pid_t, frontmostAppPID: pid_t) -> [String: Any]? {
+func getWindowInformation(window: [String: Any], windowOwnerPID: pid_t) -> [String: Any]? {
 	// Skip transparent windows, like with Chrome.
 	if (window[kCGWindowAlpha as String] as! Double) == 0 { // Documented to always exist.
 		return nil
@@ -111,7 +111,7 @@ for window in windows {
 	if !enableOpenWindowsList && windowOwnerPID != frontmostAppPID {
 		continue
 	}
-	guard let windowInformation = getWindowInformation(window, windowOwnerPID, frontmostAppPID) else {
+	guard let windowInformation = getWindowInformation(window, windowOwnerPID) else {
 		continue
 	}
 	if !enableOpenWindowsList {
