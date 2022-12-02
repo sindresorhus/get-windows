@@ -127,6 +127,12 @@ If you use this package in an Electron app that is sandboxed and you want to get
 
 In case of development to bypass gyp build:
 
+With npm
+```sh
+npm install --ignore-scripts
+```
+
+With yarn
 ```sh
 yarn install --ignore-scripts
 ```

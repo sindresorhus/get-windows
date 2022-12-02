@@ -5,7 +5,6 @@
 #include <shtypes.h>
 #include <string>
 #include <windows.h>
-// #include <filesystem>
 #include <psapi.h>
 #include <version>
 #include <dwmapi.h>
@@ -31,16 +30,16 @@ std::wstring get_wstring(const std::string str)
   return std::wstring(str.begin(), str.end());
 }
 
-std::string getFileName(const std::string &s)
+std::string getFileName(const std::string &value)
 {
-  char sep = '/';
+  char separator = '/';
 #ifdef _WIN32
-  sep = '\\';
+  separator = '\\';
 #endif
-  size_t i = s.rfind(sep, s.length());
-  if (i != std::string::npos)
+  size_t index = value.rfind(separator, value.length());
+  if (index != std::string::npos)
   {
-    return (s.substr(i + 1, s.length() - i));
+    return (value.substr(index + 1, value.length() - i));
   }
   return ("");
 }
@@ -58,7 +57,7 @@ std::string toUtf8(const std::wstring &str)
   return ret;
 }
 
-// REturn window title in utf8 string
+// Return window title in utf8 string
 std::string getWindowTitle(const HWND hwnd)
 {
 
