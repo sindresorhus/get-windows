@@ -1,6 +1,6 @@
 {
   "name": "@insp/active-win",
-  "version": "7.7.6",
+  "version": "7.7.7",
   "description": "Get metadata about the active window (title, id, bounds, owner, URL, etc). Works on macOS, Linux, Windows.",
   "license": "MIT",
   "repository": "sindresorhus/active-win",
@@ -60,13 +60,15 @@
     "xo": "^0.38.2"
   },
   "optionalDependencies": {
-    "ffi-napi": "^4.0.3",
+	"@inigolabs/ffi-napi": "^4.0.7",
+    "electron-edge-js": "^19.0.0",
     "ref-napi": "^3.0.3",
     "ref-struct-di": "^1.1.1",
-    "ref-wchar-napi": "^1.0.3",
-    "electron-edge-js": "^19.0.0"
+    "ref-wchar-napi": "^1.0.3"
   },
   "ava": {
     "verbose": true
+  },
+  "dependencies": {
   }
 }
