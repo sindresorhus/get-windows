@@ -1,7 +1,7 @@
 {
 	"name": "active-win",
 	"version": "7.7.2",
-	"description": "Get metadata about the active window (title, id, bounds, owner, URL, etc). Works on macOS, Linux, Windows.",
+	"description": "Get metadata about the active window (title, id, bounds, owner, URL, etc)",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -14,7 +14,7 @@
 		"url": "https://sindresorhus.com"
 	},
 	"engines": {
-		"node": ">=10"
+		"node": ">=14"
 	},
 	"main": "./index",
 	"types": "./index.d.ts",
@@ -30,7 +30,7 @@
 		]
 	},
 	"scripts": {
-		"test": "xo && npm run build && ava && tsd",
+		"test": "xo && npm run build:macos && ava && tsd",
 		"test-ci": "xo && tsd",
 		"build:windows:install": "node-pre-gyp install --fallback-to-build",
 		"build:windows": "node-pre-gyp build",

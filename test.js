@@ -1,4 +1,4 @@
-import {inspect} from 'util';
+import {inspect} from 'node:util';
 import test from 'ava';
 import activeWindow from './index.js';
 

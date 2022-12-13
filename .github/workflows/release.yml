@@ -21,11 +21,9 @@ jobs:
         target:
           - x64
         node:
-          # - 10 # Issue with gyp build can build with this version.
-          - 12
+          - 18
           - 14
           - 16
-          - 18
         include:
           - os: windows-latest
             node: 18

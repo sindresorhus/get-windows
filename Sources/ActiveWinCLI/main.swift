@@ -18,8 +18,9 @@ func exitWithoutResult() -> Never {
 
 func printOutput(_ output: Any) -> Never {
 	guard let string = try? toJson(output) else {
-	exitWithoutResult()
+		exitWithoutResult()
 	}
+
 	print(string)
 	exit(0)
 }
@@ -111,9 +112,11 @@ for window in windows {
 	if !enableOpenWindowsList && windowOwnerPID != frontmostAppPID {
 		continue
 	}
+
 	guard let windowInformation = getWindowInformation(window: window, windowOwnerPID: windowOwnerPID) else {
 		continue
 	}
+
 	if !enableOpenWindowsList {
 		printOutput(windowInformation)
 	} else {
