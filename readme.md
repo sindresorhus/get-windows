@@ -79,6 +79,22 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 - `url` *(string?)* - URL of the active browser tab if the active window is Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi *(macOS only)*
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
+### activeWindow.getOpenWindows
+
+To get a Map of open windows.
+
+## result
+
+Returns a promise of `activeWindow.Result[]`.
+
+### activeWindow.getOpenWindowsSync
+
+To get a Map of open windows.
+
+## result
+
+Returns an enum of `activeWindow.Result`.
+
 ## OS support
 
 It works on macOS, Linux, and Windows 7+.
@@ -106,3 +122,18 @@ If you use this package in an Electron app that is sandboxed and you want to get
 
 - [Sindre Sorhus](https://github.com/sindresorhus)
 - [Sebastián Ramírez](https://github.com/tiangolo)
+
+## For development
+
+In case of development to bypass gyp build:
+
+With npm
+```sh
+npm install --ignore-scripts
+```
+
+With yarn
+```sh
+yarn install --ignore-scripts
+```
+
