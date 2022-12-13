@@ -35,7 +35,7 @@ std::string getFileName(const std::string &value) {
 	size_t index = value.rfind(separator, value.length());
 
 	if (index != std::string::npos) {
-		return (value.substr(index + 1, value.length() - i));
+		return (value.substr(index + 1, value.length() - index));
 	}
 
 	return ("");
