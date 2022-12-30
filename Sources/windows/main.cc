@@ -219,11 +219,14 @@ BOOL CALLBACK EnumDekstopWindowsProc(HWND hwnd, LPARAM lParam) {
 		GetWindowInfo(hwnd, &winInfo);
 
 		if (
+			(
 				(winInfo.dwExStyle & WS_EX_TOOLWINDOW) == 0 &&
 				(winInfo.dwStyle & WS_CAPTION) == WS_CAPTION &&
 				(winInfo.dwStyle & WS_CHILD) == 0)
+				||
+				winInfo.dwWindowStatus == WS_ACTIVECAPTION
+			)
 		{
-
 			int ClockedVal;
 			DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, (PVOID)&ClockedVal, sizeof(ClockedVal));
 			if (ClockedVal == 0) {
