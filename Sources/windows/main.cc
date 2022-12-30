@@ -220,11 +220,12 @@ BOOL CALLBACK EnumDekstopWindowsProc(HWND hwnd, LPARAM lParam) {
 
 		if (
 			(
-				(winInfo.dwExStyle & WS_EX_TOOLWINDOW) == 0 &&
-				(winInfo.dwStyle & WS_CAPTION) == WS_CAPTION &&
-				(winInfo.dwStyle & WS_CHILD) == 0)
-				||
-				winInfo.dwWindowStatus == WS_ACTIVECAPTION
+				(
+					(winInfo.dwExStyle & WS_EX_TOOLWINDOW) == 0 && (winInfo.dwStyle & WS_CAPTION) == WS_CAPTION)
+					||
+					winInfo.dwWindowStatus == WS_ACTIVECAPTION
+				) &&
+				(winInfo.dwStyle & WS_CHILD) == 0
 			)
 		{
 			int ClockedVal;
