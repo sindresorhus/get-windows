@@ -167,6 +167,9 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
 			ownerInfo = newOwner;
 		}
 	}
+	if (ownerInfo.name == "Widgets.exe") {
+		return env.Null();
+	}
 
 	PROCESS_MEMORY_COUNTERS memoryCounter;
 	BOOL memoryResult = GetProcessMemoryInfo(phlde, &memoryCounter, sizeof(memoryCounter));
@@ -219,14 +222,12 @@ BOOL CALLBACK EnumDekstopWindowsProc(HWND hwnd, LPARAM lParam) {
 		GetWindowInfo(hwnd, &winInfo);
 
 		if (
-			(
-				(
-					(winInfo.dwExStyle & WS_EX_TOOLWINDOW) == 0 && (winInfo.dwStyle & WS_CAPTION) == WS_CAPTION)
-					||
-					winInfo.dwWindowStatus == WS_ACTIVECAPTION
-				) &&
-				(winInfo.dwStyle & WS_CHILD) == 0
-			)
+			(winInfo.dwExStyle & WS_EX_TOOLWINDOW) == 0
+			&&
+			(winInfo.dwStyle & WS_CAPTION) == WS_CAPTION
+			&&
+			(winInfo.dwStyle & WS_CHILD) == 0
+		)
 		{
 			int ClockedVal;
 			DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, (PVOID)&ClockedVal, sizeof(ClockedVal));
