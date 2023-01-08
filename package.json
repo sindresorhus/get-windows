@@ -1,6 +1,6 @@
 {
   "name": "active-win",
-  "version": "8.0.2",
+  "version": "80.0.2",
   "description": "Get metadata about the active window (title, id, bounds, owner, URL, etc)",
   "license": "MIT",
   "repository": {
