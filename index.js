@@ -45,16 +45,16 @@ module.exports.sync = options => {
 };
 
 module.exports.start = () => {
-	if (process.platform === 'windows') {
-		return url_capture_api.start;
+	if (process.platform === 'win32') {
+		url_capture_api.start();
 	}
 
 	throw new Error('Windows only');
 }
 
 module.exports.stop = () => {
-	if (process.platform === 'windows') {
-		return url_capture_api.stop;
+	if (process.platform === 'win32') {
+		url_capture_api.stop();
 	}
 
 	throw new Error('Windows only');
