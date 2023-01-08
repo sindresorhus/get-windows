@@ -2,6 +2,15 @@
 
 const url_capture_api = require('bindings')('url_capture_api');
 
+
+const CHROME = 'Google Chrome';
+const FIREFOX = 'Firefox';
+const EDGE = 'Microsoft Edge';
+const BRAVE = 'Brave Browser';
+const OPERA_1 = 'Opera';
+const OPERA_2 = 'Opera Internet Browser';
+const browserList = [CHROME, FIREFOX, EDGE, BRAVE, OPERA_1, OPERA_2];
+
 module.exports = options => {
 	if (process.platform === 'darwin') {
 		return require('./lib/macos.js')(options);
@@ -14,11 +23,15 @@ module.exports = options => {
 	if (process.platform === 'win32') {
 		return new Promise((resolve, reject) => {
 			require('./lib/windows.js')(options).then(res => {
-				const url = url_capture_api.get_last_url();
-				resolve({
-					...res,
-					url
-				});
+				if (browserList.includes(res.owner.name)) {
+					const url = url_capture_api.get_last_url();
+					resolve({
+						...res,
+						url
+					});
+				} else {
+					resolve(res);
+				}
 			}).catch(err => reject(err));
 		});
 	}
@@ -37,11 +50,14 @@ module.exports.sync = options => {
 
 	if (process.platform === 'win32') {
 		const res = require('./lib/windows.js').sync(options);
-		const url = url_capture_api.get_last_url();
-		return {
-			...res,
-			url
-		};
+		if (browserList.includes(res.owner.name)) {
+			const url = url_capture_api.get_last_url();
+			return {
+				...res,
+				url
+			};
+		}
+		return res;
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
