@@ -1,6 +1,9 @@
 'use strict';
 
-const url_capture_api = require('bindings')('url_capture_api');
+let url_capture_api = null;
+if (process.platform === 'win32') {
+	url_capture_api = require('bindings')('url_capture_api');
+}
 
 
 const CHROME = 'Google Chrome';
