@@ -1,6 +1,6 @@
 {
   "name": "@insp/active-win",
-  "version": "8.0.5",
+  "version": "8.0.6",
   "description": "Get metadata about the active window (title, id, bounds, owner, URL, etc)",
   "license": "MIT",
   "repository": {
@@ -41,11 +41,11 @@
   "files": [
 	"index.js",
 	"index.d.ts",
+	"out",
 	"lib",
 	"main",
 	"Sources/windows/main.cc",
-	"binding.gyp",
-	"build"
+	"binding.gyp"
   ],
   "keywords": [
 	"macos",
