@@ -60,7 +60,6 @@
     "xo": "^0.38.2"
   },
   "optionalDependencies": {
-    "bindings": "1.5.0",
     "ffi-napi": "4.0.3",
     "ref-napi": "3.0.3",
     "ref-struct-di": "1.1.1",
@@ -68,5 +67,8 @@
   },
   "ava": {
     "verbose": true
+  },
+  "dependencies": {
+    "bindings": "^1.5.0"
   }
 }
