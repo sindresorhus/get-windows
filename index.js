@@ -1,8 +1,8 @@
 'use strict';
 
-let url_capture_api = null;
+let urlCaptureApi = null;
 if (process.platform === 'win32') {
-	url_capture_api = require('bindings')('url_capture_api');
+	urlCaptureApi = require('bindings')('url_capture_api');
 }
 
 
@@ -27,7 +27,7 @@ module.exports = options => {
 		return new Promise((resolve, reject) => {
 			require('./lib/windows.js')(options).then(res => {
 				if (browserList.includes(res.owner.name)) {
-					const url = url_capture_api.get_last_url();
+					const url = urlCaptureApi.get_last_url();
 					resolve({
 						...res,
 						url
@@ -54,7 +54,7 @@ module.exports.sync = options => {
 	if (process.platform === 'win32') {
 		const res = require('./lib/windows.js').sync(options);
 		if (browserList.includes(res.owner.name)) {
-			const url = url_capture_api.get_last_url();
+			const url = urlCaptureApi.get_last_url();
 			return {
 				...res,
 				url
@@ -68,7 +68,7 @@ module.exports.sync = options => {
 
 module.exports.start = () => {
 	if (process.platform === 'win32') {
-		return url_capture_api.start();
+		return urlCaptureApi.start();
 	}
 
 	throw new Error('Windows only');
@@ -76,7 +76,7 @@ module.exports.start = () => {
 
 module.exports.stop = () => {
 	if (process.platform === 'win32') {
-		return url_capture_api.stop();
+		return urlCaptureApi.stop();
 	}
 
 	throw new Error('Windows only');
