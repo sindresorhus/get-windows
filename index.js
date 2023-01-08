@@ -12,12 +12,15 @@ module.exports = options => {
 	}
 
 	if (process.platform === 'win32') {
-		const res = require('./lib/macos.js')(options);
-		const url = url_capture_api.get_last_url();
-		return {
-			...res,
-			url
-		};
+		return new Promise((resolve, reject) => {
+			require('./lib/windows.js')(options).then(res => {
+				const url = url_capture_api.get_last_url();
+				resolve({
+					...res,
+					url
+				});
+			}).catch(err => reject(err));
+		});
 	}
 
 	return Promise.reject(new Error('macOS, Linux, and Windows only'));
@@ -46,7 +49,7 @@ module.exports.sync = options => {
 
 module.exports.start = () => {
 	if (process.platform === 'win32') {
-		url_capture_api.start();
+		return url_capture_api.start();
 	}
 
 	throw new Error('Windows only');
@@ -54,7 +57,7 @@ module.exports.start = () => {
 
 module.exports.stop = () => {
 	if (process.platform === 'win32') {
-		url_capture_api.stop();
+		return url_capture_api.stop();
 	}
 
 	throw new Error('Windows only');
