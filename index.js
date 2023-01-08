@@ -31,3 +31,19 @@ module.exports.sync = options => {
 
 	throw new Error('macOS, Linux, and Windows only');
 };
+
+module.exports.start = () => {
+	if (process.platform === 'windows') {
+		return require('./lib/windows.js').start();
+	}
+
+	throw new Error('Windows only');
+}
+
+module.exports.stop = () => {
+	if (process.platform === 'windows') {
+		return require('./lib/windows.js').stop();
+	}
+
+	throw new Error('Windows only');
+}
