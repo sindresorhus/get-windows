@@ -24,9 +24,9 @@ module.exports = options => {
 	}
 
 	if (process.platform === 'win32') {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const response = await require('./lib/windows.js')(options)
+		return new Promise((resolve, reject) => {
+			// eslint-disable-next-line promise/prefer-await-to-then
+			require('./lib/windows.js')(options).then(response => {
 				if (browserList.has(response.owner.name)) {
 					const url = urlCaptureApi.get_last_url();
 					resolve({
@@ -36,9 +36,7 @@ module.exports = options => {
 				} else {
 					resolve(response);
 				}
-			} catch (error) {
-				reject(error);
-			}
+			}).catch(reject);
 		});
 	}
 
@@ -56,14 +54,15 @@ module.exports.sync = options => {
 
 	if (process.platform === 'win32') {
 		const response = require('./lib/windows.js').sync(options);
-		if (browserList.has(response.owner.name)) {
-			const url = urlCaptureApi.get_last_url();
-			return {
-				...response,
-				url
-			};
+		if (!browserList.has(response.owner.name)) {
+			return response;
 		}
-		return response;
+
+		const url = urlCaptureApi.get_last_url();
+		return {
+			...response,
+			url
+		};
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
@@ -75,7 +74,7 @@ module.exports.start = () => {
 	}
 
 	throw new Error('Windows only');
-}
+};
 
 module.exports.stop = () => {
 	if (process.platform === 'win32') {
@@ -83,7 +82,7 @@ module.exports.stop = () => {
 	}
 
 	throw new Error('Windows only');
-}
+};
 
 module.exports.getOpenWindows = options => {
 	if (process.platform === 'darwin') {
