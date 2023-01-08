@@ -5,14 +5,14 @@ if (process.platform === 'win32') {
 	urlCaptureApi = require('bindings')('url_capture_api');
 }
 
-
 const CHROME = 'Google Chrome';
 const FIREFOX = 'Firefox';
 const EDGE = 'Microsoft Edge';
 const BRAVE = 'Brave Browser';
 const OPERA_1 = 'Opera';
 const OPERA_2 = 'Opera Internet Browser';
-const browserList = [CHROME, FIREFOX, EDGE, BRAVE, OPERA_1, OPERA_2];
+
+const browserList = new Set([CHROME, FIREFOX, EDGE, BRAVE, OPERA_1, OPERA_2]);
 
 module.exports = options => {
 	if (process.platform === 'darwin') {
@@ -24,18 +24,21 @@ module.exports = options => {
 	}
 
 	if (process.platform === 'win32') {
-		return new Promise((resolve, reject) => {
-			require('./lib/windows.js')(options).then(res => {
-				if (browserList.includes(res.owner.name)) {
+		return new Promise(async (resolve, reject) => {
+			try {
+				const response = await require('./lib/windows.js')(options)
+				if (browserList.has(response.owner.name)) {
 					const url = urlCaptureApi.get_last_url();
 					resolve({
-						...res,
+						...response,
 						url
 					});
 				} else {
-					resolve(res);
+					resolve(response);
 				}
-			}).catch(err => reject(err));
+			} catch (error) {
+				reject(error);
+			}
 		});
 	}
 
@@ -52,15 +55,15 @@ module.exports.sync = options => {
 	}
 
 	if (process.platform === 'win32') {
-		const res = require('./lib/windows.js').sync(options);
-		if (browserList.includes(res.owner.name)) {
+		const response = require('./lib/windows.js').sync(options);
+		if (browserList.has(response.owner.name)) {
 			const url = urlCaptureApi.get_last_url();
 			return {
-				...res,
+				...response,
 				url
 			};
 		}
-		return res;
+		return response;
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
