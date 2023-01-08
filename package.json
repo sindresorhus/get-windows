@@ -60,11 +60,11 @@
     "xo": "^0.38.2"
   },
   "optionalDependencies": {
-	"ffi-napi": "^4.0.3",
-    "electron-edge-js": "^19.0.0",
-    "ref-napi": "^3.0.3",
-    "ref-struct-di": "^1.1.1",
-    "ref-wchar-napi": "^1.0.3"
+    "bindings": "1.5.0",
+    "ffi-napi": "4.0.3",
+    "ref-napi": "3.0.3",
+    "ref-struct-di": "1.1.1",
+    "ref-wchar-napi": "1.0.3"
   },
   "ava": {
     "verbose": true
