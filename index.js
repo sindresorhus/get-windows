@@ -1,5 +1,7 @@
 'use strict';
 
+const url_capture_api = require('bindings')('url_capture_api');
+
 module.exports = options => {
 	if (process.platform === 'darwin') {
 		return require('./lib/macos.js')(options);
@@ -10,7 +12,12 @@ module.exports = options => {
 	}
 
 	if (process.platform === 'win32') {
-		return require('./lib/windows.js')(options);
+		const res = require('./lib/macos.js')(options);
+		const url = url_capture_api.get_last_url();
+		return {
+			...res,
+			url
+		};
 	}
 
 	return Promise.reject(new Error('macOS, Linux, and Windows only'));
@@ -26,7 +33,12 @@ module.exports.sync = options => {
 	}
 
 	if (process.platform === 'win32') {
-		return require('./lib/windows.js').sync(options);
+		const res = require('./lib/windows.js').sync(options);
+		const url = url_capture_api.get_last_url();
+		return {
+			...res,
+			url
+		};
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
@@ -34,7 +46,7 @@ module.exports.sync = options => {
 
 module.exports.start = () => {
 	if (process.platform === 'windows') {
-		return require('./lib/windows.js').start();
+		return url_capture_api.start;
 	}
 
 	throw new Error('Windows only');
@@ -42,7 +54,7 @@ module.exports.start = () => {
 
 module.exports.stop = () => {
 	if (process.platform === 'windows') {
-		return require('./lib/windows.js').stop();
+		return url_capture_api.stop;
 	}
 
 	throw new Error('Windows only');
