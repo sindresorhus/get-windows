@@ -1,8 +1,12 @@
 name: Build & publish binary node
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - 'releases/**'
+  pull_request:
+    branches:
+      - 'releases/**'
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
