@@ -1,7 +1,11 @@
 name: CI
 on:
-  - push
-  - pull_request
+  push:
+    branches-ignore:
+      - 'releases/**'
+  pull_request:
+    branches-ignore:
+      - 'releases/**'
 jobs:
   test:
     name: Node.js ${{ matrix.node-version }}
@@ -10,14 +14,14 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
+          - 18
           - 16
           - 14
-          - 12
-          - 10
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
+      - run: npm install --ignore-scripts
+      - run: npm run build:macos
       - run: npm run test-ci

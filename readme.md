@@ -2,9 +2,7 @@
 
 Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, URL, etc)
 
-Works on macOS, Linux ([note](#linux-support)), and Windows.
-
-Users on macOS 10.13 or earlier needs to download the [Swift runtime support libraries](https://support.apple.com/kb/DL1998).
+Works on macOS 10.14+, Linux ([note](#linux-support)), and Windows 7+.
 
 ## Install
 
@@ -46,6 +44,8 @@ const activeWindow = require('active-win');
 
 ### activeWindow(options?)
 
+Get metadata about the active window.
+
 #### options
 
 Type: `object`
@@ -58,6 +58,8 @@ Default: `true`
 Enable the screen recording permission check. Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
 
 ### activeWindow.sync(options?)
+
+Get metadata about the active window synchronously.
 
 ## Result
 
@@ -79,9 +81,21 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 - `url` *(string?)* - URL of the active browser tab if the active window is Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi *(macOS only)*
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
+### activeWindow.getOpenWindows()
+
+Get metadata about all open windows.
+
+Returns `Promise<activeWindow.Result[]>`.
+
+### activeWindow.getOpenWindowsSync()
+
+Get metadata about all open windows synchronously.
+
+Returns `activeWindow.Result[]`.
+
 ## OS support
 
-It works on macOS, Linux, and Windows 7+.
+It works on macOS 10.14+, Linux, and Windows 7+.
 
 **Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle)
 
@@ -106,3 +120,11 @@ If you use this package in an Electron app that is sandboxed and you want to get
 
 - [Sindre Sorhus](https://github.com/sindresorhus)
 - [Sebastián Ramírez](https://github.com/tiangolo)
+
+## Development
+
+To bypass the `gyp` build:
+
+```sh
+npm install --ignore-scripts
+```

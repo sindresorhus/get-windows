@@ -94,8 +94,6 @@ declare const activeWindow: {
 	/**
 	Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
 
-	@returns The active window metadata.
-
 	@example
 	```
 	import activeWindow = require('active-win');
@@ -121,9 +119,7 @@ declare const activeWindow: {
 	(options?: activeWindow.Options): Promise<activeWindow.Result | undefined>;
 
 	/**
-	Synchronously get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, etc).
-
-	@returns The active window metadata.
+	Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) synchronously (title, id, bounds, owner, etc).
 
 	@example
 	```
@@ -144,6 +140,16 @@ declare const activeWindow: {
 	```
 	*/
 	sync(options?: activeWindow.Options): activeWindow.Result | undefined;
+
+	/**
+	Get metadata about all open windows.
+	*/
+	getOpenWindows(options?: activeWindow.Options): Promise<activeWindow.Result[]>;
+
+	/**
+	Get metadata about all open windows synchronously.
+	*/
+	getOpenWindowsSync(options?: activeWindow.Options): activeWindow.Result[];
 };
 
 export = activeWindow;
