@@ -86,11 +86,15 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 
 Get metadata about all open windows.
 
+Windows are returned in order from front to back.
+
 Returns `Promise<activeWindow.Result[]>`.
 
 ### activeWindow.getOpenWindowsSync()
 
 Get metadata about all open windows synchronously.
+
+Windows are returned in order from front to back.
 
 Returns `activeWindow.Result[]`.
 

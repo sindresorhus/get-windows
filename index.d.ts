@@ -143,11 +143,15 @@ declare const activeWindow: {
 
 	/**
 	Get metadata about all open windows.
+
+	Windows are returned in order from front to back.
 	*/
 	getOpenWindows(options?: activeWindow.Options): Promise<activeWindow.Result[]>;
 
 	/**
 	Get metadata about all open windows synchronously.
+
+	Windows are returned in order from front to back.
 	*/
 	getOpenWindowsSync(options?: activeWindow.Options): activeWindow.Result[];
 };
