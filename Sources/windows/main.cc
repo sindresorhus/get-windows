@@ -201,6 +201,19 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
 	bounds.Set(Napi::String::New(env, "width"), lpRect.right - lpRect.left);
 	bounds.Set(Napi::String::New(env, "height"), lpRect.bottom - lpRect.top);
 
+	WINDOWINFO pwi;
+	BOOL infoResult = GetWindowInfo(hwnd, &pwi);
+	if (infoResult == 0) {
+		return env.Null();
+	}
+
+	if (pwi.dwStyle & WS_MAXIMIZE) {
+		bounds.Set(Napi::Boolean::New(env, "isMaximized"), true);
+	}
+	else {
+		bounds.Set(Napi::Boolean::New(env, "isMaximized"), false);
+	}
+
 	Napi::Object activeWinObj = Napi::Object::New(env);
 
 	activeWinObj.Set(Napi::String::New(env, "platform"), Napi::String::New(env, "windows"));
