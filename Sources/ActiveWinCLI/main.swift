@@ -86,12 +86,6 @@ func getWindowInformation(window: [String: Any], windowOwnerPID: pid_t) -> [Stri
 let disableScreenRecordingPermission = CommandLine.arguments.contains("--no-screen-recording-permission")
 let enableOpenWindowsList = CommandLine.arguments.contains("--open-windows-list")
 
-// Show accessibility permission prompt if needed. Required to get the complete window title.
-if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
-	print("active-win requires the accessibility permission in “System Settings › Privacy & Security › Accessibility”.")
-	exit(1)
-}
-
 // Show screen recording permission prompt if needed. Required to get the complete window title.
 if !disableScreenRecordingPermission && !hasScreenRecordingPermission() {
 	print("active-win requires the screen recording permission in “System Settings › Privacy & Security › Screen Recording”.")
