@@ -88,7 +88,7 @@ let disableAccessibilityPermission = CommandLine.arguments.contains("--no-access
 let disableScreenRecordingPermission = CommandLine.arguments.contains("--no-screen-recording-permission")
 let enableOpenWindowsList = CommandLine.arguments.contains("--open-windows-list")
 
-// Show accessibility permission prompt if needed. Required to get the complete window title.
+// Show accessibility permission prompt if needed. Required to get the URL of the active tab in browsers.
 if !disableAccessibilityPermission && !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
 	print("active-win requires the accessibility permission in “System Settings › Privacy & Security › Accessibility”.")
 	exit(1)
