@@ -3,7 +3,7 @@ declare namespace activeWindow {
 		/**
 		Enable the accessibility permission check. _(macOS)_
 
-		Setting this to `false` will prevent the accessibility permission prompt on macOS versions 10.15 and newer.
+		Setting this to `false` will prevent the accessibility permission prompt on macOS versions 10.15 and newer. The `url` property won't be retrieved.
 
 		@default true
 		*/

@@ -55,7 +55,7 @@ Type: `object`
 Type: `boolean`\
 Default: `true`
 
-Enable the accessibility permission check. Setting this to `false` will prevent the accessibility permission prompt on macOS versions 10.15 and newer.
+Enable the accessibility permission check. Setting this to `false` will prevent the accessibility permission prompt on macOS versions 10.15 and newer. The `url` property won't be retrieved.
 
 ##### screenRecordingPermission **(macOS only)**
 
