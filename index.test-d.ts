@@ -4,7 +4,10 @@ import {Result, LinuxResult, MacOSResult, WindowsResult, BaseOwner} from './inde
 
 expectType<Promise<Result | undefined>>(activeWindow());
 
-const result = activeWindow.sync({screenRecordingPermission: false});
+const result = activeWindow.sync({
+	screenRecordingPermission: false,
+	accessibilityPermission: false
+});
 
 expectType<Result | undefined>(result);
 

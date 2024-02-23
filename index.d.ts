@@ -1,6 +1,15 @@
 declare namespace activeWindow {
 	interface Options {
 		/**
+		Enable the accessibility permission check. _(macOS)_
+
+		Setting this to `false` will prevent the accessibility permission prompt on macOS versions 10.15 and newer. The `url` property won't be retrieved.
+
+		@default true
+		*/
+		readonly accessibilityPermission: boolean;
+
+		/**
 		Enable the screen recording permission check. _(macOS)_
 
 		Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
