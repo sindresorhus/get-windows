@@ -22,8 +22,6 @@ jobs:
           - x64
         node:
           - 18
-          - 14
-          - 16
         include:
           - os: windows-latest
             node: 18

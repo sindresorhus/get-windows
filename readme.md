@@ -1,6 +1,6 @@
 # active-win
 
-Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, URL, etc)
+> Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) and open windows (title, id, bounds, owner, URL, etc)
 
 Works on macOS 10.14+, Linux ([note](#linux-support)), and Windows 7+.
 
@@ -10,34 +10,34 @@ Works on macOS 10.14+, Linux ([note](#linux-support)), and Windows 7+.
 npm install active-win
 ```
 
+**[This is an ESM package which requires you to use ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)**
+
 ## Usage
 
 ```js
-const activeWindow = require('active-win');
+import {activeWindow} from 'active-win';
 
-(async () => {
-	console.log(await activeWindow(options));
-	/*
-	{
-		title: 'Unicorns - Google Search',
-		id: 5762,
-		bounds: {
-			x: 0,
-			y: 0,
-			height: 900,
-			width: 1440
-		},
-		owner: {
-			name: 'Google Chrome',
-			processId: 310,
-			bundleId: 'com.google.Chrome',
-			path: '/Applications/Google Chrome.app'
-		},
-		url: 'https://sindresorhus.com/unicorn',
-		memoryUsage: 11015432
-	}
-	*/
-})();
+console.log(await activeWindow(options));
+/*
+{
+	title: 'Unicorns - Google Search',
+	id: 5762,
+	bounds: {
+		x: 0,
+		y: 0,
+		height: 900,
+		width: 1440
+	},
+	owner: {
+		name: 'Google Chrome',
+		processId: 310,
+		bundleId: 'com.google.Chrome',
+		path: '/Applications/Google Chrome.app'
+	},
+	url: 'https://sindresorhus.com/unicorn',
+	memoryUsage: 11015432
+}
+*/
 ```
 
 ## API
@@ -64,7 +64,7 @@ Default: `true`
 
 Enable the screen recording permission check. Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
 
-### activeWindow.sync(options?)
+### activeWindowSync(options?)
 
 Get metadata about the active window synchronously.
 
@@ -89,21 +89,21 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 	- Supported browsers: Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
-### activeWindow.getOpenWindows()
+### openWindows()
 
 Get metadata about all open windows.
 
 Windows are returned in order from front to back.
 
-Returns `Promise<activeWindow.Result[]>`.
+Returns `Promise<Result[]>`.
 
-### activeWindow.getOpenWindowsSync()
+### openWindowsSync()
 
 Get metadata about all open windows synchronously.
 
 Windows are returned in order from front to back.
 
-Returns `activeWindow.Result[]`.
+Returns `Result[]`.
 
 ## OS support
 

@@ -1,7 +1,7 @@
 {
 	"name": "active-win",
 	"version": "8.2.1",
-	"description": "Get metadata about the active window (title, id, bounds, owner, URL, etc)",
+	"description": "Get metadata about the active window and open windows (title, id, bounds, owner, URL, etc)",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -13,12 +13,16 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": {
+		"types": "./index.d.ts",
+		"default": "./index.js"
+	},
+	"main": "./index.js",
 	"sideEffects": false,
 	"engines": {
-		"node": ">=14"
+		"node": ">=18.18"
 	},
-	"main": "./index",
-	"types": "./index.d.ts",
 	"binary": {
 		"module_name": "node-active-win",
 		"module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
@@ -26,8 +30,7 @@
 		"remote_path": "v{version}",
 		"package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
 		"napi_versions": [
-			3,
-			6
+			9
 		]
 	},
 	"scripts": {
@@ -54,10 +57,11 @@
 		"app",
 		"application",
 		"window",
-		"win",
+		"windows",
 		"active",
 		"focused",
 		"current",
+		"open",
 		"title",
 		"name",
 		"id",
@@ -77,25 +81,22 @@
 		"brave"
 	],
 	"devDependencies": {
-		"ava": "^2.4.0",
-		"tsd": "^0.14.0",
-		"xo": "^0.38.2",
+		"ava": "^6.1.2",
+		"tsd": "^0.31.0",
+		"xo": "^0.58.0",
 		"node-pre-gyp-github": "^1.4.4"
 	},
 	"optionalDependencies": {
-		"@mapbox/node-pre-gyp": "^1.0.10",
-		"node-addon-api": "^5.0.0",
-		"node-gyp": "^9.3.0"
+		"@mapbox/node-pre-gyp": "^1.0.11",
+		"node-addon-api": "^8.0.0",
+		"node-gyp": "^10.1.0"
 	},
 	"peerDependencies": {
-		"node-gyp": "^9.3.0"
+		"node-gyp": "^10.1.0"
 	},
 	"peerDependenciesMeta": {
 		"node-gyp": {
 			"optional": true
 		}
-	},
-	"ava": {
-		"verbose": true
 	}
 }
