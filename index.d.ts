@@ -104,7 +104,7 @@ Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_wind
 
 @example
 ```
-import {activeWindow} from 'active-win';
+import {activeWindow} from 'get-windows';
 
 const result = await activeWindow();
 
@@ -129,7 +129,7 @@ Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_wind
 
 @example
 ```
-import {activeWindowSync} from 'active-win';
+import {activeWindowSync} from 'get-windows';
 
 const result = activeWindowSync();
 

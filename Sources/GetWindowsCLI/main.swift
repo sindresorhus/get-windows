@@ -91,7 +91,7 @@ let enableOpenWindowsList = CommandLine.arguments.contains("--open-windows-list"
 // Show accessibility permission prompt if needed. Required to get the URL of the active tab in browsers.
 if !disableAccessibilityPermission {
 	if !AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary) {
-		print("active-win requires the accessibility permission in “System Settings › Privacy & Security › Accessibility”.")
+		print("get-windows requires the accessibility permission in “System Settings › Privacy & Security › Accessibility”.")
 		exit(1)
 	}
 }
@@ -101,7 +101,7 @@ if
 	!disableScreenRecordingPermission,
 	!hasScreenRecordingPermission()
 {
-	print("active-win requires the screen recording permission in “System Settings › Privacy & Security › Screen Recording”.")
+	print("get-windows requires the screen recording permission in “System Settings › Privacy & Security › Screen Recording”.")
 	exit(1)
 }
 

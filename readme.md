@@ -1,4 +1,4 @@
-# active-win
+# get-windows
 
 > Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) and open windows (title, id, bounds, owner, URL, etc)
 
@@ -7,7 +7,7 @@ Works on macOS 10.14+, Linux ([note](#linux-support)), and Windows 7+.
 ## Install
 
 ```sh
-npm install active-win
+npm install get-windows
 ```
 
 **[This is an ESM package which requires you to use ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)**
@@ -15,7 +15,7 @@ npm install active-win
 ## Usage
 
 ```js
-import {activeWindow} from 'active-win';
+import {activeWindow} from 'get-windows';
 
 console.log(await activeWindow(options));
 /*
@@ -117,7 +117,7 @@ Wayland is not supported. For security reasons, Wayland does not provide a way t
 
 ## Electron usage
 
-If you use this package in an Electron app that is sandboxed and you want to get the `.url` property, you need to add the [proper entitlements and usage description](https://github.com/sindresorhus/active-win/issues/99#issuecomment-870874546).
+If you use this package in an Electron app that is sandboxed and you want to get the `.url` property, you need to add the [proper entitlements and usage description](https://github.com/sindresorhus/get-windows/issues/99#issuecomment-870874546).
 
 ## Users
 
@@ -126,12 +126,7 @@ If you use this package in an Electron app that is sandboxed and you want to get
 
 ## Related
 
-- [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
-
-## Maintainers
-
-- [Sindre Sorhus](https://github.com/sindresorhus)
-- [Sebastián Ramírez](https://github.com/tiangolo)
+- [windows-cli](https://github.com/sindresorhus/windows-cli) - CLI for this package
 
 ## Development
 
