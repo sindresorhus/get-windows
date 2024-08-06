@@ -39,9 +39,11 @@ if (result) {
 		expectType<string | undefined>(result.url);
 	} else if (result.platform === 'linux') {
 		expectType<LinuxResult>(result);
-		expectError(result.owner.bundleId);
 	} else {
 		expectType<WindowsResult>(result);
-		expectError(result.owner.bundleId);
+		expectType<number>(result.boundsClient.x);
+		expectType<number>(result.boundsClient.y);
+		expectType<number>(result.boundsClient.width);
+		expectType<number>(result.boundsClient.height);
 	}
 }

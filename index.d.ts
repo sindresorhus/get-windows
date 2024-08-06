@@ -95,6 +95,16 @@ export type LinuxResult = {
 
 export type WindowsResult = {
 	platform: 'windows';
+
+	/**
+		 Client position and size.
+	 */
+	boundsClient: {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	};
 } & BaseResult;
 
 export type Result = MacOSResult | LinuxResult | WindowsResult;

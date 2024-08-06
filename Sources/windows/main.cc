@@ -181,10 +181,13 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
 		return env.Null();
 	}
 
-	RECT lpRect;
-	BOOL rectResult = GetWindowRect(hwnd, &lpRect);
+	RECT lpWinRect;
+	BOOL rectWinResult = GetWindowRect(hwnd, &lpWinRect);
 
-	if (rectResult == 0) {
+	RECT lpClientRect;
+	BOOL rectClientResult = GetClientRect(hwnd, &lpClientRect);
+
+	if (rectWinResult == 0 || rectClientResult == 0 ) {
 		return env.Null();
 	}
 
@@ -194,12 +197,26 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
 	owner.Set(Napi::String::New(env, "path"), ownerInfo.path);
 	owner.Set(Napi::String::New(env, "name"), ownerInfo.name);
 
+  // bounds window
 	Napi::Object bounds = Napi::Object::New(env);
 
-	bounds.Set(Napi::String::New(env, "x"), lpRect.left);
-	bounds.Set(Napi::String::New(env, "y"), lpRect.top);
-	bounds.Set(Napi::String::New(env, "width"), lpRect.right - lpRect.left);
-	bounds.Set(Napi::String::New(env, "height"), lpRect.bottom - lpRect.top);
+	bounds.Set(Napi::String::New(env, "x"), lpWinRect.left);
+	bounds.Set(Napi::String::New(env, "y"), lpWinRect.top);
+	bounds.Set(Napi::String::New(env, "width"), lpWinRect.right - lpWinRect.left);
+	bounds.Set(Napi::String::New(env, "height"), lpWinRect.bottom - lpWinRect.top);
+
+	// bounds client
+	POINT rectTopLeft = {lpClientRect.left, lpClientRect.top};
+	ClientToScreen(hwnd, &rectTopLeft);
+	POINT rectBottomRight = {lpClientRect.right, lpClientRect.bottom};
+	ClientToScreen(hwnd, &rectBottomRight);
+
+	Napi::Object boundsClient = Napi::Object::New(env);
+
+	boundsClient.Set(Napi::String::New(env, "x"), rectTopLeft.x);
+	boundsClient.Set(Napi::String::New(env, "y"), rectTopLeft.y);
+	boundsClient.Set(Napi::String::New(env, "width"), rectBottomRight.x - rectTopLeft.x);
+	boundsClient.Set(Napi::String::New(env, "height"), rectBottomRight.y - rectTopLeft.y);
 
 	Napi::Object activeWinObj = Napi::Object::New(env);
 
@@ -208,6 +225,7 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
 	activeWinObj.Set(Napi::String::New(env, "title"), getWindowTitle(hwnd));
 	activeWinObj.Set(Napi::String::New(env, "owner"), owner);
 	activeWinObj.Set(Napi::String::New(env, "bounds"), bounds);
+	activeWinObj.Set(Napi::String::New(env, "boundsClient"), boundsClient);
 	activeWinObj.Set(Napi::String::New(env, "memoryUsage"), memoryCounter.WorkingSetSize);
 
 	return activeWinObj;
