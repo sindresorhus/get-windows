@@ -97,9 +97,9 @@ export type WindowsResult = {
 	platform: 'windows';
 
 	/**
-		 Client position and size.
-	 */
-	boundsClient: {
+	Content position and size without Nonclient Area
+	*/
+	contentBounds: {
 		x: number;
 		y: number;
 		width: number;

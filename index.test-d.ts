@@ -41,9 +41,9 @@ if (result) {
 		expectType<LinuxResult>(result);
 	} else {
 		expectType<WindowsResult>(result);
-		expectType<number>(result.boundsClient.x);
-		expectType<number>(result.boundsClient.y);
-		expectType<number>(result.boundsClient.width);
-		expectType<number>(result.boundsClient.height);
+		expectType<number>(result.contentBounds.x);
+		expectType<number>(result.contentBounds.y);
+		expectType<number>(result.contentBounds.width);
+		expectType<number>(result.contentBounds.height);
 	}
 }
