@@ -80,6 +80,11 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 	- `y` *(number)*
 	- `width` *(number)*
 	- `height` *(number)*
+- `contentBounds` *(Object)* - Window content position and size, which excludes the title bar, menu bar, and frame *(Windows only)*
+	- `x` *(number)*
+	- `y` *(number)*
+	- `width` *(number)*
+	- `height` *(number)*
 - `owner` *(Object)* - App that owns the window
 	- `name` *(string)* - Name of the app
 	- `processId` *(number)* - Process identifier

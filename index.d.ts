@@ -95,6 +95,16 @@ export type LinuxResult = {
 
 export type WindowsResult = {
 	platform: 'windows';
+
+	/**
+	Window content position and size, which excludes the title bar, menu bar, and frame.
+	*/
+	contentBounds: {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	};
 } & BaseResult;
 
 export type Result = MacOSResult | LinuxResult | WindowsResult;
