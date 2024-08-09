@@ -97,7 +97,7 @@ export type WindowsResult = {
 	platform: 'windows';
 
 	/**
-	Content position and size without Nonclient Area
+	Window content position and size, which excludes the title bar, menu bar, and frame.
 	*/
 	contentBounds: {
 		x: number;
