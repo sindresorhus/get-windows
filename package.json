@@ -1,6 +1,6 @@
 {
   "name": "@deepfocus/get-windows",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Custom version of get-windows for MacOS fixes",
   "repository": {
     "type": "git",
