@@ -21,20 +21,33 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Install pnpm
+        run: npm install -g pnpm 
+
       # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
-      # Run tests (optional, ensure your project is working correctly before publishing)
-      - name: Run tests
-        run: npm test
+     # Set up Git identity (this is required to perform version commits)
+      - name: Set Git user identity
+        run: |
+          git config --global user.name "Timeo Williams"
+          git config --global user.email "timwillie73@gmail.com"
+
+      - name: Bump version
+        run: npm version patch
+
+
+      # Push new version commit and tag to GitHub
+      - name: Push version commit and tag
+        run: |
+           git push origin main --follow-tags
 
       # Bump version and publish to npm
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm version patch  # This increments the patch version, can be changed to minor/major
           npm publish --access public
 
       # Create a new release on GitHub
