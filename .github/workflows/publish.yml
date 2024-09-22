@@ -40,7 +40,6 @@ jobs:
       - name: Bump version
         run: npm version patch
 
-
       # Push new version commit and tag to GitHub
       - name: Push version commit and tag
         run: |
