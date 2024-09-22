@@ -56,8 +56,15 @@ jobs:
         run: |
           npm publish --access public
 
-      # Create a new release on GitHub
+        # Get the latest tag
+      - name: Get latest tag
+        id: get_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+ 
+       # Create a new release on GitHub using the pushed tag
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2.0.8
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}  # Dynamically use the latest tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
