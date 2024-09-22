@@ -38,7 +38,7 @@ jobs:
           git config --global user.email "timwillie73@gmail.com"
 
       - name: Bump version
-        run: npm version patch
+        run: pnpm version patch
 
       # Push new version commit and tag to GitHub
       - name: Push version commit and tag
@@ -54,7 +54,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm publish --access public
+          pnpm publish --access public
 
         # Get the latest tag
       - name: Get latest tag
