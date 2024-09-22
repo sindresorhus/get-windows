@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+permissions:
+  contents: write  # Grants permission to push code, commits, and tags
+  issues: write   
 
 jobs:
   publish:
