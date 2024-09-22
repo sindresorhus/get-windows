@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches-ignore:
-      - 'releases/**'
+      - "releases/**"
   pull_request:
     branches-ignore:
-      - 'releases/**'
+      - "releases/**"
 jobs:
   test:
     name: Node.js ${{ matrix.node-version }}
@@ -21,8 +21,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install pnpm
-        run: npm install -g pnpm 
-  
+        run: npm install -g pnpm
+
       # Install dependencies
       - name: Install dependencies
         run: pnpm install

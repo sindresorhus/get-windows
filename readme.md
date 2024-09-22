@@ -15,7 +15,7 @@ npm install get-windows
 ## Usage
 
 ```js
-import {activeWindow} from 'get-windows';
+import { activeWindow } from "get-windows";
 
 console.log(await activeWindow(options));
 /*
@@ -72,27 +72,27 @@ Get metadata about the active window synchronously.
 
 Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is no active window or if the information is not available.
 
-- `platform` *(string)* - `'macos'` | `'linux'` | `'windows'`
-- `title` *(string)* - Window title
-- `id` *(number)* - Window identifier
-- `bounds` *(Object)* - Window position and size
-	- `x` *(number)*
-	- `y` *(number)*
-	- `width` *(number)*
-	- `height` *(number)*
-- `contentBounds` *(Object)* - Window content position and size, which excludes the title bar, menu bar, and frame *(Windows only)*
-	- `x` *(number)*
-	- `y` *(number)*
-	- `width` *(number)*
-	- `height` *(number)*
-- `owner` *(Object)* - App that owns the window
-	- `name` *(string)* - Name of the app
-	- `processId` *(number)* - Process identifier
-	- `bundleId` *(string)* - Bundle identifier *(macOS only)*
-	- `path` *(string)* - Path to the app
-- `url` *(string?)* - URL of the active browser tab if the active window *(macOS only)*
-	- Supported browsers: Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi
-- `memoryUsage` *(number)* - Memory usage by the window owner process
+- `platform` _(string)_ - `'macos'` | `'linux'` | `'windows'`
+- `title` _(string)_ - Window title
+- `id` _(number)_ - Window identifier
+- `bounds` _(Object)_ - Window position and size
+  - `x` _(number)_
+  - `y` _(number)_
+  - `width` _(number)_
+  - `height` _(number)_
+- `contentBounds` _(Object)_ - Window content position and size, which excludes the title bar, menu bar, and frame _(Windows only)_
+  - `x` _(number)_
+  - `y` _(number)_
+  - `width` _(number)_
+  - `height` _(number)_
+- `owner` _(Object)_ - App that owns the window
+  - `name` _(string)_ - Name of the app
+  - `processId` _(number)_ - Process identifier
+  - `bundleId` _(string)_ - Bundle identifier _(macOS only)_
+  - `path` _(string)_ - Path to the app
+- `url` _(string?)_ - URL of the active browser tab if the active window _(macOS only)_
+  - Supported browsers: Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi
+- `memoryUsage` _(number)_ - Memory usage by the window owner process
 
 ### openWindows()
 
@@ -114,7 +114,7 @@ Returns `Result[]`.
 
 It works on macOS 10.14+, Linux, and Windows 7+.
 
-**Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle)
+**Note**: On Windows, there isn't a clear notion of a "Window ID". Instead it returns the memory address of the window "handle" in the `id` property. That "handle" is unique per window, so it can be used to identify them. [Read more…](<https://msdn.microsoft.com/en-us/library/windows/desktop/ms632597(v=vs.85).aspx#window_handle>)
 
 ### Linux support
 

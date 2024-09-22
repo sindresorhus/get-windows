@@ -5,8 +5,8 @@ on:
     branches:
       - main
 permissions:
-  contents: write  # Grants permission to push code, commits, and tags
-  issues: write   
+  contents: write # Grants permission to push code, commits, and tags
+  issues: write
 
 jobs:
   publish:
@@ -21,17 +21,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install pnpm
-        run: npm install -g pnpm 
+        run: npm install -g pnpm
 
       # Install dependencies
       - name: Install dependencies
         run: pnpm install
 
-     # Set up Git identity (this is required to perform version commits)
+      # Set up Git identity (this is required to perform version commits)
       - name: Set Git user identity
         run: |
           git config --global user.name "Timeo Williams"
@@ -60,11 +60,11 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
- 
-       # Create a new release on GitHub using the pushed tag
+
+        # Create a new release on GitHub using the pushed tag
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2.0.8
         with:
-          tag_name: ${{ steps.get_tag.outputs.tag }}  # Dynamically use the latest tag
+          tag_name: ${{ steps.get_tag.outputs.tag }} # Dynamically use the latest tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
