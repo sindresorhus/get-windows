@@ -22,14 +22,13 @@ jobs:
       - name: Build macOS binary
         run: npm run build:macos
 
-      - name: Package binary using node-pre-gyp
-        run: npm run package:binary
-
       - name: Publish binary to GitHub Releases
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run: npm run publish:binary
+        run: |
+          npm run package:binary
+          node-pre-gyp-github publish --target_commitish=main
+
       # Publish to npm (after binaries are built and uploaded)
       - name: Publish to npm
         env:
