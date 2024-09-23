@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Ensure all history and tags are fetched
+          fetch-depth: 0
 
       # Set up Node.js environment
       - name: Set up Node.js
@@ -30,6 +30,21 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: npm install
+
+      # Set Git user identity (for version bump commit)
+      - name: Set Git user identity
+        run: |
+          git config --global user.name "Timeo Williams"
+          git config --global user.email "timwillie73@gmail.com"
+
+      # Bump the package version early
+      - name: Bump version
+        run: npm version patch
+
+      # Push version commit and tag to GitHub
+      - name: Push version commit and tag
+        run: |
+          git push origin ${{ github.ref_name }} --tags
 
       # Install node-pre-gyp-github globally
       - name: Install node-pre-gyp-github
@@ -48,27 +63,6 @@ jobs:
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
         run: node-pre-gyp-github publish --release
-
-      # Set Git user identity (for version bump commit)
-      - name: Set Git user identity
-        run: |
-          git config --global user.name "Timeo Williams"
-          git config --global user.email "timwillie73@gmail.com"
-
-      # Commit any changes
-      - name: Commit changes
-        run: |
-          git add .
-          git commit -m "Committing changes from build" || echo "No changes to commit"
-
-      # Bump the package version
-      - name: Bump version
-        run: npm version patch
-
-      # Push version commit and tag to GitHub
-      - name: Push version commit and tag
-        run: |
-          git push origin ${{ github.ref_name }} --tags
 
       # Publish to npm
       - name: Publish to npm
