@@ -1,6 +1,6 @@
 {
 	"name": "@deepfocus/get-windows",
-	"version": "1.0.17",
+	"version": "1.0.18",
 	"description": "Custom version of get-windows for MacOS fixes. This module is intended to be used with node-pre-gyp. Be sure to configure and install node-pre-gyp first. Update the binary properties 'host' and 'remote_path' to match: 'host': 'https://github.com/[owner]/[repo]/releases/download/', 'remote_path': '{version}'. Do not replace {version}.",
 	"repository": {
 		"type": "git",
