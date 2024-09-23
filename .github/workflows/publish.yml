@@ -8,6 +8,8 @@ on:
 permissions:
   contents: write
   issues: write
+  pull-requests: read # Added read permission for pull requests
+  actions: read      # Added read permission for actions
 
 jobs:
   publish:
