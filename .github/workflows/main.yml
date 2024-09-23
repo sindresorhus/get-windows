@@ -6,6 +6,11 @@ on:
   pull_request:
     branches-ignore:
       - "releases/**"
+    paths:
+      - "**/*.ts"
+      - "**/*.js"
+      - "package.json"
+      - "package-lock.json"
 jobs:
   test:
     name: Node.js ${{ matrix.node-version }}

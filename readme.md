@@ -1,4 +1,4 @@
-# get-windows
+#@deepfocus/get-windows
 
 > Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) and open windows (title, id, bounds, owner, URL, etc)
 
@@ -7,7 +7,7 @@ Works on macOS 10.14+, Linux ([note](#linux-support)), and Windows 7+.
 ## Install
 
 ```sh
-npm install get-windows
+npm install @deepfocus/get-windows
 ```
 
 **[This is an ESM package which requires you to use ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)**
@@ -15,7 +15,7 @@ npm install get-windows
 ## Usage
 
 ```js
-import { activeWindow } from "get-windows";
+import { activeWindow } from "@deepfocus/get-windows";
 
 console.log(await activeWindow(options));
 /*
