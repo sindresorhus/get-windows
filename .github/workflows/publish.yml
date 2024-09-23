@@ -10,44 +10,39 @@ permissions:
   issues: write
 
 jobs:
-  macos-build:
-    runs-on: macos-latest
+  publish:
+    runs-on: macos-latest # Ensure macOS for macOS builds
+
     steps:
+      # Checkout the code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Install node-pre-gyp-github globally
+      - name: Install node-pre-gyp-github
+        run: npm install -g node-pre-gyp-github
+
+      # Build the macOS binary
       - name: Build macOS binary
         run: npm run build:macos
 
+      # Package binary using node-pre-gyp
+      - name: Package binary
+        run: npm run package:binary
+
+      # Publish binary to GitHub Releases
       - name: Publish binary to GitHub Releases
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run: |
-          npm run package:binary
-          node-pre-gyp-github publish --target_commitish=main
-
-      # Publish to npm (after binaries are built and uploaded)
-      - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
-
-      # Bump version automatically
-      - name: Bump version
-        run: npm version patch
-
-      # Get the latest tag
-      - name: Get latest tag
-        id: get_tag
-        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
-
-      # Create a new release on GitHub using the pushed tag
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2.0.8
-        with:
-          tag_name: ${{ steps.get_tag.outputs.tag }} # Dynamically use the latest tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node-pre-gyp-github publish --target_commitish=main
