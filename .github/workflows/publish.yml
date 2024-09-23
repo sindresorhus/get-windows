@@ -45,7 +45,7 @@ jobs:
       - name: Publish binary to GitHub Releases
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run: node-pre-gyp-github publish --release --target_commitish="${{ github.ref_name }}"
+        run: node-pre-gyp-github publish --release
 
       # Set Git user identity (for version bump commit)
       - name: Set Git user identity
