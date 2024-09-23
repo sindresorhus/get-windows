@@ -4,11 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "**/*.ts"
-      - "**/*.js"
-      - "package.json"
-      - "package-lock.json"
+
 permissions:
   contents: write # Grants permission to push code, commits, and tags
   issues: write
