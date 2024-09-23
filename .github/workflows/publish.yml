@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write # Grants permission to push code, commits, and tags
+  contents: write
   issues: write
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
       - name: Install node-pre-gyp-github
         run: npm install -g node-pre-gyp-github
 
-      # Build the macOS binary
+      # Build macOS binary explicitly (optional, could be redundant with node-pre-gyp)
       - name: Build macOS binary
         run: npm run build:macos
 
@@ -45,28 +45,28 @@ jobs:
       - name: Publish binary to GitHub Releases
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run:
-          node-pre-gyp-github publish
+        run: node-pre-gyp-github publish --release
 
-          # Set Git user identity (for version bump commit)
+      # Set Git user identity (for version bump commit)
       - name: Set Git user identity
         run: |
           git config --global user.name "Timeo Williams"
           git config --global user.email "timwillie73@gmail.com"
-        # Bump the package version
+
+      # Bump the package version
       - name: Bump version
         run: npm version patch
 
-        # Push version commit and tag to GitHub
+      # Push version commit and tag to GitHub
       - name: Push version commit and tag
         run: |
           git push origin main --tags
 
-        # Fetch all tags to make sure the latest tag is available
+      # Fetch all tags to make sure the latest tag is available
       - name: Fetch all tags
         run: git fetch --tags
 
-        # Publish to npm
+      # Publish to npm
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
