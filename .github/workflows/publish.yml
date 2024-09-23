@@ -74,6 +74,7 @@ jobs:
       - name: Publish binary to GitHub Releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
         run: npm run publish:binary
       # Publish to npm (after binaries are built and uploaded)
       - name: Publish to npm
