@@ -44,7 +44,8 @@
 		"lib",
 		"main",
 		"Sources/windows/main.cc",
-		"binding.gyp"
+		"binding.gyp",
+		"Package.swift"
 	],
 	"keywords": [
 		"macos",
