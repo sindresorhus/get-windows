@@ -57,39 +57,39 @@ jobs:
       # Build the macOS binary
       # IMPORTANT: You need to build the binary on macOS because it can't be built on Ubuntu
   macos-build:
-        runs-on: macos-latest
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v4
-          
-          - name: Install dependencies
-            run: npm install
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-          - name: Build macOS binary
-            run: npm run build:macos
+      - name: Install dependencies
+        run: npm install
 
-          - name: Package binary using node-pre-gyp
-            run: npm run package:binary
+      - name: Build macOS binary
+        run: npm run build:macos
 
-          - name: Publish binary to GitHub Releases
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            run: npm run publish:binary
+      - name: Package binary using node-pre-gyp
+        run: npm run package:binary
+
+      - name: Publish binary to GitHub Releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run publish:binary
       # Publish to npm (after binaries are built and uploaded)
-          - name: Publish to npm
-            env:
-              NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-            run: npm publish --access public
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
 
-          # Get the latest tag
-          - name: Get latest tag
-            id: get_tag
-            run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+      # Get the latest tag
+      - name: Get latest tag
+        id: get_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
 
-          # Create a new release on GitHub using the pushed tag
-          - name: Create GitHub Release
-            uses: softprops/action-gh-release@v2.0.8
-            with:
-              tag_name: ${{ steps.get_tag.outputs.tag }} # Dynamically use the latest tag
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Create a new release on GitHub using the pushed tag
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2.0.8
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }} # Dynamically use the latest tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

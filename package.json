@@ -1,67 +1,69 @@
 {
-  "name": "@deepfocus/get-windows",
-  "version": "1.0.11",
-  "description": "Custom version of get-windows for MacOS fixes",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Tech-Nest-Ventures/get-windows"
-  },
-  "author": "Timeo Williams",
-  "license": "MIT",
-  "type": "module",
-  "exports": {
-    "types": "./index.d.ts",
-    "default": "./index.js"
-  },
-  "main": "./index.js",
-  "sideEffects": false,
-  "engines": {
-    "node": ">=18.18"
-  },
-  "binary": {
-    "module_name": "node-get-windows",
-    "module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
-    "host": "https://github.com/Tech-Nest-Ventures/get-windows/releases/download/",
-    "remote_path": "v{version}",
-    "package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
-    "napi_versions": [9]
-  },
-  "scripts": {
-    "test": "xo && npm run build:macos && ava && tsd",
-    "format": "prettier --write \"**/*.+(js|ts|jsx|tsx|json|css|md|yml|yaml|html)\"",
-    "test-ci": "xo && tsd",
-    "build:macos": "swift build --configuration=release --arch arm64 --arch x86_64 && mv .build/apple/Products/Release/get-windows main",
-    "package:binary": "node-pre-gyp package",
-    "publish:binary": "node-pre-gyp-github publish",
-    "install": "node-pre-gyp install --fallback-to-build"
-  },
-  "files": [
-    "index.js",
-    "index.d.ts",
-    "lib",
-    "main",
-    "Sources/windows/main.cc",
-    "binding.gyp",
-    "Package.swift"
-  ],
-  "devDependencies": {
-    "ava": "^6.1.3",
-    "node-pre-gyp-github": "^2.0.0",
-    "prettier": "^3.3.3",
-    "tsd": "^0.31.2",
-    "xo": "^0.59.3"
-  },
-  "optionalDependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.11",
-    "node-addon-api": "^8.1.0",
-    "node-gyp": "^10.2.0"
-  },
-  "peerDependencies": {
-    "node-gyp": "^10.1.0"
-  },
-  "peerDependenciesMeta": {
-    "node-gyp": {
-      "optional": true
-    }
-  }
+	"name": "@deepfocus/get-windows",
+	"version": "1.0.11",
+	"description": "Custom version of get-windows for MacOS fixes",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Tech-Nest-Ventures/get-windows"
+	},
+	"author": "Timeo Williams",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		"types": "./index.d.ts",
+		"default": "./index.js"
+	},
+	"main": "./index.js",
+	"sideEffects": false,
+	"engines": {
+		"node": ">=18.18"
+	},
+	"binary": {
+		"module_name": "node-get-windows",
+		"module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
+		"host": "https://github.com/Tech-Nest-Ventures/get-windows/releases/download/",
+		"remote_path": "v{version}",
+		"package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
+		"napi_versions": [
+			9
+		]
+	},
+	"scripts": {
+		"test": "xo && npm run build:macos && ava && tsd",
+		"format": "prettier --write \"**/*.+(js|ts|jsx|tsx|json|css|md|yml|yaml|html)\"",
+		"test-ci": "xo && tsd",
+		"build:macos": "swift build --configuration=release --arch arm64 --arch x86_64 && mv .build/apple/Products/Release/get-windows main",
+		"package:binary": "node-pre-gyp package",
+		"publish:binary": "node-pre-gyp-github publish",
+		"install": "node-pre-gyp install --fallback-to-build"
+	},
+	"files": [
+		"index.js",
+		"index.d.ts",
+		"lib",
+		"main",
+		"Sources/windows/main.cc",
+		"binding.gyp",
+		"Package.swift"
+	],
+	"devDependencies": {
+		"ava": "^6.1.3",
+		"node-pre-gyp-github": "^2.0.0",
+		"prettier": "^3.3.3",
+		"tsd": "^0.31.2",
+		"xo": "^0.59.3"
+	},
+	"optionalDependencies": {
+		"@mapbox/node-pre-gyp": "^1.0.11",
+		"node-addon-api": "^8.1.0",
+		"node-gyp": "^10.2.0"
+	},
+	"peerDependencies": {
+		"node-gyp": "^10.1.0"
+	},
+	"peerDependenciesMeta": {
+		"node-gyp": {
+			"optional": true
+		}
+	}
 }
