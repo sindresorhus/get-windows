@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
 	name: "GetWindows",
 	products: [
-		.executable(
+		.executable(	
 			name: "get-windows",
 			targets: [
 				"GetWindowsCLI"
