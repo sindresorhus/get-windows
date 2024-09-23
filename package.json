@@ -34,7 +34,7 @@
 		"test-ci": "xo && tsd",
 		"build:macos": "swift build --configuration=release --arch arm64 --arch x86_64 && mv .build/apple/Products/Release/get-windows main",
 		"package:binary": "node-pre-gyp package",
-		"publish:binary": "node-pre-gyp-github publish",
+		"publish:binary": "node-pre-gyp-github publish --release --target_commitish=main",
 		"install": "node-pre-gyp install --fallback-to-build"
 	},
 	"files": [
@@ -65,5 +65,8 @@
 		"node-gyp": {
 			"optional": true
 		}
+	},
+	"dependencies": {
+		"node-pre-gyp": "^0.17.0"
 	}
 }
