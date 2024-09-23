@@ -1,4 +1,4 @@
-#@deepfocus/get-windows
+# @deepfocus/get-windows
 
 > Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) and open windows (title, id, bounds, owner, URL, etc)
 
