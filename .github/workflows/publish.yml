@@ -8,12 +8,10 @@ on:
 permissions:
   contents: write
   issues: write
-  pull-requests: read # Added read permission for pull requests
-  actions: read      # Added read permission for actions
 
 jobs:
   publish:
-    runs-on: macos-latest # Ensure macOS for macOS builds
+    runs-on: macos-latest
 
     steps:
       # Checkout the code
@@ -35,7 +33,7 @@ jobs:
       - name: Install node-pre-gyp-github
         run: npm install -g node-pre-gyp-github
 
-      # Build macOS binary explicitly (optional, could be redundant with node-pre-gyp)
+      # Build macOS binary
       - name: Build macOS binary
         run: npm run build:macos
 
@@ -47,7 +45,7 @@ jobs:
       - name: Publish binary to GitHub Releases
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run: node-pre-gyp-github publish --release
+        run: node-pre-gyp-github publish --release --target_commitish="${{ github.ref_name }}"
 
       # Set Git user identity (for version bump commit)
       - name: Set Git user identity
@@ -62,11 +60,7 @@ jobs:
       # Push version commit and tag to GitHub
       - name: Push version commit and tag
         run: |
-          git push origin main --tags
-
-      # Fetch all tags to make sure the latest tag is available
-      - name: Fetch all tags
-        run: git fetch --tags
+          git push origin ${{ github.ref_name }} --tags
 
       # Publish to npm
       - name: Publish to npm
