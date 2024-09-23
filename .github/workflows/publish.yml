@@ -45,4 +45,29 @@ jobs:
       - name: Publish binary to GitHub Releases
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ secrets.NODE_PRE_GYP_GITHUB_TOKEN }}
-        run: node-pre-gyp-github publish --target_commitish=main
+        run:
+          node-pre-gyp-github publish
+
+          # Set Git user identity (for version bump commit)
+      - name: Set Git user identity
+        run: |
+          git config --global user.name "Timeo Williams"
+          git config --global user.email "timwillie73@gmail.com"
+        # Bump the package version
+      - name: Bump version
+        run: npm version patch
+
+        # Push version commit and tag to GitHub
+      - name: Push version commit and tag
+        run: |
+          git push origin main --tags
+
+        # Fetch all tags to make sure the latest tag is available
+      - name: Fetch all tags
+        run: git fetch --tags
+
+        # Publish to npm
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
