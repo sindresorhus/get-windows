@@ -10,48 +10,6 @@ permissions:
   issues: write
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checkout the code
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          registry-url: "https://registry.npmjs.org"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      # Install dependencies
-      - name: Install dependencies
-        run: pnpm install
-
-      # Set up Git identity (this is required to perform version commits)
-      - name: Set Git user identity
-        run: |
-          git config --global user.name "Timeo Williams"
-          git config --global user.email "timwillie73@gmail.com"
-
-      - name: Bump version
-        run: pnpm version patch
-
-      # Push new version commit and tag to GitHub
-      - name: Push version commit and tag
-        run: |
-          git push origin main --tags
-
-      # Fetch tags to ensure the GitHub Action can access the tag
-      - name: Fetch all tags
-        run: git fetch --tags
-
-      # Build the macOS binary
-      # IMPORTANT: You need to build the binary on macOS because it can't be built on Ubuntu
   macos-build:
     runs-on: macos-latest
     steps:
@@ -77,6 +35,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
+
+      # Bump version automatically
+      - name: Bump version
+        run: npm version patch
 
       # Get the latest tag
       - name: Get latest tag

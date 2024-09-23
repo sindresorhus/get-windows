@@ -4,7 +4,7 @@
 	"description": "Custom version of get-windows for MacOS fixes",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Tech-Nest-Ventures/get-windows"
+		"url": "https://github.com/Tech-Nest-Ventures/get-windows.git"
 	},
 	"author": "Timeo Williams",
 	"license": "MIT",
