@@ -36,7 +36,8 @@
 		"build:windows": "node-pre-gyp build",
 		"build:windows:debug": "node-pre-gyp build --debug",
 		"build:macos": "swift build --configuration=release --arch arm64 --arch x86_64 && mv .build/apple/Products/Release/get-windows main",
-		"install": "node-pre-gyp install --fallback-to-build"
+		"install": "node-pre-gyp install --fallback-to-build",
+		"postinstall": "if [ $(uname) = 'Darwin' ]; then npm run build:macos; fi"
 	},
 	"files": [
 		"index.js",
