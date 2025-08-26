@@ -90,8 +90,8 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 	- `processId` *(number)* - Process identifier
 	- `bundleId` *(string)* - Bundle identifier *(macOS only)*
 	- `path` *(string)* - Path to the app
-- `url` *(string?)* - URL of the active browser tab if the active window *(macOS only)*
-	- Supported browsers: Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi
+- `url` *(string?)* - URL of the active browser tab if the active window is a supported browser *(macOS only)*
+    - Supported browsers: Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta, Developer, and GX), or Vivaldi
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
 ### openWindows()
@@ -140,3 +140,5 @@ To bypass the `gyp` build:
 ```sh
 npm install --ignore-scripts
 ```
+
+- Debug logging: Set `DEBUG_GET_WINDOWS=1` to log Linux window enumeration errors and summary counts to the console.

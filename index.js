@@ -82,4 +82,4 @@ export function openWindowsSync(options) {
 	throw new Error('macOS, Linux, and Windows only');
 }
 
-// Note to self: The `main` field in package.json is requried for pre-gyp.
+// Note to self: The `main` field in package.json is required for pre-gyp.

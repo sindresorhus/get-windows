@@ -64,7 +64,7 @@ export type BaseResult = {
 	owner: BaseOwner;
 
 	/**
-	Memory usage by the window.
+	Memory usage by the window owner process.
 	*/
 	memoryUsage: number;
 };
@@ -84,7 +84,7 @@ export type MacOSResult = {
 	owner: MacOSOwner;
 
 	/**
-	URL of the active browser tab if the active window is Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, WaveBox, Sidekick, Opera (includes Beta and Developer), or Vivaldi.
+	URL of the active browser tab if the active window is Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta, Developer, and GX), or Vivaldi.
 	*/
 	url?: string;
 } & BaseResult;
