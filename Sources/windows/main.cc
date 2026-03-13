@@ -129,7 +129,7 @@ BOOL CALLBACK EnumChildWindowsProc(HWND hwnd, LPARAM lParam) {
 
 	if (phlde != NULL) {
 		newOwner = getProcessPathAndName(phlde);
-		CloseHandle(hwnd);
+		CloseHandle(phlde);
 		if (ownerInfo->path != newOwner.path) {
 			return FALSE;
 		}
