@@ -3,16 +3,9 @@
 	"version": "9.3.0",
 	"description": "Get metadata about the active window and open windows (title, id, bounds, owner, URL, etc)",
 	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/sindresorhus/get-windows.git"
-	},
+	"repository": "sindresorhus/get-windows",
 	"funding": "https://github.com/sponsors/sindresorhus",
-	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "https://sindresorhus.com"
-	},
+	"author": "Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)",
 	"type": "module",
 	"exports": {
 		"types": "./index.d.ts",
@@ -21,34 +14,24 @@
 	"main": "./index.js",
 	"sideEffects": false,
 	"engines": {
-		"node": ">=18.18"
-	},
-	"binary": {
-		"module_name": "node-get-windows",
-		"module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
-		"host": "https://github.com/sindresorhus/get-windows/releases/download/",
-		"remote_path": "v{version}",
-		"package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
-		"napi_versions": [
-			9
-		]
+		"node": ">=22"
 	},
 	"scripts": {
-		"test": "xo && npm run build:macos && ava && tsd",
-		"test-ci": "xo && tsd",
+		"test": "xo && npm run build:macos && node --test && nz",
+		"test-ci": "xo && nz",
 		"build:windows:install": "node-pre-gyp install --fallback-to-build",
 		"build:windows": "node-pre-gyp build",
 		"build:windows:debug": "node-pre-gyp build --debug",
-		"build:macos": "swift build --configuration=release --arch arm64 --arch x86_64 && mv .build/apple/Products/Release/get-windows main",
+		"build:macos": "swift build --configuration=release --arch arm64 --arch x86_64 && mv \"$(swift build --configuration=release --arch arm64 --arch x86_64 --show-bin-path)/get-windows\" main",
 		"install": "node-pre-gyp install --fallback-to-build"
 	},
 	"files": [
 		"index.js",
 		"index.d.ts",
+		"binding.gyp",
 		"lib",
 		"main",
-		"Sources/windows/main.cc",
-		"binding.gyp"
+		"Sources/windows/main.cc"
 	],
 	"keywords": [
 		"macos",
@@ -57,7 +40,6 @@
 		"app",
 		"application",
 		"window",
-		"windows",
 		"active",
 		"focused",
 		"current",
@@ -81,22 +63,41 @@
 		"brave"
 	],
 	"devDependencies": {
-		"ava": "^6.1.3",
-		"tsd": "^0.31.1",
-		"xo": "^0.59.3",
-		"node-pre-gyp-github": "^2.0.0"
-	},
-	"optionalDependencies": {
-		"@mapbox/node-pre-gyp": "^1.0.11",
-		"node-addon-api": "^8.1.0",
-		"node-gyp": "^10.2.0"
+		"@typescript/native": "npm:typescript@^7.0.2",
+		"node-pre-gyp-github": "^2.0.0",
+		"nz": "^0.1.0",
+		"xo": "^5.0.1"
 	},
 	"peerDependencies": {
-		"node-gyp": "^10.1.0"
+		"node-gyp": "^13.0.2"
 	},
 	"peerDependenciesMeta": {
 		"node-gyp": {
 			"optional": true
+		}
+	},
+	"optionalDependencies": {
+		"@mapbox/node-pre-gyp": "^2.0.3",
+		"node-addon-api": "^8.9.2",
+		"node-gyp": "^13.0.2"
+	},
+	"binary": {
+		"module_name": "node-get-windows",
+		"module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
+		"host": "https://github.com/sindresorhus/get-windows/releases/download/",
+		"remote_path": "v{version}",
+		"package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
+		"napi_versions": [
+			9
+		]
+	},
+	"xo": {
+		"files": [
+			"package.json"
+		],
+		"rules": {
+			"package-json/prefer-exports": "off",
+			"package-json/no-install-scripts": "off"
 		}
 	}
 }

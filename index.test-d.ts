@@ -1,4 +1,4 @@
-import {expectType, expectError} from 'tsd';
+import {expectTypeOf} from 'nz';
 import {
 	activeWindow,
 	activeWindowSync,
@@ -11,39 +11,39 @@ import {
 	BaseOwner,
 } from './index.js';
 
-expectType<Promise<Result | undefined>>(activeWindow());
+expectTypeOf(activeWindow()).toBe<Promise<Result | undefined>>();
 
 const result = activeWindowSync({
 	screenRecordingPermission: false,
 	accessibilityPermission: false,
 });
 
-expectType<Result | undefined>(result);
+expectTypeOf(result).toBe<Result | undefined>();
 
 if (result) {
-	expectType<'macos' | 'linux' | 'windows'>(result.platform);
-	expectType<string>(result.title);
-	expectType<number>(result.id);
-	expectType<number>(result.bounds.x);
-	expectType<number>(result.bounds.y);
-	expectType<number>(result.bounds.width);
-	expectType<number>(result.bounds.height);
-	expectType<string>(result.owner.name);
-	expectType<number>(result.owner.processId);
-	expectType<string>(result.owner.path);
-	expectType<number>(result.memoryUsage);
+	expectTypeOf(result.platform).toBe<'macos' | 'linux' | 'windows'>();
+	expectTypeOf(result.title).toBe<string>();
+	expectTypeOf(result.id).toBe<number>();
+	expectTypeOf(result.bounds.x).toBe<number>();
+	expectTypeOf(result.bounds.y).toBe<number>();
+	expectTypeOf(result.bounds.width).toBe<number>();
+	expectTypeOf(result.bounds.height).toBe<number>();
+	expectTypeOf(result.owner.name).toBe<string>();
+	expectTypeOf(result.owner.processId).toBe<number>();
+	expectTypeOf(result.owner.path).toBe<string>();
+	expectTypeOf(result.memoryUsage).toBe<number>();
 
 	if (result.platform === 'macos') {
-		expectType<MacOSResult>(result);
-		expectType<string>(result.owner.bundleId);
-		expectType<string | undefined>(result.url);
+		expectTypeOf(result).toBe<MacOSResult>();
+		expectTypeOf(result.owner.bundleId).toBe<string>();
+		expectTypeOf(result.url).toBe<string | undefined>();
 	} else if (result.platform === 'linux') {
-		expectType<LinuxResult>(result);
+		expectTypeOf(result).toBe<LinuxResult>();
 	} else {
-		expectType<WindowsResult>(result);
-		expectType<number>(result.contentBounds.x);
-		expectType<number>(result.contentBounds.y);
-		expectType<number>(result.contentBounds.width);
-		expectType<number>(result.contentBounds.height);
+		expectTypeOf(result).toBe<WindowsResult>();
+		expectTypeOf(result.contentBounds.x).toBe<number>();
+		expectTypeOf(result.contentBounds.y).toBe<number>();
+		expectTypeOf(result.contentBounds.width).toBe<number>();
+		expectTypeOf(result.contentBounds.height).toBe<number>();
 	}
 }
