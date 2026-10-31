@@ -1,6 +1,6 @@
 {
 	"name": "get-windows",
-	"version": "9.3.0",
+	"version": "10.0.0",
 	"description": "Get metadata about the active window and open windows (title, id, bounds, owner, URL, etc)",
 	"license": "MIT",
 	"repository": "sindresorhus/get-windows",
