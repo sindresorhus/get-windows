@@ -102,6 +102,8 @@ Windows are returned in order from front to back.
 
 Returns `Promise<Result[]>`.
 
+The array is empty if the window list cannot be read.
+
 ### openWindowsSync()
 
 Get metadata about all open windows synchronously.
@@ -109,6 +111,8 @@ Get metadata about all open windows synchronously.
 Windows are returned in order from front to back.
 
 Returns `Result[]`.
+
+The array is empty if the window list cannot be read.
 
 ## OS support
 

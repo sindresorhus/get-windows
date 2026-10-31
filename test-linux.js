@@ -20,6 +20,9 @@ const invalidWindowIds = new Set([0, -255, NaN]);
 
 const xpropOpenWindowsOutput = '_NET_CLIENT_LIST_STACKING(ARRAY) = # 0x0\n0x3400007, 0x3400008, -ff, zzz\n';
 
+// The root query is the one the failure tests below replace, so it can't be the fixed fixture above.
+let rootQueryOutput = xpropOpenWindowsOutput;
+
 // `xprop` writes every byte of a non-ASCII title as an octal escape, so the title below is
 // `«Café» \slash "end"` and reaches `parseLinux` as ASCII. Decoding it is the whole reason the
 // fixture title is not plain text.
@@ -64,7 +67,7 @@ const stdoutFor = (file, arguments_) => {
 		return file === 'xwininfo' ? xwininfoDetailsOutput : xpropDetailsOutput;
 	}
 
-	return xpropOpenWindowsOutput;
+	return rootQueryOutput;
 };
 
 const originalExecFile = childProcess.execFile;
@@ -202,5 +205,29 @@ test('openWindows parses the window that xprop and xwininfo describe', async () 
 
 test('openWindowsSync parses the window that xprop and xwininfo describe', () => {
 	assert.deepEqual(openWindowsSync(), [expectedWindow]);
+});
+
+// A window list that cannot be read has to come back as an empty array, which the documented
+// `Result[]` return type allows, and not as `undefined`, which makes every caller handle it.
+const unreadableRootOutput = 'xprop: unable to open display ""\n';
+
+test('openWindows returns an empty array when the window list cannot be read', async () => {
+	rootQueryOutput = unreadableRootOutput;
+
+	try {
+		assert.deepEqual(await openWindows(), []);
+	} finally {
+		rootQueryOutput = xpropOpenWindowsOutput;
+	}
+});
+
+test('openWindowsSync returns an empty array when the window list cannot be read', () => {
+	rootQueryOutput = unreadableRootOutput;
+
+	try {
+		assert.deepEqual(openWindowsSync(), []);
+	} finally {
+		rootQueryOutput = xpropOpenWindowsOutput;
+	}
 });
 /* eslint-enable node-test/require-assertion -- See the disable at the top of this file. */

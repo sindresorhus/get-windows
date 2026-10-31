@@ -161,6 +161,8 @@ export function activeWindowSync(options?: Options): Result | undefined;
 Get metadata about all open windows.
 
 Windows are returned in order from front to back.
+
+The array is empty if the window list cannot be read.
 */
 export function openWindows(options?: Options): Promise<Result[]>;
 
@@ -168,5 +170,7 @@ export function openWindows(options?: Options): Promise<Result[]>;
 Get metadata about all open windows synchronously.
 
 Windows are returned in order from front to back.
+
+The array is empty if the window list cannot be read.
 */
 export function openWindowsSync(options?: Options): Result[];
